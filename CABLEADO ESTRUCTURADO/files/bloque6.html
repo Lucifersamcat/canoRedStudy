@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Módulo 6 · Consideraciones Profesionales — Cableado Estructurado</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<header class="topnav">
+  <div class="wrap">
+    <span class="brand">Cableado<span class="dot">.</span>Estructurado</span>
+    <nav>
+      <a href="index.html">Inicio</a>
+      <a href="bloque1.html">1 · Intro</a>
+      <a href="bloque2.html">2 · Canalización</a>
+      <a href="bloque3.html">3 · Data Center</a>
+      <a href="bloque4.html">4 · Campo</a>
+      <a href="bloque5.html">5 · Fibra</a>
+      <a href="bloque6.html">6 · Profesional</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <section class="block-head wrap">
+    <div class="num">MÓDULO 06</div>
+    <h1>Consideraciones Profesionales</h1>
+    <p>Las buenas prácticas, las recomendaciones del mercado y el flujo de entrega de un proyecto completo. Este módulo cierra el curso con el proyecto final: cableando un mini data center de principio a fin.</p>
+    <div class="progress-dots">
+      <span class="on"></span><span class="on"></span><span class="on"></span><span class="on"></span><span class="on"></span><span class="on"></span>
+    </div>
+    <div class="toc">
+      <a href="#teoria">Teoría</a>
+      <a href="#conceptos">Conceptos</a>
+      <a href="#diagrama">Diagrama</a>
+      <a href="#lab">Proyecto Final</a>
+      <a href="#flash">Flashcards</a>
+      <a href="#quiz">Cuestionario</a>
+    </div>
+  </section>
+
+  <!-- ===== TEORÍA ===== -->
+  <section class="section" id="teoria">
+    <div class="wrap block-body">
+      <h2 class="h"><span class="lead">Teoría</span> ampliada</h2>
+
+      <h3>Buenas Prácticas — Lo que Diferencia al Profesional</h3>
+      <p>En cableado estructurado, la diferencia entre un instalador promedio y un profesional no está solo en conocer las normas, sino en <strong>aplicarlas consistentemente</strong> incluso cuando nadie está mirando. Las buenas prácticas reducen las llamadas de soporte, simplifican el mantenimiento y construyen una reputación en el mercado.</p>
+      <ul class="bullets">
+        <li><strong>Mantener el trenzado:</strong> máx. 13 mm de desenrollado en jacks y patch panels. A más desenrollado, peor NEXT.</li>
+        <li><strong>Peinar con velcro:</strong> grupos de máximo 24 cables. Nunca bridas de plástico apretadas.</li>
+        <li><strong>Etiquetar al tender:</strong> no al final. Recuperar un cable sin etiqueta en un rack de 200 puntos cuesta horas.</li>
+        <li><strong>Fotografiar la instalación:</strong> canaleta vacía → cables tendidos → punchdown → rack final. Las fotos son el as-built visual.</li>
+        <li><strong>Certificar, no solo testear:</strong> entregar siempre resultados Fluke al cliente. Son la garantía de la instalación.</li>
+      </ul>
+
+      <h3>Recomendaciones del Mercado</h3>
+      <table>
+        <tr><th>Área</th><th>Recomendación</th><th>Razón</th></tr>
+        <tr><td>Categoría mínima (nueva instalación)</td><td>Cat6A</td><td>10G a 100 m, forward-compatible con PoE++ (90 W)</td></tr>
+        <tr><td>Backbone vertical</td><td>Fibra OM4 o SM OS2</td><td>Escalable, sin limitaciones de distancia del cobre</td></tr>
+        <tr><td>Data center nuevo</td><td>Cat6A + fibra OM4</td><td>Densidad y flexibilidad para 25/40/100G futuros</td></tr>
+        <tr><td>PoE para cámaras IP / APs</td><td>Cat6A U/FTP</td><td>Menor temperatura del cable bajo carga PoE alta</td></tr>
+        <tr><td>Cableado en obras nuevas</td><td>Conduit EMT o PVC rígido</td><td>Permite reemplazar cables sin romper paredes</td></tr>
+        <tr><td>Etiquetado</td><td>Impresora Brady o Dymo</td><td>Etiquetas permanentes y legibles vs. manuscritas</td></tr>
+        <tr><td>Certificación</td><td>Fluke DSX-8000 o DSX2-8000</td><td>Certificador de referencia; aceptado por todos los fabricantes</td></tr>
+      </table>
+
+      <h3>PoE — Power over Ethernet</h3>
+      <p>PoE (IEEE 802.3af/at/bt) alimenta dispositivos a través del cable UTP junto con los datos. Fundamental para instaladores de CCTV, VoIP y domótica:</p>
+      <table>
+        <tr><th>Estándar</th><th>Potencia máx.</th><th>Aplicación</th></tr>
+        <tr><td>802.3af (PoE)</td><td>15.4 W</td><td>Teléfonos IP, cámaras IP básicas</td></tr>
+        <tr><td>802.3at (PoE+)</td><td>30 W</td><td>APs WiFi 6, cámaras PTZ, lectores biométricos</td></tr>
+        <tr><td>802.3bt Type 3 (PoE++)</td><td>60 W</td><td>Thin clients, pantallas táctiles, APs WiFi 6E</td></tr>
+        <tr><td>802.3bt Type 4 (PoE++)</td><td>90 W</td><td>Laptops, luminarias inteligentes, conferencia</td></tr>
+      </table>
+      <div class="callout tip">
+        <span class="label">Consejo</span>
+        Con PoE++ (90 W), el cable Cat6 se calienta significativamente. Cat6A reduce la resistencia del conductor y la temperatura, especialmente en bundles grandes. Siempre especificar Cat6A cuando se anticipa PoE de alta potencia.
+      </div>
+
+      <h3>Relación con el Cliente</h3>
+      <ul class="bullets">
+        <li><strong>Alcance por escrito:</strong> documentar qué se instala, qué categoría, cuántos puntos, qué materiales incluye y qué no.</li>
+        <li><strong>Gestionar expectativas de tiempo:</strong> un punto (pull + terminate + test) toma 45–60 min a ritmo profesional. No prometer tiempos imposibles.</li>
+        <li><strong>Entrega formal:</strong> dossier con tabla de puntos certificados, plano as-built, reportes de certificación, lista de materiales y garantía.</li>
+        <li><strong>Garantía de sistema:</strong> 15–25 años cuando se usan materiales certificados de un fabricante (Panduit, Systimax, Belden, Legrand).</li>
+      </ul>
+
+      <h3>Certificaciones del Mercado</h3>
+      <ul class="bullets">
+        <li><strong>BICSI RCDD</strong> (Registered Communications Distribution Designer): certificación de diseño de sistemas de distribución; reconocida globalmente.</li>
+        <li><strong>BICSI Installer 1/2:</strong> valida habilidades técnicas en campo.</li>
+        <li><strong>Certificaciones de fabricante</strong> (Panduit, Systimax): permiten instalar con garantía extendida del sistema.</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- ===== CONCEPTOS ===== -->
+  <section class="section" id="conceptos">
+    <div class="wrap block-body">
+      <h2 class="h"><span class="lead">Conceptos</span> clave</h2>
+      <table>
+        <tr><th>Término</th><th>Definición</th></tr>
+        <tr><td>PoE (802.3af)</td><td>Power over Ethernet básico — hasta 15.4 W por puerto</td></tr>
+        <tr><td>PoE+ (802.3at)</td><td>Hasta 30 W; para APs WiFi 6 y cámaras PTZ</td></tr>
+        <tr><td>PoE++ (802.3bt)</td><td>Hasta 90 W usando los 4 pares; requiere Cat6A para control térmico</td></tr>
+        <tr><td>Cat6A U/FTP</td><td>Cable Cat6A con foil global; equilibrio entre costo y rendimiento PoE</td></tr>
+        <tr><td>BICSI RCDD</td><td>Registered Communications Distribution Designer — credencial de diseño de infraestructura</td></tr>
+        <tr><td>Garantía de sistema</td><td>Garantía de 15–25 años ofrecida por fabricantes al usar cableado certificado de su misma marca</td></tr>
+        <tr><td>Dossier de entrega</td><td>Documento de cierre: tabla de puntos certificados, as-built, certificaciones, materiales y garantía</td></tr>
+        <tr><td>Throughput de instalación</td><td>Puntos certificados por jornada; técnico senior: ~20–25 puntos/día (pull + terminate + certify)</td></tr>
+        <tr><td>Fluke DSX-8000</td><td>Certificador de campo para Cat6A/7/8; referencia del mercado</td></tr>
+        <tr><td>Panduit / Systimax</td><td>Marcas líderes en cableado estructurado con garantías de sistema extendidas</td></tr>
+      </table>
+    </div>
+  </section>
+
+  <!-- ===== DIAGRAMA ===== -->
+  <section class="section" id="diagrama">
+    <div class="wrap block-body">
+      <h2 class="h"><span class="lead">Diagrama</span> — Flujo del proyecto profesional</h2>
+      <div class="diagram">
+        <svg viewBox="0 0 760 300" xmlns="http://www.w3.org/2000/svg" font-family="Segoe UI, sans-serif" font-size="12">
+          <defs>
+            <marker id="aw" markerWidth="8" markerHeight="8" refX="5" refY="3" orient="auto">
+              <path d="M0,0 L8,3 L0,6 Z" fill="#e6edf3"/>
+            </marker>
+            <marker id="ar" markerWidth="8" markerHeight="8" refX="5" refY="3" orient="auto">
+              <path d="M0,0 L8,3 L0,6 Z" fill="#f87171"/>
+            </marker>
+          </defs>
+
+          <!-- Fila 1 -->
+          <rect x="10" y="20" width="120" height="58" rx="7" fill="#1c2230" stroke="#4f9cf9" stroke-width="2"/>
+          <text x="70" y="43" fill="#4f9cf9" font-weight="bold" text-anchor="middle" font-size="11">① DISEÑO</text>
+          <text x="70" y="57" fill="#9aa7b8" text-anchor="middle" font-size="10">Plano · Tabla</text>
+          <text x="70" y="69" fill="#9aa7b8" text-anchor="middle" font-size="10">Materiales</text>
+
+          <line x1="130" y1="49" x2="155" y2="49" stroke="#e6edf3" stroke-width="1.5" marker-end="url(#aw)"/>
+
+          <rect x="155" y="20" width="120" height="58" rx="7" fill="#1c2230" stroke="#a78bfa" stroke-width="2"/>
+          <text x="215" y="43" fill="#a78bfa" font-weight="bold" text-anchor="middle" font-size="11">② CANALIZACIÓN</text>
+          <text x="215" y="57" fill="#9aa7b8" text-anchor="middle" font-size="10">Canaleta · Conduit</text>
+          <text x="215" y="69" fill="#9aa7b8" text-anchor="middle" font-size="10">Escalerilla</text>
+
+          <line x1="275" y1="49" x2="300" y2="49" stroke="#e6edf3" stroke-width="1.5" marker-end="url(#aw)"/>
+
+          <rect x="300" y="20" width="120" height="58" rx="7" fill="#1c2230" stroke="#f59e0b" stroke-width="2"/>
+          <text x="360" y="43" fill="#f59e0b" font-weight="bold" text-anchor="middle" font-size="11">③ TENDIDO</text>
+          <text x="360" y="57" fill="#9aa7b8" text-anchor="middle" font-size="10">Pasar cable</text>
+          <text x="360" y="69" fill="#9aa7b8" text-anchor="middle" font-size="10">Etiquetar</text>
+
+          <line x1="420" y1="49" x2="445" y2="49" stroke="#e6edf3" stroke-width="1.5" marker-end="url(#aw)"/>
+
+          <rect x="445" y="20" width="120" height="58" rx="7" fill="#1c2230" stroke="#34d399" stroke-width="2"/>
+          <text x="505" y="43" fill="#34d399" font-weight="bold" text-anchor="middle" font-size="11">④ TERMINACIÓN</text>
+          <text x="505" y="57" fill="#9aa7b8" text-anchor="middle" font-size="10">Punchdown panel</text>
+          <text x="505" y="69" fill="#9aa7b8" text-anchor="middle" font-size="10">Jacks · Conectores</text>
+
+          <!-- Curva hacia abajo -->
+          <line x1="625" y1="49" x2="650" y2="49" stroke="#e6edf3" stroke-width="1.5"/>
+          <line x1="650" y1="49" x2="650" y2="145" stroke="#e6edf3" stroke-width="1.5" marker-end="url(#aw)"/>
+
+          <!-- Fila 2 -->
+          <rect x="445" y="145" width="160" height="58" rx="7" fill="#1c2230" stroke="#22d3ee" stroke-width="2"/>
+          <text x="525" y="168" fill="#22d3ee" font-weight="bold" text-anchor="middle" font-size="11">⑤ CERTIFICACIÓN</text>
+          <text x="525" y="182" fill="#9aa7b8" text-anchor="middle" font-size="10">Fluke DSX · OTDR</text>
+          <text x="525" y="194" fill="#9aa7b8" text-anchor="middle" font-size="10">Wiremap · NEXT · Loss</text>
+
+          <line x1="445" y1="174" x2="420" y2="174" stroke="#e6edf3" stroke-width="1.5" marker-end="url(#aw)"/>
+
+          <rect x="265" y="145" width="155" height="58" rx="7" fill="#1c2230" stroke="#f472b6" stroke-width="2"/>
+          <text x="342" y="168" fill="#f472b6" font-weight="bold" text-anchor="middle" font-size="11">⑥ DOCUMENTACIÓN</text>
+          <text x="342" y="182" fill="#9aa7b8" text-anchor="middle" font-size="10">As-built · Fotos</text>
+          <text x="342" y="194" fill="#9aa7b8" text-anchor="middle" font-size="10">Tabla de puntos</text>
+
+          <line x1="265" y1="174" x2="240" y2="174" stroke="#e6edf3" stroke-width="1.5" marker-end="url(#aw)"/>
+
+          <rect x="60" y="145" width="180" height="58" rx="7" fill="#1c2230" stroke="#34d399" stroke-width="2"/>
+          <text x="150" y="168" fill="#34d399" font-weight="bold" text-anchor="middle" font-size="11">⑦ ENTREGA AL CLIENTE</text>
+          <text x="150" y="182" fill="#9aa7b8" text-anchor="middle" font-size="10">Dossier completo</text>
+          <text x="150" y="194" fill="#9aa7b8" text-anchor="middle" font-size="10">Garantía 15–25 años</text>
+
+          <!-- FAIL path -->
+          <line x1="525" y1="203" x2="525" y2="240" stroke="#f87171" stroke-width="1.5" stroke-dasharray="4,2"/>
+          <line x1="525" y1="240" x2="620" y2="240" stroke="#f87171" stroke-width="1.5"/>
+          <text x="575" y="255" fill="#f87171" text-anchor="middle" font-size="10">FAIL → Re-punchear</text>
+          <text x="575" y="267" fill="#f87171" text-anchor="middle" font-size="10">o reemplazar cable</text>
+
+          <!-- Pilares -->
+          <rect x="10" y="232" width="420" height="55" rx="6" fill="#1c2230" stroke="#2b3242"/>
+          <text x="220" y="252" fill="#f59e0b" font-weight="bold" text-anchor="middle" font-size="11">Pilares del instalador profesional</text>
+          <text x="65" y="272" fill="#4f9cf9" text-anchor="middle" font-size="10" font-weight="bold">Normas</text>
+          <text x="65" y="283" fill="#9aa7b8" text-anchor="middle" font-size="9">TIA-568 · TIA-606</text>
+          <text x="165" y="272" fill="#34d399" text-anchor="middle" font-size="10" font-weight="bold">Técnica</text>
+          <text x="165" y="283" fill="#9aa7b8" text-anchor="middle" font-size="9">Punchdown · Fusión</text>
+          <text x="275" y="272" fill="#a78bfa" text-anchor="middle" font-size="10" font-weight="bold">Documentación</text>
+          <text x="275" y="283" fill="#9aa7b8" text-anchor="middle" font-size="9">As-built · Certificados</text>
+          <text x="380" y="272" fill="#f472b6" text-anchor="middle" font-size="10" font-weight="bold">Seguridad</text>
+          <text x="380" y="283" fill="#9aa7b8" text-anchor="middle" font-size="9">EPP · Firestopping</text>
+        </svg>
+        <div class="cap">El flujo completo de un proyecto profesional: desde el diseño hasta la entrega del dossier al cliente. Un FAIL en certificación devuelve al paso de terminación o tendido.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== LABORATORIO / PROYECTO FINAL ===== -->
+  <section class="section" id="lab">
+    <div class="wrap block-body">
+      <h2 class="h"><span class="lead">Proyecto Final</span> — Cableando un mini data center</h2>
+      <p class="subtitle">Cuarto técnico de 6×4 m: 1 rack 42U, 12 puntos Cat6A, backbone de fibra OM4, certificación completa y entrega formal.</p>
+      <ol class="steps">
+        <li><strong>Diseño:</strong> crear el plano del cuarto con posición del rack, ruta de escalerilla en techo, conduits a los outlets. Tabla de 12 puntos con IDs únicos (DC-A1 a DC-A12).</li>
+        <li><strong>Lista de materiales:</strong> calcular metros de Cat6A, cantidad de jacks y puertos de patch panel, metros de escalerilla y conduit EMT. Añadir 15% de desperdicio.</li>
+        <li><strong>Canalización:</strong> montar rack, instalar escalerilla a 2.5 m, bajar conduit EMT 1" por paredes hasta las cajas de pared.</li>
+        <li><strong>Tendido Cat6A:</strong> tirar 12 cables desde el patch panel hasta los outlets. Etiquetar ambos extremos antes de terminar. Verificar que ninguno supera 90 m.</li>
+        <li><strong>Tendido fibra OM4:</strong> 2 fibras de backbone hasta el MDF principal. Lazos de reserva de 2 m en cada extremo.</li>
+        <li><strong>Terminaciones:</strong> punchdown de los 12 cables en patch panel y jacks. Fusionar la fibra OM4 en el ODF. Conectores LC en ambos extremos.</li>
+        <li><strong>Tierra:</strong> conectar rack al TGB con #6 AWG verde/amarillo. Verificar continuidad &lt;1 Ω.</li>
+        <li><strong>Certificar Cat6A:</strong> Fluke DSX, Cat6A channel. Los 12 puntos deben ser PASS en todos los parámetros.</li>
+        <li><strong>Medir fibra OM4:</strong> OTDR en 850 nm y 1300 nm. Pérdida total &lt;2 dB. Guardar traces con ID del enlace.</li>
+        <li><strong>Dossier de entrega:</strong> plano as-built con fotos, tabla de 12 puntos certificados, traces OTDR, lista de materiales y hoja de garantía.</li>
+      </ol>
+    </div>
+  </section>
+
+  <!-- ===== RESUMEN DEL CURSO ===== -->
+  <section class="section">
+    <div class="wrap block-body">
+      <h2 class="h"><span class="lead">Resumen</span> del curso completo</h2>
+      <ul class="bullets">
+        <li><strong>M1:</strong> Cable UTP Cat6/6A, T568B, patch panels, jacks, patch cords, herramientas de punchdown.</li>
+        <li><strong>M2:</strong> Canaleta, conduit, escalerilla, fill ratio 40%, etiquetado TIA-606, certificación Fluke.</li>
+        <li><strong>M3:</strong> Racks 42U, puesta a tierra TIA-607, pasillos frío/caliente, UPS doble conversión, VESDA, piso falso.</li>
+        <li><strong>M4:</strong> Lectura de planos, EPP, trabajo en altura, ambientes hostiles, médica LSZH, industrial STP, exterior SPD.</li>
+        <li><strong>M5:</strong> SM vs. MM, conectores LC/MPO, fusión, clivado, OTDR, ADSS, direct burial.</li>
+        <li><strong>M6:</strong> Buenas prácticas, PoE hasta 90 W, Cat6A como estándar mínimo, dossier, garantía 15–25 años, BICSI RCDD.</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- ===== FLASHCARDS ===== -->
+  <section class="section" id="flash">
+    <div class="wrap block-body">
+      <h2 class="h"><span class="lead">Flashcards</span></h2>
+      <p class="subtitle">Haz clic en cada tarjeta para ver la respuesta.</p>
+      <div class="fc-grid">
+        <div class="flashcard"><div class="inner">
+          <div class="face front">¿Por qué Cat6A es la categoría mínima recomendada para instalaciones nuevas?</div>
+          <div class="face back">Soporta <strong>10 Gbps a 100 m</strong>, es compatible con PoE++ (90 W) con menor temperatura que Cat6, y garantiza compatibilidad con estándares 25G/40G futuros.</div>
+        </div></div>
+        <div class="flashcard"><div class="inner">
+          <div class="face front">¿Cuántos puntos certifica un técnico senior por jornada?</div>
+          <div class="face back">Aproximadamente <strong>20–25 puntos</strong>/día (tendido + terminación + certificación). La certificación en sí toma ~2 min por punto con Fluke DSX.</div>
+        </div></div>
+        <div class="flashcard"><div class="inner">
+          <div class="face front">¿Qué es la garantía de sistema y cómo obtenerla?</div>
+          <div class="face back"><strong>15–25 años</strong> de garantía del fabricante cuando se instala cableado de su misma marca certificado (cable + jacks + patch panels + patch cords) y se entrega reporte Fluke.</div>
+        </div></div>
+        <div class="flashcard"><div class="inner">
+          <div class="face front">Potencia máxima de PoE++ (802.3bt Tipo 4)</div>
+          <div class="face back"><strong>90 W</strong> por puerto, usando los 4 pares del cable. Permite alimentar laptops y luminarias inteligentes. Requiere Cat6A para evitar sobrecalentamiento.</div>
+        </div></div>
+        <div class="flashcard"><div class="inner">
+          <div class="face front">¿Qué contenido mínimo lleva el dossier de entrega?</div>
+          <div class="face back">Tabla de puntos certificados, plano <strong>as-built</strong>, reportes de certificación Fluke, lista de materiales instalados, fotos de la instalación y hoja de <strong>garantía del sistema</strong>.</div>
+        </div></div>
+        <div class="flashcard"><div class="inner">
+          <div class="face front">¿Qué certifica el BICSI RCDD?</div>
+          <div class="face back"><strong>Registered Communications Distribution Designer</strong>: capacidad de diseñar sistemas completos de distribución de telecomunicaciones. La certificación de diseño más reconocida globalmente en el sector.</div>
+        </div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== QUIZ ===== -->
+  <section class="section" id="quiz">
+    <div class="wrap block-body">
+      <h2 class="h"><span class="lead">Cuestionario</span></h2>
+      <div class="quiz" id="quiz6">
+
+        <div class="q" data-answer="b">
+          <div class="qt">1. ¿Cuál es la potencia máxima del estándar PoE+ (802.3at)?</div>
+          <label><input type="radio" name="q1f" value="a"> 15.4 W</label>
+          <label><input type="radio" name="q1f" value="b"> 30 W</label>
+          <label><input type="radio" name="q1f" value="c"> 90 W</label>
+          <div class="explain">802.3at (PoE+) = 30 W. 802.3af (PoE) = 15.4 W. 802.3bt Tipo 4 (PoE++) = 90 W.</div>
+        </div>
+
+        <div class="q" data-answer="b">
+          <div class="qt">2. ¿Cuánto mide el máximo desenrollado recomendado al terminar en un jack?</div>
+          <label><input type="radio" name="q2f" value="a"> 25 mm</label>
+          <label><input type="radio" name="q2f" value="b"> 13 mm</label>
+          <label><input type="radio" name="q2f" value="c"> 5 mm</label>
+          <div class="explain">Máximo 13 mm (media pulgada) de par desenrollado. A mayor desenrollado, mayor NEXT y peor certificación.</div>
+        </div>
+
+        <div class="q" data-answer="c">
+          <div class="qt">3. ¿Qué categoría mínima recomienda el mercado para instalaciones nuevas?</div>
+          <label><input type="radio" name="q3f" value="a"> Cat5e</label>
+          <label><input type="radio" name="q3f" value="b"> Cat6</label>
+          <label><input type="radio" name="q3f" value="c"> Cat6A</label>
+          <div class="explain">Cat6A (500 MHz, 10 Gbps a 100 m) es el estándar mínimo recomendado. Cat6 solo garantiza 10G a 55 m.</div>
+        </div>
+
+        <div class="q" data-answer="b">
+          <div class="qt">4. Un NEXT FAIL persiste tras re-punchear. ¿Causa más probable?</div>
+          <label><input type="radio" name="q4f" value="a"> El patch cord está defectuoso</label>
+          <label><input type="radio" name="q4f" value="b"> El cable fue dañado durante el tendido</label>
+          <label><input type="radio" name="q4f" value="c"> El certificador no está calibrado</label>
+          <div class="explain">Si el NEXT sigue fallando después de re-punchear, el problema está en el cable: fue aplastado o doblado bajo el radio mínimo. Solo solución: reemplazar el tramo.</div>
+        </div>
+
+        <div class="q" data-answer="c">
+          <div class="qt">5. ¿Qué certificación BICSI valida habilidades de diseño de sistemas de telecomunicaciones?</div>
+          <label><input type="radio" name="q5f" value="a"> BICSI Installer 1</label>
+          <label><input type="radio" name="q5f" value="b"> Fluke Certified</label>
+          <label><input type="radio" name="q5f" value="c"> BICSI RCDD</label>
+          <div class="explain">RCDD (Registered Communications Distribution Designer) es la credencial de diseño de mayor reconocimiento global en infraestructura de telecomunicaciones.</div>
+        </div>
+
+        <button class="btn" onclick="checkQuiz('quiz6')">Comprobar respuestas</button>
+        <button class="btn ghost" onclick="resetQuiz('quiz6')">Reiniciar</button>
+        <div class="quiz-result"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== REPASO FINAL ===== -->
+  <section class="section">
+    <div class="wrap block-body">
+      <h2 class="h"><span class="lead">Preguntas</span> de repaso finales</h2>
+      <ul class="review">
+        <li>Un cliente pide instalar Cat5e para reducir costos. ¿Qué argumentos técnicos usarías para justificar Cat6A?</li>
+        <li>Describe el proceso completo desde que recibes un proyecto hasta que lo entregas al cliente.</li>
+        <li>¿Por qué Cat6A U/FTP es preferida sobre Cat6A UTP para instalaciones con muchos dispositivos PoE++?</li>
+        <li>Un cable certifica PASS en todos los parámetros pero el cliente reporta lentitud en una PC específica. ¿Qué investigarías?</li>
+        <li>¿Qué pasos seguirías para obtener una garantía de sistema de 25 años de un fabricante como Panduit?</li>
+      </ul>
+    </div>
+  </section>
+
+  <nav class="block-nav wrap">
+    <a class="prev" href="bloque5.html"><div class="dir">← Anterior</div><div class="ttl">Fibra Óptica</div></a>
+    <a class="next disabled" href="index.html"><div class="dir">Fin del curso ✓</div><div class="ttl">Ir al inicio</div></a>
+  </nav>
+</main>
+
+<footer><div class="wrap">Módulo 6 de 6 · Curso de Cableado Estructurado — Fin del programa</div></footer>
+<script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Cableado Estructurado — Plan de Estudio</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<header class="topnav">
+  <div class="wrap">
+    <span class="brand">Cableado<span class="dot">.</span>Estructurado</span>
+    <nav>
+      <a href="index.html">Inicio</a>
+      <a href="bloque1.html">1 · Intro</a>
+      <a href="bloque2.html">2 · Canalización</a>
+      <a href="bloque3.html">3 · Data Center</a>
+      <a href="bloque4.html">4 · Campo</a>
+      <a href="bloque5.html">5 · Fibra</a>
+      <a href="bloque6.html">6 · Profesional</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+
+  <!-- ===== Hero ===== -->
+  <section class="hero wrap">
+    <div class="kicker">Material de estudio interactivo</div>
+    <h1>Curso de <span class="grad">Cableado Estructurado</span></h1>
+    <p>Seis módulos progresivos: desde los medios físicos y herramientas de instalación hasta data center, fibra óptica y estándares profesionales. El curso más práctico del mercado para instaladores, integradores y técnicos.</p>
+    <div class="meta">
+      <span class="pill">6 módulos</span>
+      <span class="pill">Proyecto final en vivo</span>
+      <span class="pill">Cobre + Fibra</span>
+      <span class="pill">Data Center</span>
+    </div>
+  </section>
+
+  <!-- ===== Diagrama de infraestructura ===== -->
+  <section class="section">
+    <div class="wrap">
+      <h2 class="h"><span class="lead">Arquitectura</span> de la infraestructura</h2>
+      <p class="subtitle">Cómo encajan los seis módulos en una instalación de cableado estructurado real.</p>
+      <div class="diagram">
+        <svg viewBox="0 0 860 470" xmlns="http://www.w3.org/2000/svg" font-family="Segoe UI, sans-serif">
+          <defs>
+            <marker id="arr" markerWidth="9" markerHeight="9" refX="7" refY="3" orient="auto">
+              <path d="M0,0 L7,3 L0,6 Z" fill="#9aa7b8"/>
+            </marker>
+          </defs>
+
+          <!-- Líneas de conexión -->
+          <g stroke="#9aa7b8" stroke-width="2" fill="none" marker-end="url(#arr)">
+            <!-- Acometida → MDF -->
+            <line x1="430" y1="53" x2="430" y2="88"/>
+            <!-- MDF → IDF Piso 1 -->
+            <line x1="370" y1="146" x2="210" y2="193"/>
+            <!-- MDF → IDF Piso 2 -->
+            <line x1="490" y1="146" x2="650" y2="193"/>
+            <!-- IDF-1 → Canal-1 -->
+            <line x1="200" y1="249" x2="200" y2="291"/>
+            <!-- IDF-2 → Canal-2 -->
+            <line x1="660" y1="249" x2="660" y2="291"/>
+            <!-- Canal-1 → Trabajo-1 -->
+            <line x1="200" y1="349" x2="200" y2="391"/>
+            <!-- Canal-2 → Trabajo-2 -->
+            <line x1="660" y1="349" x2="660" y2="391"/>
+          </g>
+
+          <!-- Etiqueta backbone fibra óptica -->
+          <text x="430" y="174" font-size="10" fill="#f472b6" text-anchor="middle"
+                font-family="Segoe UI, sans-serif" font-style="italic">
+            Backbone Fibra Óptica · Módulo 5
+          </text>
+
+          <!-- Nodos -->
+          <g font-size="13" fill="#e6edf3" text-anchor="middle" font-family="Segoe UI, sans-serif">
+
+            <!-- Acometida / Proveedor -->
+            <rect x="330" y="14" width="200" height="39" rx="9" fill="#1c2230" stroke="#2b3242"/>
+            <text x="430" y="38">Acometida / Proveedor</text>
+
+            <!-- MDF — Cuarto Principal (Módulo 3) -->
+            <rect x="295" y="90" width="270" height="56" rx="9" fill="#1c2230" stroke="#a78bfa"/>
+            <text x="430" y="113" font-weight="700">MDF · Cuarto Principal</text>
+            <text x="430" y="129" font-size="11" fill="#9aa7b8">Gabinetes · Patch Panel · UPS · Piso Falso</text>
+            <text x="430" y="143" font-size="10" fill="#a78bfa">Módulo 3 · Elementos del Data Center</text>
+
+            <!-- IDF Piso 1 (Módulo 2) -->
+            <rect x="90" y="195" width="220" height="54" rx="9" fill="#1c2230" stroke="#4f9cf9"/>
+            <text x="200" y="217" font-weight="700">IDF · Piso 1</text>
+            <text x="200" y="232" font-size="11" fill="#9aa7b8">Patch Panel · Switch PoE</text>
+            <text x="200" y="246" font-size="10" fill="#4f9cf9">Módulo 2 · Terminación</text>
+
+            <!-- IDF Piso 2 (Módulo 2) -->
+            <rect x="550" y="195" width="220" height="54" rx="9" fill="#1c2230" stroke="#4f9cf9"/>
+            <text x="660" y="217" font-weight="700">IDF · Piso 2</text>
+            <text x="660" y="232" font-size="11" fill="#9aa7b8">Patch Panel · Switch PoE</text>
+            <text x="660" y="246" font-size="10" fill="#4f9cf9">Módulo 2 · Terminación</text>
+
+            <!-- Canalización Piso 1 (Módulo 2) -->
+            <rect x="65" y="293" width="270" height="56" rx="9" fill="#1c2230" stroke="#34d399"/>
+            <text x="200" y="315" font-weight="700">Canalización · Piso 1</text>
+            <text x="200" y="331" font-size="11" fill="#9aa7b8">Tuberías · Escalerillas · Bandejas</text>
+            <text x="200" y="346" font-size="10" fill="#34d399">Módulo 2 · Canalización</text>
+
+            <!-- Canalización Piso 2 (Módulo 2) -->
+            <rect x="525" y="293" width="270" height="56" rx="9" fill="#1c2230" stroke="#34d399"/>
+            <text x="660" y="315" font-weight="700">Canalización · Piso 2</text>
+            <text x="660" y="331" font-size="11" fill="#9aa7b8">Tuberías · Escalerillas · Bandejas</text>
+            <text x="660" y="346" font-size="10" fill="#34d399">Módulo 2 · Canalización</text>
+
+            <!-- Área de Trabajo Piso 1 (Módulos 1 & 4) -->
+            <rect x="55" y="393" width="290" height="58" rx="9" fill="#1c2230" stroke="#f59e0b"/>
+            <text x="200" y="416" font-weight="700">Área de Trabajo · Piso 1</text>
+            <text x="200" y="432" font-size="11" fill="#9aa7b8">Jacks · Patch Cords · Etiquetado</text>
+            <text x="200" y="446" font-size="10" fill="#f59e0b">Módulos 1 · 4 · Capa Física</text>
+
+            <!-- Área de Trabajo Piso 2 (Módulos 1 & 4) -->
+            <rect x="515" y="393" width="290" height="58" rx="9" fill="#1c2230" stroke="#f59e0b"/>
+            <text x="660" y="416" font-weight="700">Área de Trabajo · Piso 2</text>
+            <text x="660" y="432" font-size="11" fill="#9aa7b8">Jacks · Patch Cords · Etiquetado</text>
+            <text x="660" y="446" font-size="10" fill="#f59e0b">Módulos 1 · 4 · Capa Física</text>
+
+          </g>
+        </svg>
+        <div class="cap">La acometida entra al MDF (data center del edificio), se distribuye por fibra óptica a los IDF de cada piso, y finaliza en cobre horizontal hasta cada área de trabajo con sus jacks y patch cords.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== Módulos del curso ===== -->
+  <section class="section">
+    <div class="wrap">
+      <h2 class="h"><span class="lead">Los 6</span> módulos del curso</h2>
+      <p class="subtitle">Estudio progresivo: cada módulo construye sobre el anterior.</p>
+      <div class="grid">
+
+        <a class="card b1" href="bloque1.html">
+          <span class="bar"></span>
+          <span class="num">MÓDULO 01</span>
+          <h3>Introducción al Cableado Estructurado</h3>
+          <p>Medios de la capa física, tipos de cables del mercado, herramientas de cableado, patch panels, jacks, conectores y patch cords de cobre y fibra.</p>
+          <div class="tags"><span class="tag">Cat5e / Cat6</span><span class="tag">Patch Panel</span><span class="tag">Jacks</span></div>
+        </a>
+
+        <a class="card b2" href="bloque2.html">
+          <span class="bar"></span>
+          <span class="num">MÓDULO 02</span>
+          <h3>Canalización Profesional</h3>
+          <p>Canalización del cableado, accesorios, tendido y peinado, terminación en patch panel y jacks, etiquetado e identificación y certificación de puntos.</p>
+          <div class="tags"><span class="tag">Tuberías</span><span class="tag">Etiquetado</span><span class="tag">Certificación</span></div>
+        </a>
+
+        <a class="card b3" href="bloque3.html">
+          <span class="bar"></span>
+          <span class="num">MÓDULO 03</span>
+          <h3>Elementos del Data Center</h3>
+          <p>Tipos de gabinetes, montaje, puesta a tierra, climatización, control de acceso, seguridad contra incendio, instalación UPS y piso falso.</p>
+          <div class="tags"><span class="tag">Gabinetes</span><span class="tag">UPS</span><span class="tag">Piso Falso</span></div>
+        </a>
+
+        <a class="card b4" href="bloque4.html">
+          <span class="bar"></span>
+          <span class="num">MÓDULO 04</span>
+          <h3>En el Campo de Trabajo</h3>
+          <p>Lectura de planos, seguridad física, uso de escaleras y grúas, ambientes hostiles, cableado en área médica, industrial y de exterior.</p>
+          <div class="tags"><span class="tag">Planos</span><span class="tag">Seguridad</span><span class="tag">Exterior</span></div>
+        </a>
+
+        <a class="card b5" href="bloque5.html">
+          <span class="bar"></span>
+          <span class="num">MÓDULO 05</span>
+          <h3>Introducción a Fibra Óptica</h3>
+          <p>Cómo funciona la fibra óptica, despliegue de exterior, fibra indoor, tipos de fibra y herramientas de fusión y corte.</p>
+          <div class="tags"><span class="tag">SM / MM</span><span class="tag">Fusión</span><span class="tag">OTDR</span></div>
+        </a>
+
+        <a class="card b6" href="bloque6.html">
+          <span class="bar"></span>
+          <span class="num">MÓDULO 06</span>
+          <h3>Consideraciones Profesionales</h3>
+          <p>Buenas prácticas, recomendaciones del mercado y proyecto final en vivo: cableando un data center completo con todo lo aprendido.</p>
+          <div class="tags"><span class="tag">Proyecto Final</span><span class="tag">Normas</span><span class="tag">Estándares</span></div>
+        </a>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== Cómo estudiar ===== -->
+  <section class="section">
+    <div class="wrap">
+      <h2 class="h"><span class="lead">Cómo</span> aprovechar este material</h2>
+      <div class="two-col">
+        <div>
+          <h3>Ruta recomendada</h3>
+          <ol class="steps">
+            <li>Lee la teoría de cada módulo y comprende el fundamento técnico.</li>
+            <li>Identifica las herramientas y materiales mencionados en el módulo.</li>
+            <li>Practica las técnicas de instalación antes de ir al campo.</li>
+            <li>Repasa con las flashcards hasta responderlas sin dudar.</li>
+            <li>Completa el cuestionario; si bajas del 70 %, vuelve a la teoría.</li>
+          </ol>
+        </div>
+        <div>
+          <h3>Qué incluye cada módulo</h3>
+          <ul class="bullets">
+            <li><strong>Teoría ampliada</strong> con el fundamento técnico de cada tecnología.</li>
+            <li><strong>Tablas de materiales</strong> y comparativas de productos del mercado.</li>
+            <li><strong>Técnicas paso a paso</strong> de instalación y terminación.</li>
+            <li><strong>Diagrama</strong> de la topología del escenario del módulo.</li>
+            <li><strong>Flashcards</strong> interactivas (clic para girar).</li>
+            <li><strong>Cuestionario</strong> autoevaluable con explicaciones.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== Para quién es este curso ===== -->
+  <section class="section">
+    <div class="wrap">
+      <h2 class="h"><span class="lead">¿Para</span> quién es este curso?</h2>
+      <p class="subtitle">Cuatro perfiles profesionales que se benefician directamente de este curso.</p>
+      <div class="aud-grid">
+
+        <div class="aud-card">
+          <span class="aud-tag b3">DATA CENTER</span>
+          <h3>Constructores de Data Centers</h3>
+          <p>Si confeccionas data centers de manera empírica, este curso te da la formalidad y los estándares que necesitas para profesionalizar tu trabajo.</p>
+        </div>
+
+        <div class="aud-card">
+          <span class="aud-tag b6">CAMERA</span>
+          <h3>Integradores de CCTV IP</h3>
+          <p>Toda tu red de cámaras depende de un cableado estructurado correcto. Aprende a instalarlo con las mejores prácticas del mercado.</p>
+        </div>
+
+        <div class="aud-card">
+          <span class="aud-tag b4">DOMÓTICA</span>
+          <h3>Integradores Domóticos</h3>
+          <p>Los sistemas domóticos modernos corren sobre CAT6. Un buen cableado es la base indispensable de cualquier instalación domótica.</p>
+        </div>
+
+        <div class="aud-card">
+          <span class="aud-tag b2">VOIP</span>
+          <h3>Técnicos de Telefonía IP</h3>
+          <p>Si integras centrales telefónicas IP, la calidad de voz depende directamente de la calidad del cableado. Este curso es tuyo.</p>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    Curso de Cableado Estructurado · Material de estudio interactivo · Actualiza tus notas a medida que avances.
+  </div>
+</footer>
+
+<script src="script.js"></script>
+</body>
+</html>

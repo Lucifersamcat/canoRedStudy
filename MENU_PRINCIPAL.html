@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Cursos · Redes y Cableado Estructurado</title>
+<meta name="description" content="Portal de cursos interactivos: Redes Básicas, Redes Avanzado y Cableado Estructurado. Material de estudio con teoría, laboratorios, flashcards y cuestionarios.">
+<style>
+/* ===== Tokens — same design system as course pages ===== */
+:root {
+  --bg: #0e1117;
+  --bg-soft: #161b22;
+  --bg-card: #1c2230;
+  --border: #2b3242;
+  --text: #e6edf3;
+  --text-dim: #9aa7b8;
+  --accent: #f59e0b;
+  --accent-2: #34d399;
+  --accent-3: #4f9cf9;
+  --b1: #f59e0b;
+  --b2: #4f9cf9;
+  --b3: #a78bfa;
+  --b4: #34d399;
+  --b5: #22d3ee;
+  --b6: #f472b6;
+  --radius: 14px;
+  --shadow: 0 8px 28px rgba(0,0,0,.45);
+  --font: 'Segoe UI', system-ui, -apple-system, Roboto, Helvetica, Arial, sans-serif;
+  --mono: 'Cascadia Code', 'Consolas', 'SF Mono', Menlo, monospace;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font);
+  line-height: 1.65;
+  -webkit-font-smoothing: antialiased;
+  min-height: 100vh;
+}
+
+/* ===== Layout ===== */
+.wrap { max-width: 1080px; margin: 0 auto; padding: 0 22px; }
+
+/* ===== Top nav ===== */
+.topnav {
+  position: sticky; top: 0; z-index: 50;
+  background: rgba(14,17,23,.92);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--border);
+}
+.topnav .wrap {
+  display: flex; align-items: center; gap: 18px;
+  height: 60px;
+}
+.brand { font-weight: 700; font-size: 1.05rem; white-space: nowrap; }
+.brand .dot { color: var(--accent); }
+
+/* ===== Hero ===== */
+.hero { padding: 72px 0 52px; text-align: center; }
+.hero h1 { font-size: 2.6rem; line-height: 1.2; margin-bottom: 16px; }
+.hero h1 .grad {
+  background: linear-gradient(90deg, var(--b1), var(--b5), var(--b3));
+  -webkit-background-clip: text; background-clip: text; color: transparent;
+}
+.hero p { color: var(--text-dim); font-size: 1.1rem; max-width: 660px; margin: 0 auto; }
+.hero .meta { margin-top: 22px; display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+.pill {
+  background: var(--bg-card); border: 1px solid var(--border);
+  padding: 6px 14px; border-radius: 999px; font-size: .85rem; color: var(--text-dim);
+}
+.kicker {
+  font-family: var(--mono); font-size: .8rem; letter-spacing: 2px;
+  text-transform: uppercase; color: var(--text-dim);
+}
+
+/* ===== Section headings ===== */
+.section { padding: 38px 0; border-top: 1px solid var(--border); }
+h2.h { font-size: 1.6rem; margin-bottom: 6px; }
+h2.h .lead { color: var(--accent); }
+.subtitle { color: var(--text-dim); margin-bottom: 24px; }
+
+/* ===== Course cards ===== */
+.courses-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(310px, 1fr));
+  gap: 24px;
+}
+.course-card {
+  position: relative;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 0;
+  overflow: hidden;
+  transition: transform .2s, box-shadow .2s, border-color .2s;
+  display: flex;
+  flex-direction: column;
+  text-decoration: none;
+  color: inherit;
+}
+.course-card:hover {
+  transform: translateY(-6px);
+  box-shadow: var(--shadow);
+  border-color: var(--accent);
+  text-decoration: none;
+}
+.course-card .card-accent {
+  height: 5px;
+  width: 100%;
+}
+.course-card.c-basico .card-accent { background: linear-gradient(90deg, var(--b4), var(--b2)); }
+.course-card.c-avanzado .card-accent { background: linear-gradient(90deg, var(--b2), var(--b3)); }
+.course-card.c-cableado .card-accent { background: linear-gradient(90deg, var(--b1), var(--b6)); }
+
+.course-card .card-body { padding: 28px 26px; flex: 1; display: flex; flex-direction: column; }
+.course-card .card-level {
+  font-family: var(--mono); font-size: .72rem; letter-spacing: 1.5px;
+  text-transform: uppercase; display: inline-block;
+  padding: 4px 10px; border-radius: 6px;
+  background: var(--bg-soft); border: 1px solid; margin-bottom: 14px;
+}
+.c-basico .card-level { color: var(--b4); border-color: var(--b4); }
+.c-avanzado .card-level { color: var(--b3); border-color: var(--b3); }
+.c-cableado .card-level { color: var(--b1); border-color: var(--b1); }
+
+.course-card h3 {
+  font-size: 1.35rem; margin-bottom: 10px; color: var(--text);
+  line-height: 1.3;
+}
+.course-card .card-desc {
+  color: var(--text-dim); font-size: .94rem; line-height: 1.6;
+  flex: 1;
+}
+.course-card .card-meta {
+  display: flex; flex-wrap: wrap; gap: 8px; margin-top: 18px;
+}
+.course-card .card-meta .tag {
+  font-size: .74rem; padding: 3px 9px; border-radius: 6px;
+  background: var(--bg-soft); border: 1px solid var(--border); color: var(--text-dim);
+}
+.course-card .card-cta {
+  display: flex; align-items: center; gap: 6px;
+  margin-top: 18px; font-weight: 600; font-size: .92rem;
+}
+.c-basico .card-cta { color: var(--b4); }
+.c-avanzado .card-cta { color: var(--b3); }
+.c-cableado .card-cta { color: var(--b1); }
+.card-cta .arrow {
+  display: inline-block; transition: transform .18s;
+}
+.course-card:hover .card-cta .arrow { transform: translateX(4px); }
+
+/* ===== Stats row ===== */
+.stats-row {
+  display: flex; justify-content: center; gap: 40px; flex-wrap: wrap;
+  padding: 32px 0;
+}
+.stat { text-align: center; }
+.stat .num {
+  font-size: 2rem; font-weight: 700;
+  background: linear-gradient(135deg, var(--b1), var(--b5));
+  -webkit-background-clip: text; background-clip: text; color: transparent;
+}
+.stat .label { font-size: .85rem; color: var(--text-dim); margin-top: 2px; }
+
+/* ===== How to use ===== */
+.two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+.two-col h3 { font-size: 1.1rem; margin-bottom: 12px; color: var(--text); }
+ol.steps { counter-reset: s; list-style: none; margin: 14px 0; }
+ol.steps li {
+  position: relative; padding: 8px 0 8px 44px; border-bottom: 1px dashed var(--border);
+  color: var(--text-dim);
+}
+ol.steps li:last-child { border-bottom: none; }
+ol.steps li::before {
+  counter-increment: s; content: counter(s);
+  position: absolute; left: 0; top: 8px;
+  width: 28px; height: 28px; border-radius: 50%;
+  background: var(--accent); color: #000; font-weight: 700;
+  display: flex; align-items: center; justify-content: center; font-size: .85rem;
+}
+ul.bullets { margin: 10px 0 10px 20px; color: var(--text-dim); }
+ul.bullets li { margin: 4px 0; }
+
+/* ===== Roadmap ===== */
+.roadmap {
+  display: flex; align-items: center; justify-content: center;
+  gap: 0; flex-wrap: wrap; margin: 24px 0;
+}
+.roadmap-item {
+  text-align: center; position: relative; padding: 18px 28px;
+}
+.roadmap-item .rm-icon {
+  width: 56px; height: 56px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  margin: 0 auto 10px; font-size: 1.5rem;
+  border: 2px solid var(--border); background: var(--bg-card);
+  transition: .2s;
+}
+.roadmap-item:nth-child(1) .rm-icon { border-color: var(--b4); color: var(--b4); }
+.roadmap-item:nth-child(2) .rm-icon { border-color: var(--b3); color: var(--b3); }
+.roadmap-item:nth-child(3) .rm-icon { border-color: var(--b1); color: var(--b1); }
+.roadmap-item .rm-title { font-weight: 600; font-size: .92rem; }
+.roadmap-item .rm-sub { font-size: .8rem; color: var(--text-dim); }
+.roadmap-arrow {
+  font-size: 1.4rem; color: var(--border); margin: 0 4px;
+  align-self: center;
+}
+
+/* ===== Footer ===== */
+footer {
+  border-top: 1px solid var(--border); padding: 28px 0; margin-top: 30px;
+  color: var(--text-dim); font-size: .85rem; text-align: center;
+}
+
+/* ===== Responsive ===== */
+@media (max-width: 720px) {
+  .hero h1 { font-size: 1.9rem; }
+  .two-col { grid-template-columns: 1fr; }
+  .courses-grid { grid-template-columns: 1fr; }
+  .stats-row { gap: 24px; }
+  .roadmap { flex-direction: column; }
+  .roadmap-arrow { transform: rotate(90deg); }
+}
+</style>
+</head>
+<body>
+
+<header class="topnav">
+  <div class="wrap">
+    <span class="brand">Cursos<span class="dot">.</span>Networking</span>
+  </div>
+</header>
+
+<main>
+
+  <!-- ===== Hero ===== -->
+  <section class="hero wrap">
+    <div class="kicker">Material de estudio interactivo</div>
+    <h1>Cursos de <span class="grad">Redes y Cableado</span></h1>
+    <p>Tres cursos progresivos con teoría ampliada, diagramas, laboratorios, flashcards interactivas y cuestionarios autoevaluables. Desde los fundamentos de redes hasta switching avanzado y cableado estructurado profesional.</p>
+    <div class="meta">
+      <span class="pill">3 cursos</span>
+      <span class="pill">17 módulos en total</span>
+      <span class="pill">Flashcards + Quizzes</span>
+      <span class="pill">Diagramas SVG</span>
+    </div>
+  </section>
+
+  <!-- ===== Stats ===== -->
+  <section class="section">
+    <div class="wrap">
+      <div class="stats-row">
+        <div class="stat">
+          <div class="num">3</div>
+          <div class="label">Cursos</div>
+        </div>
+        <div class="stat">
+          <div class="num">17</div>
+          <div class="label">Módulos</div>
+        </div>
+        <div class="stat">
+          <div class="num">100+</div>
+          <div class="label">Flashcards</div>
+        </div>
+        <div class="stat">
+          <div class="num">17</div>
+          <div class="label">Cuestionarios</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== Cursos ===== -->
+  <section class="section">
+    <div class="wrap">
+      <h2 class="h"><span class="lead">Los 3</span> cursos disponibles</h2>
+      <p class="subtitle">Selecciona un curso para acceder a sus módulos, flashcards y cuestionarios.</p>
+      <div class="courses-grid">
+
+        <!-- Redes Básico -->
+        <a class="course-card c-basico" href="REDES BASICO/files/index.html" id="curso-basico">
+          <div class="card-accent"></div>
+          <div class="card-body">
+            <span class="card-level">Nivel Básico</span>
+            <h3>Redes Básicas</h3>
+            <p class="card-desc">Cinco módulos progresivos: fundamentos de redes, protocolos TCP/IP, servicios (DHCP, DNS, NTP), redes inalámbricas y virtualización con Proxmox. El punto de partida ideal.</p>
+            <div class="card-meta">
+              <span class="tag">5 módulos</span>
+              <span class="tag">OSI · TCP/IP</span>
+              <span class="tag">DHCP · DNS</span>
+              <span class="tag">WiFi</span>
+              <span class="tag">Proxmox</span>
+            </div>
+            <div class="card-cta">
+              Ir al curso <span class="arrow">→</span>
+            </div>
+          </div>
+        </a>
+
+        <!-- Redes Avanzado -->
+        <a class="course-card c-avanzado" href="REDES AVANZADO/files/index.html" id="curso-avanzado">
+          <div class="card-accent"></div>
+          <div class="card-body">
+            <span class="card-level">Nivel Avanzado</span>
+            <h3>Redes Avanzado</h3>
+            <p class="card-desc">Seis bloques: switches Cisco, VLANs y Spanning Tree, infraestructura Ubiquiti, RADIUS, WiFi empresarial 802.1X y multicast con PIM. Para administradores de red y especialistas.</p>
+            <div class="card-meta">
+              <span class="tag">6 bloques</span>
+              <span class="tag">Cisco IOS</span>
+              <span class="tag">VLANs · STP</span>
+              <span class="tag">RADIUS</span>
+              <span class="tag">Multicast</span>
+            </div>
+            <div class="card-cta">
+              Ir al curso <span class="arrow">→</span>
+            </div>
+          </div>
+        </a>
+
+        <!-- Cableado Estructurado -->
+        <a class="course-card c-cableado" href="CABLEADO ESTRUCTURADO/files/index.html" id="curso-cableado">
+          <div class="card-accent"></div>
+          <div class="card-body">
+            <span class="card-level">Especialización</span>
+            <h3>Cableado Estructurado</h3>
+            <p class="card-desc">Seis módulos: medios físicos, canalización profesional, data center, campo de trabajo, fibra óptica y estándares. El curso más práctico para instaladores e integradores.</p>
+            <div class="card-meta">
+              <span class="tag">6 módulos</span>
+              <span class="tag">Cobre · Fibra</span>
+              <span class="tag">Data Center</span>
+              <span class="tag">Certificación</span>
+              <span class="tag">Normas</span>
+            </div>
+            <div class="card-cta">
+              Ir al curso <span class="arrow">→</span>
+            </div>
+          </div>
+        </a>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== Ruta de estudio recomendada ===== -->
+  <section class="section">
+    <div class="wrap">
+      <h2 class="h"><span class="lead">Ruta</span> de estudio recomendada</h2>
+      <p class="subtitle">La secuencia ideal para aprovechar el material al máximo.</p>
+      <div class="roadmap">
+        <div class="roadmap-item">
+          <div class="rm-icon">1</div>
+          <div class="rm-title">Redes Básicas</div>
+          <div class="rm-sub">Fundamentos · 5 módulos</div>
+        </div>
+        <div class="roadmap-arrow">→</div>
+        <div class="roadmap-item">
+          <div class="rm-icon">2</div>
+          <div class="rm-title">Redes Avanzado</div>
+          <div class="rm-sub">Switching · 6 bloques</div>
+        </div>
+        <div class="roadmap-arrow">→</div>
+        <div class="roadmap-item">
+          <div class="rm-icon">3</div>
+          <div class="rm-title">Cableado Estructurado</div>
+          <div class="rm-sub">Infraestructura · 6 módulos</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== Cómo estudiar ===== -->
+  <section class="section">
+    <div class="wrap">
+      <h2 class="h"><span class="lead">Cómo</span> aprovechar estos cursos</h2>
+      <div class="two-col">
+        <div>
+          <h3>Ruta recomendada por curso</h3>
+          <ol class="steps">
+            <li>Lee la teoría ampliada de cada módulo y comprende los conceptos.</li>
+            <li>Reproduce los laboratorios en un simulador o equipo real.</li>
+            <li>Practica las técnicas y comandos antes de avanzar.</li>
+            <li>Repasa con las flashcards hasta responderlas sin dudar.</li>
+            <li>Completa el cuestionario; si bajas del 70%, vuelve a la teoría.</li>
+          </ol>
+        </div>
+        <div>
+          <h3>Qué incluye cada módulo</h3>
+          <ul class="bullets">
+            <li><strong>Teoría ampliada</strong> con el fundamento técnico de cada tecnología.</li>
+            <li><strong>Tablas comparativas</strong> y resúmenes de conceptos clave.</li>
+            <li><strong>Diagramas SVG</strong> de topología y flujos de protocolos.</li>
+            <li><strong>Laboratorios</strong> paso a paso con herramientas reales.</li>
+            <li><strong>Flashcards</strong> interactivas (clic para girar).</li>
+            <li><strong>Cuestionario</strong> autoevaluable con explicaciones.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    Cursos de Redes y Cableado Estructurado · Material de estudio interactivo · Actualiza tus notas a medida que avances.
+  </div>
+</footer>
+
+</body>
+</html>

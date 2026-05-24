@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Módulo 4 · En el Campo de Trabajo — Cableado Estructurado</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<header class="topnav">
+  <div class="wrap">
+    <span class="brand">Cableado<span class="dot">.</span>Estructurado</span>
+    <nav>
+      <a href="index.html">Inicio</a>
+      <a href="bloque1.html">1 · Intro</a>
+      <a href="bloque2.html">2 · Canalización</a>
+      <a href="bloque3.html">3 · Data Center</a>
+      <a href="bloque4.html">4 · Campo</a>
+      <a href="bloque5.html">5 · Fibra</a>
+      <a href="bloque6.html">6 · Profesional</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <section class="block-head wrap">
+    <div class="num">MÓDULO 04</div>
+    <h1>En el Campo de Trabajo</h1>
+    <p>La obra real exige leer planos, usar EPP, trabajar con escaleras de forma segura y adaptar la instalación a entornos hostiles: hospitales, planta industrial y exterior. La teoría termina cuando empieza el tendido.</p>
+    <div class="progress-dots">
+      <span class="on"></span><span class="on"></span><span class="on"></span><span class="on"></span><span></span><span></span>
+    </div>
+    <div class="toc">
+      <a href="#teoria">Teoría</a>
+      <a href="#conceptos">Conceptos</a>
+      <a href="#diagrama">Diagrama</a>
+      <a href="#lab">Laboratorio</a>
+      <a href="#flash">Flashcards</a>
+      <a href="#quiz">Cuestionario</a>
+    </div>
+  </section>
+
+  <!-- ===== TEORÍA ===== -->
+  <section class="section" id="teoria">
+    <div class="wrap block-body">
+      <h2 class="h"><span class="lead">Teoría</span> ampliada</h2>
+
+      <h3>Lectura de Planos</h3>
+      <p>Antes de tender un metro de cable, el técnico debe interpretar el plano del proyecto:</p>
+      <ul class="bullets">
+        <li><strong>Planta arquitectónica:</strong> ubicación de cajas de pared, rutas de canalización, acceso a ductos.</li>
+        <li><strong>Tabla de puntos:</strong> outlet ID, piso, sala, tipo (datos/voz/CCTV), patch panel y puerto asignado.</li>
+        <li><strong>Simbología:</strong> círculo con D (dato), V (voz), C (cámara). Línea punteada = canalización empotrada; sólida = superficial.</li>
+        <li><strong>Validar distancias:</strong> medir en el sitio con cinta métrica — el plano puede estar desactualizado o estar a escala incorrecta.</li>
+      </ul>
+
+      <h3>Seguridad Física — EPP</h3>
+      <table>
+        <tr><th>EPP</th><th>Protección</th><th>Cuándo usarlo</th></tr>
+        <tr><td>Casco de seguridad</td><td>Impactos en cabeza</td><td>Obras, perforación de losas, trabajo en altura</td></tr>
+        <tr><td>Guantes de trabajo</td><td>Cortes con cables y herramientas</td><td>Siempre al manipular cables y canaletas metálicas</td></tr>
+        <tr><td>Gafas de seguridad</td><td>Esquirlas, polvo, fragmentos de fibra óptica</td><td>Perforación, corte de conduit, trabajo con fibra</td></tr>
+        <tr><td>Botas de punta de acero</td><td>Caída de objetos, perforación plantar</td><td>Obras y data centers en construcción</td></tr>
+        <tr><td>Arnés de seguridad</td><td>Caída de altura</td><td>Trabajo en alturas &gt;1.5 m</td></tr>
+        <tr><td>Tapones auditivos</td><td>Ruido de taladros</td><td>Trabajos prolongados con rotomartillo</td></tr>
+      </table>
+
+      <h3>Escaleras y Trabajo en Altura</h3>
+      <ul class="bullets">
+        <li><strong>Escalera de tijera:</strong> abrir completamente antes de usar; no pararse en el último escalón; base estable y nivelada.</li>
+        <li><strong>Escalera extensible:</strong> apoyar a <strong>75°</strong> (regla 1:4 — 1 m horizontal por 4 m de altura). Amarrar el extremo superior cuando sea posible.</li>
+        <li><strong>Plataforma elevadora (manlift):</strong> para alturas ≥4 m. Requiere certificación de operador y verificación de carga máxima.</li>
+        <li>Nunca modificar una escalera para aumentar su altura. Nunca superar la carga máxima indicada.</li>
+      </ul>
+
+      <h3>Ambientes Hostiles</h3>
+      <table>
+        <tr><th>Ambiente</th><th>Problema</th><th>Solución de cableado</th></tr>
+        <tr><td>Alta temperatura</td><td>Chaqueta PVC se endurece o derrite</td><td>Cable LSZH o PLENUM; chaqueta PE</td></tr>
+        <tr><td>Humedad / exterior</td><td>Oxidación, degradación de chaqueta</td><td>Cable outdoor UV-resistant; conectores blindados</td></tr>
+        <tr><td>Alta EMI/RFI</td><td>Ruido en la señal, errores de transmisión</td><td>STP / FTP en conduit metálico cerrado; o fibra óptica</td></tr>
+        <tr><td>Impacto mecánico</td><td>Aplastamiento del cable</td><td>Cable con armadura metálica (armored) o conduit RMC</td></tr>
+        <tr><td>Exposición química</td><td>Corrosión de chaqueta</td><td>Chaqueta de fluoropolímero (PTFE) o polietileno</td></tr>
+      </table>
+
+      <h3>Cableado en Área Médica</h3>
+      <ul class="bullets">
+        <li>Cable <strong>LSZH</strong> obligatorio: no emite gases halogenados tóxicos en caso de incendio.</li>
+        <li><strong>Firestopping</strong>: sellar todos los pasos de cable entre pisos con masilla intumescente (los ductos sin sellar actúan como chimeneas).</li>
+        <li>No programar cortes de servicio sin coordinación con personal médico. Rutas redundantes en zonas críticas (UCI, quirófano).</li>
+      </ul>
+
+      <h3>Cableado Industrial</h3>
+      <ul class="bullets">
+        <li>Ambiente con EMI severa por motores, variadores de frecuencia y equipos de soldadura.</li>
+        <li>Separar al menos <strong>300 mm</strong> el cableado de datos respecto a cables de potencia de motores.</li>
+        <li>Usar fibra óptica para tramos en zonas de alta interferencia. Para cobre: STP/SFTP Cat6A en conduit metálico con tierra continua.</li>
+        <li>Switches industriales: IP67, rango -40 a +70 °C, compatibles con PROFINET/EtherNet/IP.</li>
+      </ul>
+
+      <h3>Cableado de Exterior</h3>
+      <ul class="bullets">
+        <li><strong>Direct burial:</strong> chaqueta de polietileno negro UV-resistant con gel relleno; enterrado en conduit HDPE.</li>
+        <li><strong>Cable aéreo:</strong> soportado por messenger wire (acero) o ADSS autosoportante para fibra.</li>
+        <li><strong>SPD (Surge Protection Device):</strong> en ambos extremos del cable outdoor para proteger contra rayos.</li>
+        <li>Cinta de advertencia a 30 cm sobre el cable enterrado para prevenir daño en futuras excavaciones.</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- ===== CONCEPTOS ===== -->
+  <section class="section" id="conceptos">
+    <div class="wrap block-body">
+      <h2 class="h"><span class="lead">Conceptos</span> clave</h2>
+      <table>
+        <tr><th>Término</th><th>Definición</th></tr>
+        <tr><td>EPP</td><td>Equipo de Protección Personal: casco, guantes, gafas, botas de seguridad, arnés</td></tr>
+        <tr><td>Plano as-built</td><td>Plano que refleja la instalación real con todos los cambios respecto al diseño original</td></tr>
+        <tr><td>Cable LSZH</td><td>Low Smoke Zero Halogen — no emite gases tóxicos al quemarse; obligatorio en hospitales, aeropuertos, trenes</td></tr>
+        <tr><td>Firestopping</td><td>Sellado con materiales cortafuegos de los pasos de cable entre compartimentos de fuego</td></tr>
+        <tr><td>STP / SFTP</td><td>Cable blindado; reduce EMI en entornos industriales con motores y variadores de frecuencia</td></tr>
+        <tr><td>SPD</td><td>Surge Protection Device — protector contra sobretensiones por rayos en cableado outdoor</td></tr>
+        <tr><td>Direct burial</td><td>Cable de exterior para enterrar directamente; chaqueta PE gruesa + gel antipenetración de humedad</td></tr>
+        <tr><td>HDPE</td><td>High Density Polyethylene — tubería flexible para canalización subterránea, resistente a UV y químicos</td></tr>
+        <tr><td>Switch industrial</td><td>Switch Ethernet IP67, rango de temperatura extendido, certificado para planta industrial</td></tr>
+        <tr><td>75° (escalera)</td><td>Ángulo correcto de apoyo de escalera extensible: regla 1:4 (1 m base por 4 m de altura)</td></tr>
+      </table>
+    </div>
+  </section>
+
+  <!-- ===== DIAGRAMA ===== -->
+  <section class="section" id="diagrama">
+    <div class="wrap block-body">
+      <h2 class="h"><span class="lead">Diagrama</span> — Escenarios de cableado en campo</h2>
+      <div class="diagram">
+        <svg viewBox="0 0 760 260" xmlns="http://www.w3.org/2000/svg" font-family="Segoe UI, sans-serif" font-size="12">
+
+          <!-- Interior -->
+          <rect x="10" y="20" width="220" height="180" rx="8" fill="#0d1220" stroke="#4f9cf9" stroke-width="2"/>
+          <text x="120" y="42" fill="#4f9cf9" font-weight="bold" text-anchor="middle" font-size="13">INTERIOR</text>
+          <rect x="25" y="56" width="190" height="12" rx="3" fill="none" stroke="#a78bfa" stroke-width="1.5"/>
+          <text x="120" y="66" fill="#a78bfa" text-anchor="middle" font-size="9">Bandeja techo</text>
+          <line x1="80" y1="68" x2="80" y2="145" stroke="#a78bfa" stroke-width="1.5"/>
+          <line x1="160" y1="68" x2="160" y2="145" stroke="#a78bfa" stroke-width="1.5"/>
+          <rect x="55" y="145" width="50" height="28" rx="4" fill="#1c2230" stroke="#34d399" stroke-width="1.5"/>
+          <text x="80" y="163" fill="#34d399" text-anchor="middle" font-size="10">Outlet</text>
+          <rect x="125" y="145" width="50" height="28" rx="4" fill="#1c2230" stroke="#34d399" stroke-width="1.5"/>
+          <text x="150" y="163" fill="#34d399" text-anchor="middle" font-size="10">Outlet</text>
+          <text x="120" y="200" fill="#f59e0b" text-anchor="middle" font-size="10">EPP: gafas + guantes</text>
+
+          <!-- Industrial -->
+          <rect x="260" y="20" width="220" height="180" rx="8" fill="#0d1220" stroke="#f59e0b" stroke-width="2"/>
+          <text x="370" y="42" fill="#f59e0b" font-weight="bold" text-anchor="middle" font-size="13">INDUSTRIAL</text>
+          <ellipse cx="300" cy="110" rx="28" ry="28" fill="#1c2230" stroke="#f87171" stroke-width="2"/>
+          <text x="300" y="107" fill="#f87171" text-anchor="middle" font-size="10" font-weight="bold">Motor</text>
+          <text x="300" y="120" fill="#f87171" text-anchor="middle" font-size="9">EMI</text>
+          <line x1="338" y1="60" x2="338" y2="185" stroke="#9aa7b8" stroke-dasharray="3,2"/>
+          <text x="345" y="85" fill="#9aa7b8" font-size="9">300 mm</text>
+          <text x="345" y="97" fill="#9aa7b8" font-size="9">mín.</text>
+          <line x1="370" y1="55" x2="370" y2="185" stroke="#34d399" stroke-width="2.5"/>
+          <text x="400" y="120" fill="#34d399" font-size="9" transform="rotate(-90,400,120)">STP + conduit metálico</text>
+          <rect x="390" y="165" width="70" height="24" rx="3" fill="#1c2230" stroke="#22d3ee" stroke-width="1.5"/>
+          <text x="425" y="181" fill="#22d3ee" text-anchor="middle" font-size="9">SW Industrial</text>
+          <text x="370" y="210" fill="#f59e0b" text-anchor="middle" font-size="10">EPP: casco + botas + tapones</text>
+
+          <!-- Exterior -->
+          <rect x="510" y="20" width="240" height="180" rx="8" fill="#0d1220" stroke="#34d399" stroke-width="2"/>
+          <text x="630" y="42" fill="#34d399" font-weight="bold" text-anchor="middle" font-size="13">EXTERIOR</text>
+          <!-- Suelo -->
+          <rect x="510" y="110" width="240" height="90" rx="0" fill="#160e00"/>
+          <line x1="510" y1="110" x2="750" y2="110" stroke="#92400e" stroke-width="2"/>
+          <text x="630" y="127" fill="#92400e" text-anchor="middle" font-size="10">Suelo</text>
+          <!-- HDPE + cinta -->
+          <ellipse cx="545" cy="148" rx="12" ry="12" fill="none" stroke="#f59e0b" stroke-width="2"/>
+          <text x="545" y="152" fill="#f59e0b" text-anchor="middle" font-size="8">HDPE</text>
+          <line x1="510" y1="128" x2="750" y2="128" stroke="#f59e0b" stroke-dasharray="8,4" stroke-width="1.5"/>
+          <text x="630" y="124" fill="#f59e0b" text-anchor="middle" font-size="8">← cinta advertencia</text>
+          <!-- SPD + cable aéreo -->
+          <rect x="558" y="48" width="50" height="26" rx="4" fill="#1c2230" stroke="#f472b6" stroke-width="1.5"/>
+          <text x="583" y="65" fill="#f472b6" text-anchor="middle" font-size="10">SPD ⚡</text>
+          <line x1="620" y1="55" x2="740" y2="55" stroke="#34d399" stroke-width="2.5"/>
+          <text x="680" y="48" fill="#34d399" text-anchor="middle" font-size="9">Cable aéreo</text>
+          <line x1="620" y1="55" x2="620" y2="110" stroke="#34d399" stroke-width="1.5"/>
+          <text x="630" y="210" fill="#f59e0b" text-anchor="middle" font-size="10">EPP: arnés + casco</text>
+        </svg>
+        <div class="cap">Tres escenarios: interior (canaleta + UTP), industrial (STP + conduit + 300 mm separación), exterior (SPD + direct burial + HDPE).</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== LABORATORIO ===== -->
+  <section class="section" id="lab">
+    <div class="wrap block-body">
+      <h2 class="h"><span class="lead">Laboratorio 4</span> — Lectura de plano y tendido en condiciones reales</h2>
+      <ol class="steps">
+        <li>Leer el plano: identificar outlets, rutas de canalización y MDF/IDF. Medir distancias en el plano con la escala indicada.</li>
+        <li>Inspección del sitio: verificar rutas reales contra el plano. Identificar obstáculos (vigas, ductos de A/C, cañerías). Ajustar si hay discrepancias.</li>
+        <li>Preparar EPP: seleccionar el equipo según condiciones del sitio (interior/exterior, altura, electricidad cercana).</li>
+        <li>Tender el cable en conduit: usar guía (fish tape) para pasar el UTP. Lubricar con gel si hay tramos largos o curvas. No forzar; respetar el radio mínimo.</li>
+        <li>Protección contra rayos (exterior): instalar SPD en el extremo del edificio, conectado a tierra. Verificar resistencia de tierra &lt;10 Ω con telurómetro.</li>
+        <li>Firestopping: sellar con masilla cortafuegos todos los pasos de cable entre pisos o paredes de compartimento de fuego. Fotografiar antes y después.</li>
+        <li>Actualizar el plano as-built: registrar cambios respecto al diseño original. Archivar con fotografías del tendido.</li>
+      </ol>
+    </div>
+  </section>
+
+  <!-- ===== RESUMEN ===== -->
+  <section class="section">
+    <div class="wrap block-body">
+      <h2 class="h"><span class="lead">Resumen</span> del módulo</h2>
+      <ul class="bullets">
+        <li>La lectura de planos es el primer paso; siempre validar distancias y rutas contra la realidad del sitio.</li>
+        <li>EPP obligatorio: casco, guantes, gafas, botas. Arnés para alturas &gt;1.5 m. Escalera extensible a 75°.</li>
+        <li>Industrial: STP en conduit metálico, 300 mm de separación de cables de potencia.</li>
+        <li>Hospitales: cable LSZH, firestopping en pasos entre pisos, cortes coordinados con personal médico.</li>
+        <li>Exterior: direct burial o aéreo con SPD en ambos extremos, conduit HDPE subterráneo + cinta de advertencia.</li>
+        <li>El plano as-built actualizado es el documento de referencia para todo el mantenimiento futuro.</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- ===== FLASHCARDS ===== -->
+  <section class="section" id="flash">
+    <div class="wrap block-body">
+      <h2 class="h"><span class="lead">Flashcards</span></h2>
+      <p class="subtitle">Haz clic en cada tarjeta para ver la respuesta.</p>
+      <div class="fc-grid">
+        <div class="flashcard"><div class="inner">
+          <div class="face front">¿Qué es un cable LSZH y dónde se exige?</div>
+          <div class="face back"><strong>Low Smoke Zero Halogen</strong>: no emite gases tóxicos al quemarse. Obligatorio en hospitales, aeropuertos, trenes y espacios con difícil evacuación.</div>
+        </div></div>
+        <div class="flashcard"><div class="inner">
+          <div class="face front">¿Qué es el firestopping y por qué es obligatorio?</div>
+          <div class="face back">Sellado de pasos de cables con materiales <strong>cortafuegos</strong>. Sin él, los ductos actúan como chimeneas propagando fuego y gases tóxicos entre pisos.</div>
+        </div></div>
+        <div class="flashcard"><div class="inner">
+          <div class="face front">Separación mínima entre datos y cables de potencia industrial</div>
+          <div class="face back"><strong>300 mm</strong> mínimo. Para mayor protección, usar conduit metálico cerrado con tierra continua, o fibra óptica (inmune a EMI).</div>
+        </div></div>
+        <div class="flashcard"><div class="inner">
+          <div class="face front">¿Cuándo se instala un SPD en exterior?</div>
+          <div class="face back">En <strong>ambos extremos</strong> de cualquier cable que salga al exterior. Protege contra sobretensiones por rayos. Resistencia de tierra &lt;10 Ω.</div>
+        </div></div>
+        <div class="flashcard"><div class="inner">
+          <div class="face front">Ángulo correcto de una escalera extensible</div>
+          <div class="face back"><strong>75°</strong> respecto al suelo — regla 1:4: 1 m de separación en la base por cada 4 m de altura. Amarrar el extremo superior cuando sea posible.</div>
+        </div></div>
+        <div class="flashcard"><div class="inner">
+          <div class="face front">¿Qué diferencia al plano de diseño del as-built?</div>
+          <div class="face back">El diseño es el plan original. El <strong>as-built</strong> refleja lo instalado realmente: cambios de ruta, outlets añadidos/eliminados, posición exacta de equipos. Es el documento de referencia para mantenimiento.</div>
+        </div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== QUIZ ===== -->
+  <section class="section" id="quiz">
+    <div class="wrap block-body">
+      <h2 class="h"><span class="lead">Cuestionario</span></h2>
+      <div class="quiz" id="quiz4">
+
+        <div class="q" data-answer="b">
+          <div class="qt">1. ¿Qué tipo de cable se exige en hospitales por seguridad ante incendios?</div>
+          <label><input type="radio" name="q1d" value="a"> Cat6A blindado</label>
+          <label><input type="radio" name="q1d" value="b"> Cable LSZH</label>
+          <label><input type="radio" name="q1d" value="c"> Cable coaxial RG6</label>
+          <div class="explain">LSZH (Low Smoke Zero Halogen) es obligatorio en hospitales porque no emite gases halogenados tóxicos al quemarse.</div>
+        </div>
+
+        <div class="q" data-answer="c">
+          <div class="qt">2. Separación mínima entre cables de datos y cables de potencia de motores:</div>
+          <label><input type="radio" name="q2d" value="a"> 50 mm</label>
+          <label><input type="radio" name="q2d" value="b"> 150 mm</label>
+          <label><input type="radio" name="q2d" value="c"> 300 mm</label>
+          <div class="explain">300 mm mínimo entre cables de datos y potencia de motores para evitar EMI. Para mayor protección: conduit metálico o fibra óptica.</div>
+        </div>
+
+        <div class="q" data-answer="c">
+          <div class="qt">3. Ángulo correcto de apoyo de una escalera extensible:</div>
+          <label><input type="radio" name="q3d" value="a"> 45°</label>
+          <label><input type="radio" name="q3d" value="b"> 60°</label>
+          <label><input type="radio" name="q3d" value="c"> 75°</label>
+          <div class="explain">75° (regla 1:4): 1 m de separación en la base por cada 4 m de altura. Amarrar en la parte superior cuando sea posible.</div>
+        </div>
+
+        <div class="q" data-answer="b">
+          <div class="qt">4. ¿Dónde se instala el SPD en una instalación outdoor?</div>
+          <label><input type="radio" name="q4d" value="a"> Solo en el MDF</label>
+          <label><input type="radio" name="q4d" value="b"> En ambos extremos del cable que sale al exterior</label>
+          <label><input type="radio" name="q4d" value="c"> Solo en el outlet exterior</label>
+          <div class="explain">Se instala en ambos extremos para proteger toda la infraestructura interna de sobretensiones por rayos o inducción.</div>
+        </div>
+
+        <div class="q" data-answer="b">
+          <div class="qt">5. ¿Qué documento refleja la instalación tal como quedó realmente?</div>
+          <label><input type="radio" name="q5d" value="a"> Plano de diseño</label>
+          <label><input type="radio" name="q5d" value="b"> Plano as-built</label>
+          <label><input type="radio" name="q5d" value="c"> Tabla de puntos original</label>
+          <div class="explain">El as-built documenta todos los cambios respecto al diseño original. Es el documento de referencia para mantenimiento y ampliaciones futuras.</div>
+        </div>
+
+        <button class="btn" onclick="checkQuiz('quiz4')">Comprobar respuestas</button>
+        <button class="btn ghost" onclick="resetQuiz('quiz4')">Reiniciar</button>
+        <div class="quiz-result"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== REPASO ===== -->
+  <section class="section">
+    <div class="wrap block-body">
+      <h2 class="h"><span class="lead">Preguntas</span> de repaso</h2>
+      <ul class="review">
+        <li>¿Por qué es importante actualizar el plano as-built después de cada instalación?</li>
+        <li>Un cliente tiene un galpón con 12 motores de 15 HP. ¿Cómo plantearías el cableado para minimizar interferencias?</li>
+        <li>Describe los pasos de seguridad antes de trabajar en un cielo raso a 4 m de altura.</li>
+        <li>¿En qué se diferencia el cable direct burial del cable outdoor estándar?</li>
+        <li>¿Por qué el firestopping es tan crítico en edificios de varios pisos?</li>
+      </ul>
+    </div>
+  </section>
+
+  <nav class="block-nav wrap">
+    <a class="prev" href="bloque3.html"><div class="dir">← Anterior</div><div class="ttl">Elementos del Data Center</div></a>
+    <a class="next" href="bloque5.html"><div class="dir">Siguiente →</div><div class="ttl">Fibra Óptica</div></a>
+  </nav>
+</main>
+
+<footer><div class="wrap">Módulo 4 de 6 · Curso de Cableado Estructurado</div></footer>
+<script src="script.js"></script>
+</body>
+</html>

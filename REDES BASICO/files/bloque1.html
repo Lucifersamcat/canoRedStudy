@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Módulo 1 · Introducción a las Redes — Redes Básicas</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<header class="topnav">
+  <div class="wrap">
+    <span class="brand">Redes<span class="dot">.</span>Básicas</span>
+    <nav>
+      <a href="index.html">Inicio</a>
+      <a href="bloque1.html">1 · Intro</a>
+      <a href="bloque2.html">2 · Protocolos</a>
+      <a href="bloque3.html">3 · Servicios IP</a>
+      <a href="bloque4.html">4 · Wireless</a>
+      <a href="bloque5.html">5 · Virtualización</a>
+    </nav>
+  </div>
+</header>
+<main>
+  <section class="block-head wrap">
+    <div class="num">MÓDULO 01</div>
+    <h1>Introducción a las Redes de Datos</h1>
+    <p>Antes de configurar cualquier protocolo hay que entender qué es una red, qué medios físicos la componen y qué dispositivos la conforman. Este módulo cubre los cimientos sobre los que se construye todo lo demás.</p>
+    <div class="progress-dots">
+      <span class="on"></span><span></span><span></span><span></span><span></span>
+    </div>
+    <div class="toc">
+      <a href="#teoria">Teoría</a><a href="#conceptos">Conceptos</a>
+      <a href="#herramientas">Herramientas</a><a href="#diagrama">Diagrama</a>
+      <a href="#lab">Laboratorio</a><a href="#flash">Flashcards</a><a href="#quiz">Cuestionario</a>
+    </div>
+  </section>
+
+  <section class="section" id="teoria">
+    <div class="wrap block-body">
+      <h2 class="h"><span class="lead">Teoría</span> ampliada</h2>
+      <h3>¿Qué es una red de datos?</h3>
+      <p>Una red de datos es un conjunto de equipos interconectados mediante un protocolo inteligente, capaz de organizar el envío de información de un lugar a otro. La red es la base de toda la tecnología de la información: la gestión de servidores, workstations, ciberseguridad o data centers siempre incluye un componente de redes.</p>
+      <h3>Medios de transmisión</h3>
+      <p><strong>Cobre (UTP/STP):</strong> El cable más común en instalaciones de edificio. Se clasifica por categorías (Cat5e, Cat6, Cat6A) que definen el ancho de banda soportado. Las terminaciones siguen la norma <strong>T568A o T568B</strong> — ambas válidas, pero nunca se mezclan en la misma instalación. T568B es la más usada en entornos comerciales.</p>
+      <p><strong>Fibra óptica:</strong> Transmite datos mediante pulsos de luz. Inmune a interferencias electromagnéticas. Se divide en <strong>monomodo (SM)</strong> — núcleo 9 µm, largas distancias, chaqueta amarilla — y <strong>multimodo (MM)</strong> — núcleo 50/62.5 µm, distancias cortas, chaqueta naranja o aguamarina. En edificios se usa para el backbone que conecta el MDF con los IDF de cada piso.</p>
+      <p><strong>Radio Frecuencia (RF):</strong> Permite transmisión inalámbrica. Las frecuencias no licenciadas más comunes en redes locales son 2.4 GHz y 5 GHz (WiFi). Las frecuencias licenciadas (3 GHz, 11 GHz) se usan para enlaces punto a punto de largo alcance.</p>
+      <h3>Componentes principales de una red</h3>
+      <ul class="bullets">
+        <li><strong>Switch:</strong> Dispositivo de capa 2 que interconecta equipos en una misma red local usando direcciones MAC.</li>
+        <li><strong>Router:</strong> Dispositivo de capa 3 que enruta tráfico entre redes distintas usando direcciones IP.</li>
+        <li><strong>Firewall:</strong> Controla el tráfico entrante y saliente aplicando políticas de seguridad.</li>
+        <li><strong>Servidor:</strong> Equipo que ofrece servicios (web, correo, archivos, DHCP, DNS) a los clientes de la red.</li>
+      </ul>
+      <h3>MDF e IDF</h3>
+      <p>El <strong>MDF (Main Distribution Frame)</strong> es el cuarto de telecomunicaciones principal donde llegan los proveedores de internet y se alojan los equipos centrales: servidores, switches core, firewalls y load balancers. Desde el MDF se distribuye la conectividad a los gabinetes secundarios.</p>
+      <p>El <strong>IDF (Intermediate Distribution Frame)</strong> es un gabinete secundario que ofrece servicio de interconexión desde el MDF hasta los clientes de esa zona del edificio. Generalmente se interconectan al MDF usando fibra óptica.</p>
+      <div class="callout tip">
+        <span class="label">Regla práctica</span>
+        <strong>Un IDF por piso</strong> es el diseño más común. El cable horizontal (cobre UTP) no debe superar los 90 metros desde el patch panel del IDF hasta el jack del área de trabajo.
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="conceptos">
+    <div class="wrap block-body">
+      <h2 class="h"><span class="lead">Conceptos</span> clave</h2>
+      <table>
+        <tr><th>Concepto</th><th>Descripción</th></tr>
+        <tr><td>Red de datos</td><td>Conjunto de equipos interconectados capaces de intercambiar información</td></tr>
+        <tr><td>UTP</td><td>Unshielded Twisted Pair — par trenzado sin blindaje, el más común en LAN</td></tr>
+        <tr><td>T568A / T568B</td><td>Normas de pinout para crimpado de RJ45; T568B es la más usada comercialmente</td></tr>
+        <tr><td>Fibra SM</td><td>Monomodo — núcleo 9 µm, largas distancias, chaqueta amarilla</td></tr>
+        <tr><td>Fibra MM</td><td>Multimodo — núcleo 50/62.5 µm, distancias cortas, naranja o aguamarina</td></tr>
+        <tr><td>Switch (L2)</td><td>Reenvía tramas por MAC — opera en capa 2 del modelo OSI</td></tr>
+        <tr><td>Router (L3)</td><td>Enruta paquetes por IP entre redes distintas — opera en capa 3</td></tr>
+        <tr><td>Firewall</td><td>Controla el tráfico entre redes aplicando reglas de seguridad</td></tr>
+        <tr><td>MDF</td><td>Main Distribution Frame — cuarto principal de telecomunicaciones</td></tr>
+        <tr><td>IDF</td><td>Intermediate Distribution Frame — gabinete secundario por zona o piso</td></tr>
+        <tr><td>Cat6</td><td>Categoría 6 — soporta 1 Gbps a 100m y 10 Gbps hasta 55m</td></tr>
+      </table>
+    </div>
+  </section>
+
+  <section class="section" id="herramientas">
+    <div class="wrap block-body">
+      <h2 class="h"><span class="lead">Herramientas</span> de cableado estructurado</h2>
+      <table>
+        <tr><th>Herramienta</th><th>Uso principal</th><th>Notas</th></tr>
+        <tr><td>Punch Down Tool</td><td>Terminar cables en jacks y patch panels (IDC)</td><td>Navaja 110 para datos; M66 para telefonía</td></tr>
+        <tr><td>Tijera de técnico</td><td>Cortar y pelar cables</td><td>Muescas para calibre 19 y 23; corta hasta AWG 12</td></tr>
+        <tr><td>Cable Stripper</td><td>Pelar la cubierta del cable UTP</td><td>Ajustable para evitar dañar los pares internos</td></tr>
+        <tr><td>Crimping Tool</td><td>Engarce de conectores RJ45/RJ11</td><td>4, 6 y 8 posiciones; trinquete de ciclo completo</td></tr>
+        <tr><td>Crimping Pass-Thru</td><td>Conectores RJ45 de paso directo</td><td>Recorta conductores al ras del conector</td></tr>
+        <tr><td>Tester de cable</td><td>Verificar continuidad y mapa de pares</td><td>Detecta cruce, corto y cable abierto</td></tr>
+      </table>
+    </div>
+  </section>
+
+  <section class="section" id="diagrama">
+    <div class="wrap block-body">
+      <h2 class="h"><span class="lead">Diagrama</span> — Red básica con MDF e IDF</h2>
+      <div class="diagram">
+        <svg viewBox="0 0 760 260" xmlns="http://www.w3.org/2000/svg" font-family="Segoe UI, sans-serif">
+          <defs><marker id="a1" markerWidth="9" markerHeight="9" refX="7" refY="3" orient="auto"><path d="M0,0 L7,3 L0,6 Z" fill="#9aa7b8"/></marker></defs>
+          <g stroke="#9aa7b8" stroke-width="2" fill="none" marker-end="url(#a1)">
+            <line x1="100" y1="60" x2="210" y2="60"/>
+            <line x1="390" y1="60" x2="490" y2="60"/>
+            <line x1="300" y1="100" x2="300" y2="155"/>
+            <line x1="300" y1="205" x2="120" y2="205"/>
+            <line x1="300" y1="205" x2="480" y2="205"/>
+          </g>
+          <g font-size="13" fill="#e6edf3" text-anchor="middle" font-family="Segoe UI, sans-serif">
+            <rect x="490" y="34" width="130" height="50" rx="9" fill="#1c2230" stroke="#2b3242"/>
+            <text x="555" y="57">Internet / ISP</text>
+            <text x="555" y="73" font-size="10" fill="#9aa7b8">Acometida</text>
+            <rect x="210" y="34" width="180" height="50" rx="9" fill="#1c2230" stroke="#a78bfa"/>
+            <text x="300" y="56" font-weight="700">MDF</text>
+            <text x="300" y="73" font-size="11" fill="#9aa7b8">Router · Firewall · Core SW</text>
+            <rect x="30" y="34" width="70" height="50" rx="9" fill="#1c2230" stroke="#2b3242"/>
+            <text x="65" y="65">Servers</text>
+            <rect x="220" y="157" width="160" height="48" rx="9" fill="#1c2230" stroke="#4f9cf9"/>
+            <text x="300" y="178" font-weight="700">IDF (Piso 1)</text>
+            <text x="300" y="195" font-size="11" fill="#9aa7b8">Patch Panel · Switch</text>
+            <rect x="30" y="181" width="90" height="24" rx="7" fill="#11161f" stroke="#2b3242"/>
+            <text x="75" y="197" font-size="11" fill="#9aa7b8">Área trabajo</text>
+            <rect x="390" y="181" width="90" height="24" rx="7" fill="#11161f" stroke="#2b3242"/>
+            <text x="435" y="197" font-size="11" fill="#9aa7b8">Área trabajo</text>
+          </g>
+          <text x="338" y="135" font-size="10" fill="#f472b6" font-family="Segoe UI, sans-serif">Fibra Óptica</text>
+        </svg>
+        <div class="cap">El ISP llega al MDF; fibra óptica conecta el MDF con el IDF de cada piso; cobre UTP llega a cada área de trabajo.</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="lab">
+    <div class="wrap block-body">
+      <h2 class="h"><span class="lead">Laboratorio 1</span> — Armando un Rack de redes</h2>
+      <p class="subtitle">Objetivo: identificar y montar los componentes básicos de un rack de telecomunicaciones.</p>
+      <ol class="steps">
+        <li>Identificar los equipos del rack: patch panel, switch, router, UPS, PDU y organizadores.</li>
+        <li>Instalar el patch panel en los primeros 2U del rack.</li>
+        <li>Montar el switch de acceso debajo del patch panel (1U de separación recomendado).</li>
+        <li>Conectar patch cords del patch panel al switch (colores por VLAN si es posible).</li>
+        <li>Verificar que todos los equipos estén correctamente atornillados y los cables organizados.</li>
+        <li>Etiquetar cada puerto del patch panel con el número de punto de red correspondiente.</li>
+      </ol>
+      <div class="callout tip">
+        <span class="label">Buena práctica</span>
+        Deja al menos <strong>1U de organizador de cable</strong> entre grupos de equipos. El rack debe quedar con espacio para crecer — no lo llenes al 100% desde el inicio.
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="flash">
+    <div class="wrap block-body">
+      <h2 class="h"><span class="lead">Flashcards</span></h2>
+      <p class="subtitle">Haz clic en cada tarjeta para ver la respuesta.</p>
+      <div class="fc-grid">
+        <div class="flashcard"><div class="inner">
+          <div class="face front">¿Qué es una red de datos?</div>
+          <div class="face back">Conjunto de equipos interconectados por un protocolo inteligente capaz de organizar el envío de datos entre ellos.</div>
+        </div></div>
+        <div class="flashcard"><div class="inner">
+          <div class="face front">¿Cuál es la diferencia entre fibra SM y MM?</div>
+          <div class="face back">SM (monomodo) tiene núcleo de 9 µm y cubre largas distancias. MM (multimodo) tiene 50/62.5 µm y cubre distancias cortas dentro del edificio.</div>
+        </div></div>
+        <div class="flashcard"><div class="inner">
+          <div class="face front">¿Cuál es la función de un switch?</div>
+          <div class="face back">Interconectar equipos en una red local usando direcciones MAC. Opera en capa 2 del modelo OSI.</div>
+        </div></div>
+        <div class="flashcard"><div class="inner">
+          <div class="face front">¿Cuál es la función de un router?</div>
+          <div class="face back">Enrutar paquetes entre redes distintas usando direcciones IP. Opera en capa 3 del modelo OSI.</div>
+        </div></div>
+        <div class="flashcard"><div class="inner">
+          <div class="face front">¿Qué es el MDF?</div>
+          <div class="face back">Main Distribution Frame: cuarto principal de telecomunicaciones donde llega el ISP y se alojan los equipos centrales (core switch, firewall, servidores).</div>
+        </div></div>
+        <div class="flashcard"><div class="inner">
+          <div class="face front">¿Cuál es la norma de colores más usada para crimpado RJ45?</div>
+          <div class="face back">T568B: Blanco-naranja, Naranja, Blanco-verde, Azul, Blanco-azul, Verde, Blanco-marrón, Marrón.</div>
+        </div></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="quiz">
+    <div class="wrap block-body">
+      <h2 class="h"><span class="lead">Cuestionario</span></h2>
+      <div class="quiz" id="quiz1">
+        <div class="q" data-answer="b">
+          <div class="qt">1. Los switches operan en la capa…</div>
+          <label><input type="radio" name="q1" value="a"> Capa 1 — Física</label>
+          <label><input type="radio" name="q1" value="b"> Capa 2 — Enlace de datos</label>
+          <label><input type="radio" name="q1" value="c"> Capa 3 — Red</label>
+          <div class="explain">Los switches toman decisiones de reenvío usando direcciones MAC, que son de capa 2.</div>
+        </div>
+        <div class="q" data-answer="a">
+          <div class="qt">2. MDF significa…</div>
+          <label><input type="radio" name="q2" value="a"> Main Distribution Frame</label>
+          <label><input type="radio" name="q2" value="b"> Multi Device Frame</label>
+          <label><input type="radio" name="q2" value="c"> Medium Distribution Facility</label>
+          <div class="explain">MDF = Main Distribution Frame; es el cuarto principal de telecomunicaciones.</div>
+        </div>
+        <div class="q" data-answer="c">
+          <div class="qt">3. La fibra monomodo (SM) se identifica por su chaqueta de color…</div>
+          <label><input type="radio" name="q3" value="a"> Naranja</label>
+          <label><input type="radio" name="q3" value="b"> Aguamarina</label>
+          <label><input type="radio" name="q3" value="c"> Amarillo</label>
+          <div class="explain">La fibra monomodo tiene chaqueta amarilla; la multimodo OM1/OM2 es naranja y OM3/OM4 aguamarina.</div>
+        </div>
+        <div class="q" data-answer="b">
+          <div class="qt">4. La norma T568B define el orden de colores para…</div>
+          <label><input type="radio" name="q4" value="a"> Conectores de fibra LC</label>
+          <label><input type="radio" name="q4" value="b"> Crimpado de conectores RJ45</label>
+          <label><input type="radio" name="q4" value="c"> Etiquetado de puertos</label>
+          <div class="explain">T568B (y T568A) definen el pinout de los 8 hilos en un conector RJ45.</div>
+        </div>
+        <div class="q" data-answer="c">
+          <div class="qt">5. ¿Cuál es la distancia máxima recomendada de cobre horizontal desde el patch panel hasta el jack?</div>
+          <label><input type="radio" name="q5" value="a"> 50 metros</label>
+          <label><input type="radio" name="q5" value="b"> 110 metros</label>
+          <label><input type="radio" name="q5" value="c"> 90 metros</label>
+          <div class="explain">El estándar TIA-568 establece 90 m para el cable horizontal fijo, más 10 m de patch cords = 100 m total.</div>
+        </div>
+        <button class="btn" onclick="checkQuiz('quiz1')">Comprobar respuestas</button>
+        <button class="btn ghost" onclick="resetQuiz('quiz1')">Reiniciar</button>
+        <div class="quiz-result"></div>
+      </div>
+    </div>
+  </section>
+
+  <nav class="block-nav wrap">
+    <a class="prev disabled" href="index.html"><div class="dir">← Anterior</div><div class="ttl">Inicio</div></a>
+    <a class="next" href="bloque2.html"><div class="dir">Siguiente →</div><div class="ttl">Conceptos y Protocolos de Red</div></a>
+  </nav>
+</main>
+<footer><div class="wrap">Módulo 1 de 5 · Curso de Redes Básicas · Ing. Stevenson Canó</div></footer>
+<script src="script.js"></script>
+</body>
+</html>

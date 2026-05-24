@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Bloque 2 · VLANs y Spanning Tree — Curso de Redes Avanzado</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<header class="topnav">
+  <div class="wrap">
+    <span class="brand">Redes<span class="dot">.</span>Avanzado</span>
+    <nav>
+      <a href="index.html">Inicio</a>
+      <a href="bloque1.html">1 · Cisco</a>
+      <a href="bloque2.html">2 · VLANs/STP</a>
+      <a href="bloque3.html">3 · Ubiquiti</a>
+      <a href="bloque4.html">4 · RADIUS</a>
+      <a href="bloque5.html">5 · WiFi</a>
+      <a href="bloque6.html">6 · Multicast</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <section class="block-head wrap">
+    <div class="num">BLOQUE 02</div>
+    <h1>VLANs y Spanning Tree</h1>
+    <p>Segmentar la red en VLANs mejora seguridad, rendimiento y orden. Pero al unir switches con enlaces redundantes aparecen los loops de capa 2: Spanning Tree es el protocolo que mantiene la red estable sin sacrificar la redundancia.</p>
+    <div class="progress-dots"><span></span><span class="on"></span><span></span><span></span><span></span><span></span></div>
+    <div class="toc">
+      <a href="#teoria">Teoría ampliada</a>
+      <a href="#conceptos">Conceptos clave</a>
+      <a href="#comandos">Comandos</a>
+      <a href="#diagrama">Diagrama</a>
+      <a href="#lab">Laboratorio</a>
+      <a href="#flash">Flashcards</a>
+      <a href="#quiz">Cuestionario</a>
+    </div>
+  </section>
+
+  <section class="section" id="teoria">
+    <div class="wrap block-body">
+      <h2 class="h"><span class="lead">Teoría</span> ampliada</h2>
+
+      <h3>Por qué segmentar con VLANs</h3>
+      <p>Sin VLANs, todo un switch es un único <strong>dominio de broadcast</strong>: cada ARP, DHCP Discover o broadcast llega a todos los hosts. Una VLAN divide ese dominio lógicamente. Las ventajas:</p>
+      <ul class="bullets">
+        <li><strong>Rendimiento:</strong> menos broadcast por dominio.</li>
+        <li><strong>Seguridad:</strong> hosts de VLANs distintas no se ven en L2; para comunicarse necesitan un router (inter-VLAN routing).</li>
+        <li><strong>Flexibilidad:</strong> la pertenencia es lógica, no depende de la ubicación física.</li>
+      </ul>
+
+      <h3>Puertos Access vs Trunk</h3>
+      <p>Cada puerto de switch trabaja en uno de dos modos:</p>
+      <ul class="bullets">
+        <li><strong>Access:</strong> pertenece a una sola VLAN. Conecta dispositivos finales (PC, impresora). El tráfico sale <em>untagged</em>.</li>
+        <li><strong>Trunk:</strong> transporta varias VLANs por un mismo enlace. Cada trama se etiqueta con el estándar <strong>802.1Q</strong>, que inserta 4 bytes con el VLAN ID. Une switches entre sí o un switch con un router/AP.</li>
+      </ul>
+      <p>La <strong>VLAN nativa</strong> es la única que viaja <em>sin etiqueta</em> por un trunk (por defecto la VLAN 1). Debe coincidir en ambos extremos del enlace, o habrá <em>VLAN mismatch</em>.</p>
+
+      <h3>El problema de los loops L2</h3>
+      <p>Para tener redundancia se conectan switches con más de un enlace. Pero las tramas de capa 2 <strong>no tienen TTL</strong>: un broadcast en un anillo de switches circula para siempre, multiplicándose en cada switch. Esto provoca una <strong>tormenta de broadcast</strong> que satura la red en segundos, además de inestabilidad de la tabla MAC.</p>
+
+      <h3>Spanning Tree Protocol (STP)</h3>
+      <p>STP (802.1D) construye un <strong>árbol lógico sin loops</strong> sobre la topología física, bloqueando puertos redundantes que reactiva si un enlace falla. Pasos del algoritmo:</p>
+      <ol class="steps">
+        <li>Se elige un <strong>Root Bridge</strong>: el switch con el <strong>BID</strong> más bajo (BID = prioridad + MAC).</li>
+        <li>Cada switch no-raíz elige un <strong>Root Port</strong>: el de menor costo hacia la raíz.</li>
+        <li>Cada segmento elige un <strong>Designated Port</strong>.</li>
+        <li>Los puertos restantes quedan en <strong>Blocking</strong>.</li>
+      </ol>
+      <p>STP clásico converge lento (30–50 s pasando por Listening y Learning). <strong>RSTP</strong> (802.1w) lo hace en 1–2 s con nuevos roles (Alternate, Backup) y handshake entre switches.</p>
+
+      <h3>Variantes</h3>
+      <p><strong>PVST+</strong> ejecuta una instancia de STP por VLAN (control fino, más CPU). <strong>MSTP</strong> (802.1s) agrupa varias VLANs en pocas instancias: en una red con 200 VLANs, MSTP usa quizá 2–3 instancias en lugar de 200, ahorrando muchísimos recursos.</p>
+
+      <div class="callout fix">
+        <span class="label">Corrección al material original</span>
+        El material lista la prioridad del Root Bridge como un valor libre. En realidad la prioridad STP debe ser <strong>múltiplo de 4096</strong> (0, 4096, 8192…). El comando correcto y recomendado es <code>spanning-tree vlan 10 root primary</code>, que la ajusta automáticamente. Además, en redes grandes conviene proteger los puertos de acceso con <code>spanning-tree portfast</code> y <code>bpduguard</code>.
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="conceptos">
+    <div class="wrap block-body">
+      <h2 class="h"><span class="lead">Conceptos</span> clave</h2>
+      <table>
+        <tr><th>Concepto</th><th>Descripción</th></tr>
+        <tr><td>VLAN</td><td>Segmentación lógica de la red de capa 2; un dominio de broadcast</td></tr>
+        <tr><td>Access Port</td><td>Puerto en una sola VLAN; tráfico untagged hacia el host</td></tr>
+        <tr><td>Trunk</td><td>Puerto que transporta múltiples VLANs etiquetadas</td></tr>
+        <tr><td>802.1Q</td><td>Estándar de etiquetado: inserta 4 bytes con el VLAN ID en la trama</td></tr>
+        <tr><td>VLAN nativa</td><td>VLAN que viaja sin etiqueta por un trunk (por defecto la 1)</td></tr>
+        <tr><td>STP</td><td>802.1D — evita loops L2 bloqueando puertos redundantes</td></tr>
+        <tr><td>RSTP</td><td>802.1w — STP rápido, converge en 1–2 s</td></tr>
+        <tr><td>MSTP</td><td>802.1s — agrupa VLANs en pocas instancias</td></tr>
+        <tr><td>PVST+</td><td>Cisco — una instancia de STP por cada VLAN</td></tr>
+        <tr><td>Root Bridge</td><td>Switch raíz del árbol, el de BID más bajo</td></tr>
+        <tr><td>BID</td><td>Bridge ID = prioridad + dirección MAC</td></tr>
+        <tr><td>PortFast / BPDU Guard</td><td>Acelera puertos de acceso y los protege de BPDUs no autorizadas</td></tr>
+      </table>
+    </div>
+  </section>
+
+  <section class="section" id="comandos">
+    <div class="wrap block-body">
+      <h2 class="h"><span class="lead">Comandos</span> esenciales</h2>
+      <pre><code><span class="cmt"># Crear VLANs</span>
+<span class="kw">vlan</span> 10
+ <span class="kw">name</span> VENTAS
+<span class="kw">vlan</span> 20
+ <span class="kw">name</span> SOPORTE
+<span class="kw">vlan</span> 30
+ <span class="kw">name</span> GERENCIA
+
+<span class="cmt"># Puerto Access para un PC</span>
+<span class="kw">interface</span> fa0/1
+ <span class="kw">switchport mode access</span>
+ <span class="kw">switchport access vlan</span> 10
+ <span class="kw">spanning-tree portfast</span>
+ <span class="kw">spanning-tree bpduguard enable</span>
+
+<span class="cmt"># Puerto Trunk entre switches</span>
+<span class="kw">interface</span> gi0/1
+ <span class="kw">switchport trunk encapsulation dot1q</span>
+ <span class="kw">switchport mode trunk</span>
+ <span class="kw">switchport trunk allowed vlan</span> <span class="val">10,20,30</span>
+ <span class="kw">switchport trunk native vlan</span> <span class="val">99</span>
+
+<span class="cmt"># Spanning Tree</span>
+<span class="kw">spanning-tree mode rapid-pvst</span>          <span class="cmt"># habilitar RSTP por VLAN</span>
+<span class="kw">spanning-tree vlan</span> 10 <span class="kw">root primary</span>      <span class="cmt"># este switch = raíz de VLAN 10</span>
+
+<span class="cmt"># Configuración MSTP</span>
+<span class="kw">spanning-tree mode mst</span>
+<span class="kw">spanning-tree mst configuration</span>
+ <span class="kw">name</span> REGION1
+ <span class="kw">revision</span> 1
+ <span class="kw">instance</span> 1 <span class="kw">vlan</span> 10,20
+ <span class="kw">instance</span> 2 <span class="kw">vlan</span> 30
+
+<span class="cmt"># Verificación</span>
+<span class="kw">show vlan brief</span>
+<span class="kw">show interfaces trunk</span>
+<span class="kw">show spanning-tree</span>
+<span class="kw">show spanning-tree vlan</span> 10</code></pre>
+    </div>
+  </section>
+
+  <section class="section" id="diagrama">
+    <div class="wrap block-body">
+      <h2 class="h"><span class="lead">Diagrama</span> de la topología</h2>
+      <div class="diagram">
+        <svg viewBox="0 0 760 320" xmlns="http://www.w3.org/2000/svg" font-family="Segoe UI, sans-serif">
+          <g stroke="#9aa7b8" stroke-width="2" fill="none">
+            <line x1="220" y1="70" x2="540" y2="70"/>
+            <line x1="220" y1="100" x2="540" y2="100" stroke-dasharray="6 4" stroke="#f87171"/>
+            <line x1="160" y1="120" x2="160" y2="210"/>
+            <line x1="600" y1="120" x2="600" y2="210"/>
+          </g>
+          <text x="380" y="58" font-size="11" fill="#34d399" text-anchor="middle">Trunk activo (802.1Q)</text>
+          <text x="380" y="120" font-size="11" fill="#f87171" text-anchor="middle">Enlace redundante — BLOQUEADO por STP</text>
+          <g font-size="13" fill="#e6edf3" text-anchor="middle">
+            <rect x="60" y="60" width="200" height="56" rx="9" fill="#1c2230" stroke="#4f9cf9"/>
+            <text x="160" y="84" font-weight="700">SW1 (Root Bridge)</text>
+            <text x="160" y="102" font-size="11" fill="#9aa7b8">priority 4096 · VLAN 10,20,30</text>
+
+            <rect x="500" y="60" width="200" height="56" rx="9" fill="#1c2230" stroke="#a78bfa"/>
+            <text x="600" y="84" font-weight="700">SW2</text>
+            <text x="600" y="102" font-size="11" fill="#9aa7b8">VLAN 10,20,30</text>
+
+            <rect x="70" y="212" width="180" height="50" rx="9" fill="#1c2230" stroke="#2b3242"/>
+            <text x="160" y="232" font-weight="700">PC-A · VLAN 10</text>
+            <text x="160" y="250" font-size="11" fill="#9aa7b8">Ventas</text>
+
+            <rect x="510" y="212" width="180" height="50" rx="9" fill="#1c2230" stroke="#2b3242"/>
+            <text x="600" y="232" font-weight="700">PC-B · VLAN 10</text>
+            <text x="600" y="250" font-size="11" fill="#9aa7b8">Ventas</text>
+          </g>
+          <text x="380" y="296" font-size="11" fill="#9aa7b8" text-anchor="middle">PC-A y PC-B se comunican (misma VLAN). Un host en VLAN 20 quedaría aislado sin router.</text>
+        </svg>
+        <div class="cap">Laboratorio 2: dos switches con doble enlace; STP mantiene uno activo y bloquea el otro para evitar loops.</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="lab">
+    <div class="wrap block-body">
+      <h2 class="h"><span class="lead">Laboratorio 2</span> — Multi-switch VLANs</h2>
+      <p class="subtitle">Topología: 2 switches Cisco unidos por trunk, con PCs en distintas VLANs.</p>
+      <ol class="steps">
+        <li>Crear las VLANs 10, 20 y 30 en <strong>ambos</strong> switches.</li>
+        <li>Configurar los puertos de los PC como Access en su VLAN.</li>
+        <li>Configurar el enlace entre switches como Trunk con <code>allowed vlan 10,20,30</code>.</li>
+        <li>Definir la misma VLAN nativa en ambos extremos del trunk.</li>
+        <li>Aplicar <code>portfast</code> + <code>bpduguard</code> en los puertos de acceso.</li>
+        <li>Verificar que PCs de la misma VLAN se comunican entre switches.</li>
+        <li>Comprobar que VLANs distintas NO se comunican (sin router).</li>
+        <li>Forzar el Root Bridge con <code>root primary</code> y observar el árbol con <code>show spanning-tree</code>.</li>
+      </ol>
+      <div class="callout tip">
+        <span class="label">Verificación</span>
+        <code>show interfaces trunk</code> debe listar las VLANs permitidas; <code>show spanning-tree</code> debe mostrar un puerto en estado <em>blocking/discarding</em> si hay enlace redundante.
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="wrap block-body">
+      <h2 class="h"><span class="lead">Comparativa</span> de variantes STP</h2>
+      <table>
+        <tr><th>Protocolo</th><th>Estándar</th><th>Velocidad</th><th>Instancias</th></tr>
+        <tr><td>STP</td><td>802.1D</td><td>Lenta (30–50 s)</td><td>1 global</td></tr>
+        <tr><td>RSTP</td><td>802.1w</td><td>Rápida (1–2 s)</td><td>1 global</td></tr>
+        <tr><td>PVST+ / Rapid-PVST+</td><td>Cisco</td><td>Rápida</td><td>1 por VLAN</td></tr>
+        <tr><td>MSTP</td><td>802.1s</td><td>Rápida</td><td>Pocas (VLANs agrupadas)</td></tr>
+      </table>
+      <h3>Resumen del bloque</h3>
+      <ul class="bullets">
+        <li>Las VLANs dividen el dominio de broadcast: mejor rendimiento, seguridad y flexibilidad.</li>
+        <li>Access = una VLAN; Trunk = varias VLANs etiquetadas con 802.1Q.</li>
+        <li>Sin protección, los enlaces redundantes en L2 causan tormentas de broadcast.</li>
+        <li>STP bloquea puertos redundantes; RSTP converge mucho más rápido.</li>
+        <li>MSTP escala mejor que PVST+ al agrupar muchas VLANs en pocas instancias.</li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="section" id="flash">
+    <div class="wrap block-body">
+      <h2 class="h"><span class="lead">Flashcards</span></h2>
+      <p class="subtitle">Haz clic en cada tarjeta para ver la respuesta.</p>
+      <div class="fc-grid">
+        <div class="flashcard"><div class="inner">
+          <div class="face front">¿Qué problema resuelve Spanning Tree?</div>
+          <div class="face back">Los loops de capa 2, que sin TTL provocan tormentas de broadcast en topologías redundantes.</div>
+        </div></div>
+        <div class="flashcard"><div class="inner">
+          <div class="face front">¿Cómo se elige el Root Bridge?</div>
+          <div class="face back">Es el switch con el BID más bajo (BID = prioridad + MAC); a menor prioridad, gana.</div>
+        </div></div>
+        <div class="flashcard"><div class="inner">
+          <div class="face front">Access vs Trunk</div>
+          <div class="face back">Access lleva una sola VLAN (untagged); Trunk transporta varias VLANs etiquetadas con 802.1Q.</div>
+        </div></div>
+        <div class="flashcard"><div class="inner">
+          <div class="face front">¿Qué es la VLAN nativa?</div>
+          <div class="face back">La única VLAN que viaja sin etiqueta por un trunk; debe coincidir en ambos extremos.</div>
+        </div></div>
+        <div class="flashcard"><div class="inner">
+          <div class="face front">¿Por qué MSTP escala mejor que PVST+?</div>
+          <div class="face back">Agrupa muchas VLANs en pocas instancias, en lugar de una instancia STP por VLAN.</div>
+        </div></div>
+        <div class="flashcard"><div class="inner">
+          <div class="face front">¿Para qué sirve BPDU Guard?</div>
+          <div class="face back">Desactiva un puerto de acceso si recibe BPDUs, evitando que se conecte un switch no autorizado.</div>
+        </div></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="quiz">
+    <div class="wrap block-body">
+      <h2 class="h"><span class="lead">Cuestionario</span></h2>
+      <div class="quiz" id="quiz2">
+        <div class="q" data-answer="b">
+          <div class="qt">1. ¿Qué transporta un puerto trunk?</div>
+          <label><input type="radio" name="q1b" value="a"> Una sola VLAN sin etiqueta</label>
+          <label><input type="radio" name="q1b" value="b"> Múltiples VLANs etiquetadas con 802.1Q</label>
+          <label><input type="radio" name="q1b" value="c"> Solo tráfico de gestión</label>
+          <div class="explain">El trunk multiplexa varias VLANs; cada trama lleva su etiqueta 802.1Q.</div>
+        </div>
+        <div class="q" data-answer="a">
+          <div class="qt">2. El Root Bridge es el switch con…</div>
+          <label><input type="radio" name="q2b" value="a"> El BID más bajo</label>
+          <label><input type="radio" name="q2b" value="b"> Más puertos</label>
+          <label><input type="radio" name="q2b" value="c"> La MAC más alta</label>
+          <div class="explain">Gana el menor Bridge ID (prioridad + MAC).</div>
+        </div>
+        <div class="q" data-answer="c">
+          <div class="qt">3. Sin STP, un enlace redundante entre switches causa…</div>
+          <label><input type="radio" name="q3b" value="a"> Mejor rendimiento garantizado</label>
+          <label><input type="radio" name="q3b" value="b"> Nada, es seguro</label>
+          <label><input type="radio" name="q3b" value="c"> Tormentas de broadcast y loops</label>
+          <div class="explain">Las tramas L2 no tienen TTL: un loop multiplica el tráfico hasta saturar la red.</div>
+        </div>
+        <div class="q" data-answer="b">
+          <div class="qt">4. ¿Qué estándar corresponde a RSTP?</div>
+          <label><input type="radio" name="q4b" value="a"> 802.1D</label>
+          <label><input type="radio" name="q4b" value="b"> 802.1w</label>
+          <label><input type="radio" name="q4b" value="c"> 802.1Q</label>
+          <div class="explain">802.1D es STP clásico, 802.1Q es etiquetado de VLANs, 802.1w es RSTP.</div>
+        </div>
+        <div class="q" data-answer="a">
+          <div class="qt">5. Dos PCs en VLANs distintas, sin router, ¿pueden comunicarse?</div>
+          <label><input type="radio" name="q5b" value="a"> No, necesitan enrutamiento inter-VLAN</label>
+          <label><input type="radio" name="q5b" value="b"> Sí, siempre que estén en el mismo switch</label>
+          <label><input type="radio" name="q5b" value="c"> Sí, si el trunk las permite</label>
+          <div class="explain">VLANs distintas son redes distintas; la comunicación exige un dispositivo de capa 3.</div>
+        </div>
+        <button class="btn" onclick="checkQuiz('quiz2')">Comprobar respuestas</button>
+        <button class="btn ghost" onclick="resetQuiz('quiz2')">Reiniciar</button>
+        <div class="quiz-result"></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="wrap block-body">
+      <h2 class="h"><span class="lead">Preguntas</span> de repaso</h2>
+      <ul class="review">
+        <li>¿Qué problema resuelve Spanning Tree Protocol?</li>
+        <li>¿Cómo se elige el Root Bridge en STP?</li>
+        <li>¿Cuál es la diferencia entre un puerto Access y un puerto Trunk?</li>
+        <li>¿Por qué MSTP es más eficiente que PVST+ en redes grandes?</li>
+        <li>¿Qué es una VLAN nativa en un trunk?</li>
+      </ul>
+    </div>
+  </section>
+
+  <nav class="block-nav wrap">
+    <a class="prev" href="bloque1.html"><div class="dir">← Anterior</div><div class="ttl">Switches Cisco</div></a>
+    <a class="next" href="bloque3.html"><div class="dir">Siguiente →</div><div class="ttl">Switches Ubiquiti</div></a>
+  </nav>
+</main>
+
+<footer><div class="wrap">Bloque 2 de 6 · Curso de Redes Avanzado</div></footer>
+<script src="script.js"></script>
+</body>
+</html>

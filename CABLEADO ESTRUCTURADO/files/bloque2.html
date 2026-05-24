@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Módulo 2 · Canalización — Cableado Estructurado</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<header class="topnav">
+  <div class="wrap">
+    <span class="brand">Cableado<span class="dot">.</span>Estructurado</span>
+    <nav>
+      <a href="index.html">Inicio</a>
+      <a href="bloque1.html">1 · Intro</a>
+      <a href="bloque2.html">2 · Canalización</a>
+      <a href="bloque3.html">3 · Data Center</a>
+      <a href="bloque4.html">4 · Campo</a>
+      <a href="bloque5.html">5 · Fibra</a>
+      <a href="bloque6.html">6 · Profesional</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <section class="block-head wrap">
+    <div class="num">MÓDULO 02</div>
+    <h1>Canalización para Cableado Estructurado</h1>
+    <p>Canaletas, conduits, bandejas y escalerillas organizan el recorrido del cable. El tendido correcto, la terminación precisa en patch panel y jacks, el etiquetado TIA-606 y la certificación con Fluke determinan la calidad de la instalación.</p>
+    <div class="progress-dots">
+      <span class="on"></span><span class="on"></span><span></span><span></span><span></span><span></span>
+    </div>
+    <div class="toc">
+      <a href="#teoria">Teoría</a>
+      <a href="#conceptos">Conceptos</a>
+      <a href="#diagrama">Diagrama</a>
+      <a href="#lab">Laboratorio</a>
+      <a href="#flash">Flashcards</a>
+      <a href="#quiz">Cuestionario</a>
+    </div>
+  </section>
+
+  <!-- ===== TEORÍA ===== -->
+  <section class="section" id="teoria">
+    <div class="wrap block-body">
+      <h2 class="h"><span class="lead">Teoría</span> ampliada</h2>
+
+      <h3>Tipos de Canalización</h3>
+      <table>
+        <tr><th>Tipo</th><th>Material</th><th>Uso típico</th></tr>
+        <tr><td>Canaleta PVC</td><td>Plástico rígido</td><td>Superficies de pared, oficinas, bordes de escritorio</td></tr>
+        <tr><td>Conduit EMT</td><td>Acero galvanizado delgado</td><td>Paredes, techos, zonas con riesgo mecánico</td></tr>
+        <tr><td>Conduit PVC rígido</td><td>Plástico rígido</td><td>Tuberías empotradas en pared o bajo suelo</td></tr>
+        <tr><td>Bandeja portacables</td><td>Acero perforado / sólido</td><td>Cielos rasos, salas técnicas con gran volumen de cable</td></tr>
+        <tr><td>Escalerilla (cable ladder)</td><td>Acero / aluminio</td><td>Data centers, backbone vertical con carreras pesadas</td></tr>
+        <tr><td>Piso técnico / falso</td><td>Paneles elevados</td><td>Data centers; acceso inferior a cables de poder y datos</td></tr>
+      </table>
+
+      <h3>Accesorios y Reglas del Tendido</h3>
+      <ul class="bullets">
+        <li><strong>Radio mínimo de curvatura:</strong> Cat6 = 4× diámetro del cable (~28 mm). No doblar a mano — usar curvas de canaleta.</li>
+        <li><strong>Fill ratio:</strong> máximo <strong>40%</strong> de la sección transversal de la canaleta para ventilación y mantenimiento.</li>
+        <li><strong>Separación datos/corriente:</strong> mínimo 150 mm (NEC) o usar canaleta con separador interno.</li>
+        <li><strong>Velcro en rack:</strong> peinar cables con correas de velcro, nunca bridas de plástico apretadas (comprimen los pares y degradan NEXT).</li>
+        <li><strong>Etiquetado antes de terminar:</strong> etiquetar ambos extremos de cada cable al tendido, no al final.</li>
+      </ul>
+
+      <div class="callout tip">
+        <span class="label">Regla de instalación</span>
+        Tender primero todos los cables, etiquetarlos, y luego terminar por lotes en el patch panel. Jamás terminar de a un cable a la vez — pierde el doble de tiempo.
+      </div>
+
+      <h3>Terminación en el Patch Panel</h3>
+      <ul class="bullets">
+        <li>Pelar ~3 cm de chaqueta del cable a la altura del borde del panel.</li>
+        <li>Mantener el trenzado lo más cerca posible del punto de terminación (máx. 13 mm de desenrollado).</li>
+        <li>Insertar hilos según T568B en los canales coloreados del panel trasero.</li>
+        <li>Punchdown con herramienta calibrada. El lado de corte va hacia afuera.</li>
+      </ul>
+
+      <h3>Etiquetado — Estándar TIA-606</h3>
+      <p>Cada outlet recibe un identificador único (ej. <code>A1-05</code>: piso A, sala 1, outlet 05). El patch panel refleja el mismo ID en el puerto correspondiente. Las etiquetas deben ser impresas (no manuscritas) y legibles. El cable se etiqueta en ambos extremos.</p>
+
+      <h3>Certificación de Puntos</h3>
+      <table>
+        <tr><th>Parámetro</th><th>Qué mide</th><th>Falla si…</th></tr>
+        <tr><td>Wiremap</td><td>Continuidad y orden de los 8 pines</td><td>Hay cruce, cortocircuito o pin abierto</td></tr>
+        <tr><td>Length</td><td>Longitud eléctrica del enlace</td><td>Supera 90 m (horizontal) o 100 m (canal)</td></tr>
+        <tr><td>Insertion Loss</td><td>Atenuación de la señal</td><td>Excede el límite de la categoría a la frecuencia más alta</td></tr>
+        <tr><td>NEXT</td><td>CrossTalk en el extremo de origen</td><td>Par adyacente induce ruido excesivo por mal punchdown</td></tr>
+        <tr><td>Return Loss</td><td>Reflexión por variación de impedancia</td><td>Terminación defectuosa o radio de curvatura violado</td></tr>
+      </table>
+    </div>
+  </section>
+
+  <!-- ===== CONCEPTOS ===== -->
+  <section class="section" id="conceptos">
+    <div class="wrap block-body">
+      <h2 class="h"><span class="lead">Conceptos</span> clave</h2>
+      <table>
+        <tr><th>Término</th><th>Definición</th></tr>
+        <tr><td>Fill ratio</td><td>Porcentaje de la sección transversal de una canaleta ocupado por cables; máximo 40%</td></tr>
+        <tr><td>Radio de curvatura</td><td>Curvatura mínima al doblar el cable; violarlo daña los pares y degrada NEXT</td></tr>
+        <tr><td>EMT</td><td>Electrical Metallic Tubing — conduit de acero delgado para zonas con riesgo mecánico</td></tr>
+        <tr><td>Escalerilla</td><td>Bandeja tipo escalera de acero para grandes carreras de cable en data centers</td></tr>
+        <tr><td>TIA-606</td><td>Estándar de administración e identificación del cableado estructurado</td></tr>
+        <tr><td>Canal (channel)</td><td>Enlace completo extremo a extremo: patch cord + cable horizontal + patch cord; máx. 100 m</td></tr>
+        <tr><td>Wiremap</td><td>Prueba de continuidad y orden correcto de los 8 pines en ambos extremos del enlace</td></tr>
+        <tr><td>Insertion Loss</td><td>Atenuación de la señal a lo largo del enlace; límite depende de categoría y frecuencia</td></tr>
+        <tr><td>Return Loss</td><td>Reflexión de señal por inconsistencias de impedancia; causada por mala terminación o radio violado</td></tr>
+        <tr><td>Outlet</td><td>Punto de conexión en el área de trabajo: faceplate + jack keystone</td></tr>
+      </table>
+    </div>
+  </section>
+
+  <!-- ===== DIAGRAMA ===== -->
+  <section class="section" id="diagrama">
+    <div class="wrap block-body">
+      <h2 class="h"><span class="lead">Diagrama</span> — Ruta de canalización típica</h2>
+      <div class="diagram">
+        <svg viewBox="0 0 760 260" xmlns="http://www.w3.org/2000/svg" font-family="Segoe UI, sans-serif" font-size="12">
+          <defs>
+            <marker id="a" markerWidth="8" markerHeight="8" refX="5" refY="3" orient="auto">
+              <path d="M0,0 L8,3 L0,6 Z" fill="#9aa7b8"/>
+            </marker>
+          </defs>
+
+          <!-- Rack MDF -->
+          <rect x="20" y="30" width="110" height="150" rx="8" fill="#1c2230" stroke="#4f9cf9" stroke-width="2"/>
+          <text x="75" y="52" fill="#4f9cf9" font-weight="bold" text-anchor="middle" font-size="11">RACK MDF</text>
+          <rect x="32" y="62" width="86" height="20" rx="3" fill="#1a2a40" stroke="#f59e0b" stroke-width="1.5"/>
+          <text x="75" y="76" fill="#f59e0b" text-anchor="middle" font-size="10">Patch Panel ①</text>
+          <rect x="32" y="88" width="86" height="20" rx="3" fill="#1a2a40" stroke="#34d399" stroke-width="1.5"/>
+          <text x="75" y="102" fill="#34d399" text-anchor="middle" font-size="10">Switch ②</text>
+          <line x1="75" y1="82" x2="75" y2="88" stroke="#f59e0b" stroke-width="1.5" stroke-dasharray="3,2"/>
+          <text x="75" y="165" fill="#9aa7b8" text-anchor="middle" font-size="9">patch cord</text>
+
+          <!-- Escalerilla vertical -->
+          <rect x="145" y="15" width="24" height="200" rx="3" fill="none" stroke="#f59e0b" stroke-width="2"/>
+          <line x1="145" y1="45" x2="169" y2="45" stroke="#f59e0b" stroke-width="1.5"/>
+          <line x1="145" y1="75" x2="169" y2="75" stroke="#f59e0b" stroke-width="1.5"/>
+          <line x1="145" y1="105" x2="169" y2="105" stroke="#f59e0b" stroke-width="1.5"/>
+          <line x1="145" y1="135" x2="169" y2="135" stroke="#f59e0b" stroke-width="1.5"/>
+          <line x1="145" y1="165" x2="169" y2="165" stroke="#f59e0b" stroke-width="1.5"/>
+          <line x1="145" y1="195" x2="169" y2="195" stroke="#f59e0b" stroke-width="1.5"/>
+          <text x="157" y="10" fill="#f59e0b" text-anchor="middle" font-size="9">Escalerilla ③</text>
+
+          <!-- Bandeja horizontal (techo) -->
+          <rect x="169" y="30" width="270" height="18" rx="3" fill="none" stroke="#a78bfa" stroke-width="2"/>
+          <text x="304" y="43" fill="#a78bfa" text-anchor="middle" font-size="10">Bandeja portacables ④ (techo)</text>
+
+          <!-- Conduit bajante -->
+          <rect x="424" y="48" width="18" height="120" rx="3" fill="none" stroke="#34d399" stroke-width="2"/>
+          <text x="433" y="44" fill="#34d399" text-anchor="middle" font-size="9">Conduit ⑤</text>
+
+          <!-- Outlet -->
+          <rect x="455" y="130" width="90" height="42" rx="6" fill="#1c2230" stroke="#22d3ee" stroke-width="2"/>
+          <text x="500" y="150" fill="#22d3ee" font-weight="bold" text-anchor="middle" font-size="11">Outlet ⑥</text>
+          <text x="500" y="164" fill="#9aa7b8" text-anchor="middle" font-size="10">Jack Cat6 · A1-05</text>
+
+          <!-- Patch cord final -->
+          <line x1="545" y1="151" x2="620" y2="151" stroke="#f59e0b" stroke-width="2" stroke-dasharray="5,3" marker-end="url(#a)"/>
+          <text x="583" y="144" fill="#f59e0b" text-anchor="middle" font-size="9">patch cord ⑦</text>
+
+          <!-- PC -->
+          <rect x="620" y="124" width="110" height="54" rx="8" fill="#1c2230" stroke="#f472b6" stroke-width="2"/>
+          <text x="675" y="150" fill="#f472b6" font-weight="bold" text-anchor="middle" font-size="12">PC</text>
+          <text x="675" y="167" fill="#9aa7b8" text-anchor="middle" font-size="10">Área de trabajo</text>
+
+          <!-- Fill ratio bar -->
+          <rect x="20" y="220" width="200" height="14" rx="3" fill="#1c2230" stroke="#2b3242"/>
+          <rect x="20" y="220" width="80" height="14" rx="3" fill="#f59e0b" opacity="0.7"/>
+          <text x="230" y="231" fill="#9aa7b8" font-size="10">Fill ratio: 40% máximo en la canaleta</text>
+        </svg>
+        <div class="cap">Ruta completa: Rack MDF → escalerilla vertical → bandeja en techo → conduit bajante en pared → outlet → patch cord → PC.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== LABORATORIO ===== -->
+  <section class="section" id="lab">
+    <div class="wrap block-body">
+      <h2 class="h"><span class="lead">Laboratorio 2</span> — Tendido y certificación de un punto</h2>
+      <p class="subtitle">Ejercicio completo: desde planificación de ruta hasta certificación con Fluke.</p>
+      <ol class="steps">
+        <li>Planificar la ruta: medir distancia desde el rack al outlet destino. Verificar que no supera 90 m. Trazar por canaleta sin cruzar cables de corriente alterna.</li>
+        <li>Instalar canalización: fijar la canaleta o conduit con soportes cada 1 m. Usar curvas de 90° en los cambios de dirección.</li>
+        <li>Tender el cable: pasar el UTP por la canaleta. <strong>Etiquetar ambos extremos</strong> con el mismo ID (ej. <code>A1-05</code>) antes de terminar.</li>
+        <li>Terminar en el patch panel: pelar 3 cm de chaqueta, ordenar pares T568B, punchdown, colocar tapa. Puerto del panel marcado A1-05.</li>
+        <li>Terminar en el jack: pelar en la caja de pared, punchdown T568B, instalar jack en faceplate. Etiquetar.</li>
+        <li>Certificar con Fluke DSX: seleccionar Cat6 channel. Verificar Wiremap ✓, Length &lt;90 m ✓, Insertion Loss PASS, NEXT PASS, Return Loss PASS.</li>
+        <li>Registrar resultado con el ID del punto y archivar en el sistema de gestión del proyecto.</li>
+      </ol>
+      <div class="callout fix">
+        <span class="label">Si NEXT falla</span>
+        Primer paso: re-punchear el jack reduciendo el desenrollado al mínimo posible. Si persiste, revisar si el cable fue doblado por debajo del radio mínimo durante el tendido — eso daña los pares y no tiene solución sin reemplazar el tramo.
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== RESUMEN ===== -->
+  <section class="section">
+    <div class="wrap block-body">
+      <h2 class="h"><span class="lead">Resumen</span> del módulo</h2>
+      <ul class="bullets">
+        <li>Fill ratio máximo 40% en canaleta para mantener ventilación y facilitar el mantenimiento.</li>
+        <li>Datos y corriente eléctrica deben separarse al menos 150 mm o usar canaleta con separador.</li>
+        <li>La terminación mantiene el trenzado lo más cerca posible del punto de conexión (máx. 13 mm).</li>
+        <li>TIA-606 define identificadores únicos para cada outlet, repetidos en el patch panel y el cable.</li>
+        <li>La certificación con Fluke valida Wiremap, Length, Insertion Loss, NEXT y Return Loss según categoría.</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- ===== FLASHCARDS ===== -->
+  <section class="section" id="flash">
+    <div class="wrap block-body">
+      <h2 class="h"><span class="lead">Flashcards</span></h2>
+      <p class="subtitle">Haz clic en cada tarjeta para ver la respuesta.</p>
+      <div class="fc-grid">
+        <div class="flashcard"><div class="inner">
+          <div class="face front">Fill ratio máximo en una canaleta</div>
+          <div class="face back"><strong>40%</strong> de la sección transversal. El 60% libre permite ventilación, facilita agregar cables en el futuro y evita presión excesiva.</div>
+        </div></div>
+        <div class="flashcard"><div class="inner">
+          <div class="face front">¿Por qué no se usan bridas de plástico apretadas en el rack?</div>
+          <div class="face back">Comprimen los pares y aumentan el <strong>NEXT</strong>, degradando el rendimiento. Se usa velcro para peinar sin presionar.</div>
+        </div></div>
+        <div class="flashcard"><div class="inner">
+          <div class="face front">¿Qué norma regula el etiquetado del cableado?</div>
+          <div class="face back"><strong>TIA-606</strong>: define identificadores únicos para outlets, patch panels, cables y espacios. Las etiquetas deben ser impresas y legibles.</div>
+        </div></div>
+        <div class="flashcard"><div class="inner">
+          <div class="face front">Diferencia entre testear y certificar un cable</div>
+          <div class="face back"><strong>Testear</strong> (tester básico): solo wiremap y continuidad. <strong>Certificar</strong>: mide NEXT, Insertion Loss, Return Loss con Fluke calibrado y garantiza el rendimiento de la categoría.</div>
+        </div></div>
+        <div class="flashcard"><div class="inner">
+          <div class="face front">¿Qué es el canal (channel)?</div>
+          <div class="face back">El enlace completo: <strong>patch cord + cable horizontal + patch cord</strong>. Longitud máxima total: <strong>100 m</strong>. El cable horizontal solo: 90 m.</div>
+        </div></div>
+        <div class="flashcard"><div class="inner">
+          <div class="face front">Radio mínimo de curvatura del cable Cat6</div>
+          <div class="face back"><strong>4× el diámetro externo</strong> del cable (~28 mm para Cat6). Curvar menos produce reflexiones de impedancia que degradan Return Loss y NEXT.</div>
+        </div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== QUIZ ===== -->
+  <section class="section" id="quiz">
+    <div class="wrap block-body">
+      <h2 class="h"><span class="lead">Cuestionario</span></h2>
+      <div class="quiz" id="quiz2">
+
+        <div class="q" data-answer="b">
+          <div class="qt">1. ¿Cuál es el fill ratio máximo permitido en una canaleta?</div>
+          <label><input type="radio" name="q1b" value="a"> 25%</label>
+          <label><input type="radio" name="q1b" value="b"> 40%</label>
+          <label><input type="radio" name="q1b" value="c"> 60%</label>
+          <div class="explain">40% máximo. Dejar el 60% libre garantiza ventilación y permite agregar cables sin reemplazar la canaleta.</div>
+        </div>
+
+        <div class="q" data-answer="b">
+          <div class="qt">2. ¿Cuál es la longitud máxima del canal completo (channel)?</div>
+          <label><input type="radio" name="q2b" value="a"> 90 m</label>
+          <label><input type="radio" name="q2b" value="b"> 100 m</label>
+          <label><input type="radio" name="q2b" value="c"> 120 m</label>
+          <div class="explain">El canal (patch cord + cable horizontal + patch cord) puede llegar a 100 m. El cable horizontal solo no debe superar 90 m.</div>
+        </div>
+
+        <div class="q" data-answer="c">
+          <div class="qt">3. ¿Qué norma regula el etiquetado del cableado estructurado?</div>
+          <label><input type="radio" name="q3b" value="a"> TIA-568</label>
+          <label><input type="radio" name="q3b" value="b"> ISO 11801</label>
+          <label><input type="radio" name="q3b" value="c"> TIA-606</label>
+          <div class="explain">TIA-606 es el estándar de administración e identificación. TIA-568 define las categorías y terminaciones de cable.</div>
+        </div>
+
+        <div class="q" data-answer="c">
+          <div class="qt">4. Un NEXT FAIL persiste tras re-punchear el jack. ¿Causa más probable?</div>
+          <label><input type="radio" name="q4b" value="a"> Patch cord defectuoso</label>
+          <label><input type="radio" name="q4b" value="b"> Certificador no calibrado</label>
+          <label><input type="radio" name="q4b" value="c"> Cable dañado durante el tendido</label>
+          <div class="explain">Si el NEXT falla después de re-punchear, el problema está en el cable: fue doblado por debajo del radio mínimo. Se debe reemplazar el tramo.</div>
+        </div>
+
+        <div class="q" data-answer="a">
+          <div class="qt">5. Un wiremap fallido indica:</div>
+          <label><input type="radio" name="q5b" value="a"> Cruce, cortocircuito o pin abierto en la terminación</label>
+          <label><input type="radio" name="q5b" value="b"> Longitud excedida</label>
+          <label><input type="radio" name="q5b" value="c"> NEXT elevado</label>
+          <div class="explain">El wiremap verifica continuidad y orden de los 8 pines. Un fallo siempre indica un problema de terminación.</div>
+        </div>
+
+        <button class="btn" onclick="checkQuiz('quiz2')">Comprobar respuestas</button>
+        <button class="btn ghost" onclick="resetQuiz('quiz2')">Reiniciar</button>
+        <div class="quiz-result"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== REPASO ===== -->
+  <section class="section">
+    <div class="wrap block-body">
+      <h2 class="h"><span class="lead">Preguntas</span> de repaso</h2>
+      <ul class="review">
+        <li>¿Por qué es importante respetar el radio mínimo de curvatura al tender cable UTP?</li>
+        <li>Describe el proceso completo de terminación de un jack keystone desde que llega el cable a la caja de pared.</li>
+        <li>¿En qué situaciones usarías escalerilla en lugar de canaleta PVC?</li>
+        <li>¿Qué información mínima debe tener la etiqueta de un outlet según TIA-606?</li>
+        <li>Un técnico obtiene NEXT FAIL. ¿Cuáles son las causas probables y cómo las corregiría?</li>
+      </ul>
+    </div>
+  </section>
+
+  <nav class="block-nav wrap">
+    <a class="prev" href="bloque1.html"><div class="dir">← Anterior</div><div class="ttl">Introducción al Cableado</div></a>
+    <a class="next" href="bloque3.html"><div class="dir">Siguiente →</div><div class="ttl">Elementos del Data Center</div></a>
+  </nav>
+</main>
+
+<footer><div class="wrap">Módulo 2 de 6 · Curso de Cableado Estructurado</div></footer>
+<script src="script.js"></script>
+</body>
+</html>

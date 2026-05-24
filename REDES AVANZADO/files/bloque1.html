@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Bloque 1 · Switches Cisco — Curso de Redes Avanzado</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<header class="topnav">
+  <div class="wrap">
+    <span class="brand">Redes<span class="dot">.</span>Avanzado</span>
+    <nav>
+      <a href="index.html">Inicio</a>
+      <a href="bloque1.html">1 · Cisco</a>
+      <a href="bloque2.html">2 · VLANs/STP</a>
+      <a href="bloque3.html">3 · Ubiquiti</a>
+      <a href="bloque4.html">4 · RADIUS</a>
+      <a href="bloque5.html">5 · WiFi</a>
+      <a href="bloque6.html">6 · Multicast</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <section class="block-head wrap">
+    <div class="num">BLOQUE 01</div>
+    <h1>Switches Cisco — Fundamentos</h1>
+    <p>El switch es el corazón de la red de capa 2. Antes de segmentar, enrutar o asegurar, hay que dominar cómo se accede a un switch Cisco, cómo se le da una identidad en la red y cómo se administra de forma remota y segura.</p>
+    <div class="progress-dots"><span class="on"></span><span></span><span></span><span></span><span></span><span></span></div>
+    <div class="toc">
+      <a href="#teoria">Teoría ampliada</a>
+      <a href="#conceptos">Conceptos clave</a>
+      <a href="#comandos">Comandos</a>
+      <a href="#diagrama">Diagrama</a>
+      <a href="#lab">Laboratorio</a>
+      <a href="#flash">Flashcards</a>
+      <a href="#quiz">Cuestionario</a>
+    </div>
+  </section>
+
+  <!-- ===== Teoría ===== -->
+  <section class="section" id="teoria">
+    <div class="wrap block-body">
+      <h2 class="h"><span class="lead">Teoría</span> ampliada</h2>
+
+      <h3>¿Qué hace realmente un switch?</h3>
+      <p>Un switch opera en la <strong>capa 2 (enlace de datos)</strong> del modelo OSI. Su trabajo es reenviar tramas Ethernet basándose en direcciones MAC. Aprende dónde está cada dispositivo construyendo una <strong>tabla CAM</strong> (Content Addressable Memory): cuando recibe una trama, asocia la MAC de origen al puerto por el que entró. Cuando debe reenviar hacia una MAC de destino conocida, envía la trama solo por ese puerto; si la desconoce, hace <em>flooding</em> (la envía por todos los puertos del mismo dominio de broadcast).</p>
+      <p>A diferencia de un hub (capa 1, que repite todo a todos), el switch crea un <strong>dominio de colisión por puerto</strong>, lo que permite comunicación full-duplex sin colisiones.</p>
+
+      <h3>Los modos de la CLI de IOS</h3>
+      <p>El sistema operativo de los switches Cisco se llama <strong>IOS</strong> y se administra por línea de comandos jerárquica. Entender los modos evita el 90% de los errores de un principiante:</p>
+      <ul class="bullets">
+        <li><strong>User EXEC</strong> (<code>Switch&gt;</code>): solo comandos de diagnóstico básico. No permite cambiar nada.</li>
+        <li><strong>Privileged EXEC</strong> (<code>Switch#</code>): acceso completo de lectura, reinicio, guardado y depuración. Se entra con <code>enable</code>.</li>
+        <li><strong>Configuración global</strong> (<code>Switch(config)#</code>): se modifican parámetros del dispositivo. Se entra con <code>configure terminal</code>.</li>
+        <li><strong>Sub-modos de configuración</strong>: interfaz (<code>config-if</code>), línea (<code>config-line</code>), VLAN (<code>config-vlan</code>), etc.</li>
+      </ul>
+      <div class="callout tip">
+        <span class="label">Tip</span>
+        <strong>Salir de un modo:</strong> <code>exit</code> retrocede un nivel; <code>end</code> (o Ctrl+Z) vuelve directo a Privileged EXEC desde cualquier punto.
+      </div>
+
+      <h3>¿Por qué la IP va en una interfaz VLAN?</h3>
+      <p>Un switch puro de capa 2 <strong>no enruta</strong>; sus puertos físicos solo conmutan tramas, no tienen IP. Para administrarlo (SSH, ping, SNMP) se le asigna una IP a una <strong>SVI</strong> — <em>Switch Virtual Interface</em> — que es una interfaz lógica asociada a una VLAN. Esa IP es solo de <strong>gestión</strong>: identifica al switch como un host más dentro de esa VLAN. Por defecto se usa <code>interface vlan 1</code>, aunque por seguridad conviene mover la gestión a una VLAN dedicada.</p>
+
+      <h3>Acceso remoto: Telnet vs SSH</h3>
+      <p>El acceso por <strong>consola</strong> (cable rollover) es local y siempre disponible, pero poco práctico para el día a día. El acceso remoto se hace por las líneas <strong>VTY</strong> (Virtual TeleType):</p>
+      <ul class="bullets">
+        <li><strong>Telnet</strong> (puerto 23): transmite todo — incluida la contraseña — en <em>texto plano</em>. Inseguro.</li>
+        <li><strong>SSH</strong> (puerto 22): cifra toda la sesión. Requiere un par de claves RSA, por eso necesita un <em>hostname</em> y un <em>domain-name</em> definidos antes de generar la clave.</li>
+      </ul>
+
+      <h3>La primera VLAN</h3>
+      <p>Una <strong>VLAN</strong> (Virtual LAN) es un dominio de broadcast lógico. Crear la VLAN 10 con nombre <code>USUARIOS</code> no conecta a nadie todavía: solo la declara en la base de datos del switch. El tráfico empieza a separarse cuando se asignan puertos a esa VLAN (Bloque 2).</p>
+
+      <div class="callout fix">
+        <span class="label">Corrección al material original</span>
+        El material original genera la clave RSA antes de definir <code>username</code>. El orden correcto y robusto es: <strong>hostname → ip domain-name → crypto key generate rsa → username → line vty</strong>. Además, conviene fijar <code>ip ssh version 2</code>, ya que SSHv1 es vulnerable.
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== Conceptos ===== -->
+  <section class="section" id="conceptos">
+    <div class="wrap block-body">
+      <h2 class="h"><span class="lead">Conceptos</span> clave</h2>
+      <table>
+        <tr><th>Concepto</th><th>Descripción</th></tr>
+        <tr><td>Modo User EXEC</td><td>Acceso básico de solo diagnóstico — prompt <code>&gt;</code></td></tr>
+        <tr><td>Modo Privilegiado</td><td>Acceso completo: configurar, guardar, reiniciar — prompt <code>#</code></td></tr>
+        <tr><td>Config Global</td><td>Modificación de parámetros del dispositivo — prompt <code>(config)#</code></td></tr>
+        <tr><td>SVI</td><td>Switch Virtual Interface: interfaz lógica con la IP de gestión del switch</td></tr>
+        <tr><td>Tabla CAM / MAC</td><td>Asociación MAC ↔ puerto que el switch aprende dinámicamente</td></tr>
+        <tr><td>Línea de consola</td><td>Acceso físico local mediante cable rollover (9600 baud)</td></tr>
+        <tr><td>Líneas VTY</td><td>Sesiones virtuales para acceso remoto (Telnet/SSH), normalmente 0–15</td></tr>
+        <tr><td>Telnet / SSH</td><td>Protocolos de acceso remoto; SSH cifra, Telnet no</td></tr>
+        <tr><td>VLAN</td><td>Red LAN virtual: dominio de broadcast lógico independiente</td></tr>
+        <tr><td>running-config / startup-config</td><td>Configuración activa en RAM vs. configuración guardada en NVRAM</td></tr>
+      </table>
+    </div>
+  </section>
+
+  <!-- ===== Comandos ===== -->
+  <section class="section" id="comandos">
+    <div class="wrap block-body">
+      <h2 class="h"><span class="lead">Comandos</span> esenciales</h2>
+      <pre><code><span class="cmt"># Entrar a modo privilegiado y configuración global</span>
+<span class="kw">enable</span>
+<span class="kw">configure terminal</span>
+
+<span class="cmt"># Identidad del switch</span>
+<span class="kw">hostname</span> SW-CORE
+
+<span class="cmt"># IP de gestión sobre la SVI (VLAN 1 por defecto)</span>
+<span class="kw">interface vlan</span> 1
+ <span class="kw">ip address</span> <span class="val">192.168.1.10 255.255.255.0</span>
+ <span class="kw">no shutdown</span>
+<span class="kw">exit</span>
+
+<span class="cmt"># Gateway por defecto (necesario para gestión fuera de la subred)</span>
+<span class="kw">ip default-gateway</span> <span class="val">192.168.1.1</span>
+
+<span class="cmt"># Habilitar SSH (orden correcto)</span>
+<span class="kw">ip domain-name</span> empresa.local
+<span class="kw">crypto key generate rsa modulus</span> <span class="val">2048</span>
+<span class="kw">ip ssh version</span> <span class="val">2</span>
+<span class="kw">username</span> admin <span class="kw">privilege</span> 15 <span class="kw">secret</span> Admin123
+<span class="kw">enable secret</span> ClaveEnable123
+<span class="kw">line vty</span> 0 15
+ <span class="kw">transport input ssh</span>
+ <span class="kw">login local</span>
+<span class="kw">exit</span>
+
+<span class="cmt"># Crear la primera VLAN</span>
+<span class="kw">vlan</span> 10
+ <span class="kw">name</span> USUARIOS
+<span class="kw">exit</span>
+
+<span class="cmt"># Verificación</span>
+<span class="kw">show ip interface brief</span>
+<span class="kw">show running-config</span>
+<span class="kw">show vlan brief</span>
+<span class="kw">show mac address-table</span>
+
+<span class="cmt"># Guardar en NVRAM (cualquiera de las dos)</span>
+<span class="kw">write memory</span>
+<span class="kw">copy running-config startup-config</span></code></pre>
+      <div class="callout note">
+        <span class="label">Nota</span>
+        <code>enable secret</code> guarda la contraseña cifrada; <code>enable password</code> la guarda en texto plano — usa siempre <code>secret</code>.
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== Diagrama ===== -->
+  <section class="section" id="diagrama">
+    <div class="wrap block-body">
+      <h2 class="h"><span class="lead">Diagrama</span> de la topología</h2>
+      <div class="diagram">
+        <svg viewBox="0 0 760 240" xmlns="http://www.w3.org/2000/svg" font-family="Segoe UI, sans-serif">
+          <defs><marker id="a1" markerWidth="9" markerHeight="9" refX="7" refY="3" orient="auto"><path d="M0,0 L7,3 L0,6 Z" fill="#9aa7b8"/></marker></defs>
+          <g stroke="#9aa7b8" stroke-width="2" fill="none">
+            <line x1="170" y1="120" x2="290" y2="120" marker-end="url(#a1)"/>
+            <line x1="470" y1="120" x2="590" y2="120" marker-end="url(#a1)"/>
+            <line x1="380" y1="160" x2="380" y2="205" stroke-dasharray="5 4"/>
+          </g>
+          <g font-size="13" fill="#e6edf3" text-anchor="middle">
+            <rect x="40" y="92" width="130" height="56" rx="9" fill="#1c2230" stroke="#2b3242"/>
+            <text x="105" y="116" font-weight="700">PC admin</text>
+            <text x="105" y="134" font-size="11" fill="#9aa7b8">.20</text>
+
+            <rect x="290" y="84" width="180" height="72" rx="9" fill="#1c2230" stroke="#4f9cf9"/>
+            <text x="380" y="112" font-weight="700">Switch SW-CORE</text>
+            <text x="380" y="130" font-size="11" fill="#9aa7b8">SVI VLAN1 · 192.168.1.10</text>
+            <text x="380" y="146" font-size="11" fill="#9aa7b8">SSH v2 habilitado</text>
+
+            <rect x="590" y="92" width="130" height="56" rx="9" fill="#1c2230" stroke="#f59e0b"/>
+            <text x="655" y="116" font-weight="700">Router</text>
+            <text x="655" y="134" font-size="11" fill="#9aa7b8">GW .1</text>
+
+            <rect x="300" y="206" width="160" height="30" rx="7" fill="#11161f" stroke="#2b3242"/>
+            <text x="380" y="225" font-size="11" fill="#9aa7b8">Cable consola (rollover)</text>
+          </g>
+        </svg>
+        <div class="cap">Laboratorio 1: PC de administración y router conectados al switch; acceso inicial por consola, gestión posterior por SSH.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== Laboratorio ===== -->
+  <section class="section" id="lab">
+    <div class="wrap block-body">
+      <h2 class="h"><span class="lead">Laboratorio 1</span> — Configuración inicial</h2>
+      <p class="subtitle">Topología: PC → Switch Cisco → Router.</p>
+      <ol class="steps">
+        <li>Conectar al switch por consola con cable rollover y PuTTY (9600 baud, 8-N-1).</li>
+        <li>Entrar a modo privilegiado: <code>enable</code>.</li>
+        <li>Entrar a configuración global: <code>configure terminal</code>.</li>
+        <li>Asignar el hostname: <code>hostname SW-CORE</code>.</li>
+        <li>Asignar IP a la SVI VLAN 1 y activarla con <code>no shutdown</code>.</li>
+        <li>Definir <code>ip default-gateway</code> apuntando al router.</li>
+        <li>Configurar <code>ip domain-name</code>, generar la clave RSA y habilitar SSH v2.</li>
+        <li>Crear el usuario <code>admin</code> con privilegio 15 y <code>enable secret</code>.</li>
+        <li>Verificar con <code>show ip interface brief</code> y probar SSH desde la PC.</li>
+        <li>Guardar la configuración con <code>write memory</code>.</li>
+      </ol>
+      <div class="callout tip">
+        <span class="label">Verificación</span>
+        El laboratorio está bien si: (1) <code>ping</code> al switch responde, (2) la sesión SSH desde la PC pide usuario/clave y entra, y (3) tras reiniciar el switch la configuración persiste.
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== Resumen ===== -->
+  <section class="section">
+    <div class="wrap block-body">
+      <h2 class="h"><span class="lead">Resumen</span> del bloque</h2>
+      <ul class="bullets">
+        <li>El switch reenvía tramas por MAC usando la tabla CAM; crea un dominio de colisión por puerto.</li>
+        <li>IOS tiene modos jerárquicos: User EXEC → Privileged EXEC → Config Global → sub-modos.</li>
+        <li>La IP de gestión se asigna a una <strong>SVI</strong> (interfaz VLAN), no a un puerto físico.</li>
+        <li>SSH cifra la sesión y requiere hostname + domain-name + clave RSA; Telnet va en texto plano.</li>
+        <li>Crear una VLAN solo la declara; segmentar tráfico exige asignar puertos (Bloque 2).</li>
+        <li><code>running-config</code> (RAM, volátil) debe copiarse a <code>startup-config</code> (NVRAM) para persistir.</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- ===== Flashcards ===== -->
+  <section class="section" id="flash">
+    <div class="wrap block-body">
+      <h2 class="h"><span class="lead">Flashcards</span></h2>
+      <p class="subtitle">Haz clic en cada tarjeta para ver la respuesta.</p>
+      <div class="fc-grid">
+        <div class="flashcard"><div class="inner">
+          <div class="face front">¿Qué comando pasa de User EXEC a Privileged EXEC?</div>
+          <div class="face back"><code>enable</code> — el prompt cambia de <code>&gt;</code> a <code>#</code>.</div>
+        </div></div>
+        <div class="flashcard"><div class="inner">
+          <div class="face front">¿Qué es una SVI?</div>
+          <div class="face back">Switch Virtual Interface: interfaz lógica ligada a una VLAN que lleva la IP de gestión del switch.</div>
+        </div></div>
+        <div class="flashcard"><div class="inner">
+          <div class="face front">¿Por qué SSH necesita hostname y domain-name?</div>
+          <div class="face back">Porque ambos forman el nombre con el que se generan las claves RSA que cifran la sesión.</div>
+        </div></div>
+        <div class="flashcard"><div class="inner">
+          <div class="face front">Diferencia entre running-config y startup-config</div>
+          <div class="face back">running-config está en RAM (se pierde al apagar); startup-config está en NVRAM (persiste).</div>
+        </div></div>
+        <div class="flashcard"><div class="inner">
+          <div class="face front">¿Qué muestra <code>show ip interface brief</code>?</div>
+          <div class="face back">El estado (up/down) y la IP de todas las interfaces del switch.</div>
+        </div></div>
+        <div class="flashcard"><div class="inner">
+          <div class="face front">¿Para qué sirven las líneas VTY?</div>
+          <div class="face back">Son las sesiones virtuales que permiten el acceso remoto por Telnet o SSH (normalmente 0–15).</div>
+        </div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== Quiz ===== -->
+  <section class="section" id="quiz">
+    <div class="wrap block-body">
+      <h2 class="h"><span class="lead">Cuestionario</span></h2>
+      <div class="quiz" id="quiz1">
+        <div class="q" data-answer="b">
+          <div class="qt">1. ¿En qué modo se puede modificar la configuración del switch?</div>
+          <label><input type="radio" name="q1a" value="a"> User EXEC</label>
+          <label><input type="radio" name="q1a" value="b"> Configuración Global</label>
+          <label><input type="radio" name="q1a" value="c"> Solo desde la consola física</label>
+          <div class="explain">User EXEC solo diagnostica; los cambios se hacen en config global (<code>configure terminal</code>).</div>
+        </div>
+        <div class="q" data-answer="c">
+          <div class="qt">2. La IP de gestión de un switch L2 se configura en…</div>
+          <label><input type="radio" name="q2a" value="a"> El puerto físico fa0/1</label>
+          <label><input type="radio" name="q2a" value="b"> El router conectado</label>
+          <label><input type="radio" name="q2a" value="c"> Una interfaz VLAN (SVI)</label>
+          <div class="explain">Un switch L2 no enruta; la IP va en una SVI asociada a una VLAN.</div>
+        </div>
+        <div class="q" data-answer="a">
+          <div class="qt">3. ¿Qué ventaja principal aporta SSH frente a Telnet?</div>
+          <label><input type="radio" name="q3a" value="a"> Cifra toda la sesión, incluida la contraseña</label>
+          <label><input type="radio" name="q3a" value="b"> Es más rápido</label>
+          <label><input type="radio" name="q3a" value="c"> No necesita contraseña</label>
+          <div class="explain">Telnet envía todo en texto plano; SSH cifra la sesión completa.</div>
+        </div>
+        <div class="q" data-answer="b">
+          <div class="qt">4. ¿Qué comando guarda la configuración para que sobreviva a un reinicio?</div>
+          <label><input type="radio" name="q4a" value="a"> show running-config</label>
+          <label><input type="radio" name="q4a" value="b"> copy running-config startup-config</label>
+          <label><input type="radio" name="q4a" value="c"> reload</label>
+          <div class="explain">Copia la config de RAM a NVRAM; equivale a <code>write memory</code>.</div>
+        </div>
+        <div class="q" data-answer="c">
+          <div class="qt">5. Crear <code>vlan 10</code> con <code>name USUARIOS</code>…</div>
+          <label><input type="radio" name="q5a" value="a"> Conecta automáticamente a los usuarios</label>
+          <label><input type="radio" name="q5a" value="b"> Asigna todos los puertos a la VLAN 10</label>
+          <label><input type="radio" name="q5a" value="c"> Solo la declara; falta asignar puertos</label>
+          <div class="explain">Declarar la VLAN no mueve tráfico; hay que asignar puertos access o trunk.</div>
+        </div>
+        <button class="btn" onclick="checkQuiz('quiz1')">Comprobar respuestas</button>
+        <button class="btn ghost" onclick="resetQuiz('quiz1')">Reiniciar</button>
+        <div class="quiz-result"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== Preguntas de repaso ===== -->
+  <section class="section">
+    <div class="wrap block-body">
+      <h2 class="h"><span class="lead">Preguntas</span> de repaso</h2>
+      <ul class="review">
+        <li>¿Cuál es la diferencia entre modo privilegiado y modo configuración global?</li>
+        <li>¿Por qué se configura la IP en una interfaz VLAN y no en un puerto físico?</li>
+        <li>¿Qué ventaja tiene SSH sobre Telnet?</li>
+        <li>¿Qué comando muestra el estado de todas las interfaces?</li>
+        <li>¿Qué diferencia hay entre <code>enable password</code> y <code>enable secret</code>?</li>
+      </ul>
+    </div>
+  </section>
+
+  <nav class="block-nav wrap">
+    <a class="prev disabled" href="index.html"><div class="dir">← Anterior</div><div class="ttl">Inicio</div></a>
+    <a class="next" href="bloque2.html"><div class="dir">Siguiente →</div><div class="ttl">VLANs y Spanning Tree</div></a>
+  </nav>
+</main>
+
+<footer><div class="wrap">Bloque 1 de 6 · Curso de Redes Avanzado</div></footer>
+<script src="script.js"></script>
+</body>
+</html>

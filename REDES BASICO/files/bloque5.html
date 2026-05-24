@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Módulo 5 · Virtualización — Redes Básicas</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<header class="topnav">
+  <div class="wrap">
+    <span class="brand">Redes<span class="dot">.</span>Básicas</span>
+    <nav>
+      <a href="index.html">Inicio</a>
+      <a href="bloque1.html">1 · Intro</a>
+      <a href="bloque2.html">2 · Protocolos</a>
+      <a href="bloque3.html">3 · Servicios IP</a>
+      <a href="bloque4.html">4 · Wireless</a>
+      <a href="bloque5.html">5 · Virtualización</a>
+    </nav>
+  </div>
+</header>
+<main>
+  <section class="block-head wrap">
+    <div class="num">MÓDULO 05</div>
+    <h1>Virtualización</h1>
+    <p>La virtualización permite ejecutar múltiples sistemas operativos sobre un mismo servidor físico. Proxmox, KVM y LXC son las herramientas del técnico moderno para construir infraestructura eficiente, ágil y con alta disponibilidad.</p>
+    <div class="progress-dots">
+      <span class="on"></span><span class="on"></span><span class="on"></span><span class="on"></span><span class="on"></span>
+    </div>
+    <div class="toc">
+      <a href="#teoria">Teoría</a><a href="#conceptos">Conceptos</a>
+      <a href="#diagrama">Diagrama</a><a href="#lab">Laboratorio</a>
+      <a href="#flash">Flashcards</a><a href="#quiz">Cuestionario</a>
+    </div>
+  </section>
+
+  <section class="section" id="teoria">
+    <div class="wrap block-body">
+      <h2 class="h"><span class="lead">Teoría</span> ampliada</h2>
+
+      <h3>¿Por qué virtualizar?</h3>
+      <p>La virtualización permite que un servidor físico ejecute múltiples sistemas operativos simultáneamente. Antes de la virtualización, cada servicio requería su propio servidor físico, lo que significaba hardware subutilizado, alto consumo eléctrico y muchos puntos de falla. Con virtualización, un servidor con 32 cores y 128 GB de RAM puede alojar docenas de máquinas virtuales independientes.</p>
+      <p>Los cuatro pilares del beneficio: <strong>Eficiencia</strong> (maximizar recursos), <strong>Agilidad</strong> (nuevas VMs en segundos), <strong>Disponibilidad</strong> (HA, backups de VM como archivos) y <strong>Ahorro</strong> (menos hardware, menos energía, menos espacio).</p>
+
+      <h3>Hypervisores: Tipo 1 vs Tipo 2</h3>
+      <p>El <strong>hypervisor</strong> es la capa de software que abstrae el hardware y permite correr múltiples sistemas operativos sobre él:</p>
+      <ul class="bullets">
+        <li><strong>Tipo 1 (Bare-Metal):</strong> Se instala directamente sobre el hardware, sin sistema operativo host. Es el más eficiente y usado en producción. Ejemplos: <strong>Proxmox, VMware ESXi, Microsoft Hyper-V, KVM</strong>.</li>
+        <li><strong>Tipo 2 (Hosted):</strong> Se instala como una aplicación sobre un sistema operativo convencional. Menor rendimiento, ideal para pruebas y desarrollo. Ejemplos: <strong>VMware Workstation, VirtualBox, Parallels Desktop</strong>.</li>
+      </ul>
+
+      <h3>KVM — Kernel-Based Virtual Machine</h3>
+      <p>KVM convierte el kernel de Linux en un hypervisor de Tipo 1. Fue creado por Qumranet y adquirido por Red Hat en 2008. Es el motor de virtualización sobre el que se basa Proxmox para crear y gestionar máquinas virtuales completas. Cada VM tiene acceso a CPU, RAM, almacenamiento y red virtualizados completamente aislados del host.</p>
+
+      <h3>LXC — Linux Containers</h3>
+      <p>LXC (Linux Containers) virtualiza a nivel de sistema operativo, no de hardware. Los containers comparten el kernel del host pero tienen su propio sistema de archivos, red, usuarios y procesos. Son más ligeros y rápidos que las VMs completas (arrancan en menos de 5 segundos) pero su sistema operativo invitado debe ser Linux.</p>
+
+      <h3>Proxmox VE</h3>
+      <p>Proxmox Virtual Environment es una distribución bare-metal basada en Debian que integra KVM (para VMs completas) y LXC (para containers). Ofrece una interfaz web completa, clustering de servidores, migración en vivo, backups automáticos y conexión a almacenamiento compartido (NFS, iSCSI, Ceph). Es la plataforma de virtualización más usada en empresas medianas que no pueden pagar licencias de VMware.</p>
+      <div class="callout note">
+        <span class="label">VM vs Container</span>
+        Usa una <strong>VM</strong> cuando necesitas un OS diferente al host o aislamiento total. Usa un <strong>container LXC</strong> cuando quieres ligereza y velocidad en un servicio Linux (web server, DNS, base de datos).
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="conceptos">
+    <div class="wrap block-body">
+      <h2 class="h"><span class="lead">Conceptos</span> clave</h2>
+      <table>
+        <tr><th>Concepto</th><th>Descripción</th></tr>
+        <tr><td>Hypervisor</td><td>Software que permite ejecutar múltiples sistemas operativos sobre un mismo hardware</td></tr>
+        <tr><td>Tipo 1 (Bare-Metal)</td><td>Hypervisor instalado directamente sobre el hardware sin OS host — más eficiente</td></tr>
+        <tr><td>Tipo 2 (Hosted)</td><td>Hypervisor instalado sobre un OS existente — para pruebas y desarrollo</td></tr>
+        <tr><td>KVM</td><td>Kernel-Based Virtual Machine — convierte el kernel Linux en hypervisor Tipo 1</td></tr>
+        <tr><td>LXC</td><td>Linux Containers — virtualización a nivel OS, más liviana que VMs completas</td></tr>
+        <tr><td>Proxmox VE</td><td>Plataforma bare-metal basada en Debian que integra KVM + LXC con interfaz web</td></tr>
+        <tr><td>VM (Virtual Machine)</td><td>Sistema operativo completo con hardware virtualizado — aislamiento total</td></tr>
+        <tr><td>Container</td><td>Instancia que comparte el kernel del host — liviana, arranca en segundos</td></tr>
+        <tr><td>Snapshot</td><td>Foto del estado de una VM en un momento dado — permite rollback rápido</td></tr>
+        <tr><td>HA (High Availability)</td><td>Configuración que permite migrar VMs automáticamente si un nodo falla</td></tr>
+        <tr><td>Lease time</td><td>Migración en vivo de una VM de un nodo a otro sin interrupción del servicio</td></tr>
+      </table>
+    </div>
+  </section>
+
+  <section class="section" id="diagrama">
+    <div class="wrap block-body">
+      <h2 class="h"><span class="lead">Diagrama</span> — Tipo 1 vs Tipo 2</h2>
+      <div class="diagram">
+        <svg viewBox="0 0 760 240" xmlns="http://www.w3.org/2000/svg" font-family="Segoe UI, sans-serif">
+          <g font-size="12" text-anchor="middle" font-family="Segoe UI, sans-serif">
+            <!-- TIPO 1 -->
+            <text x="190" y="20" fill="#34d399" font-weight="700" font-size="14">TIPO 1 — Bare-Metal</text>
+            <rect x="60" y="30" width="260" height="36" rx="7" fill="#1c2230" stroke="#2b3242"/>
+            <text x="190" y="53" fill="#9aa7b8">Hardware físico (CPU · RAM · Disco · Red)</text>
+            <rect x="60" y="72" width="260" height="36" rx="7" fill="#1c2230" stroke="#34d399"/>
+            <text x="190" y="95" fill="#34d399" font-weight="700">Hypervisor Tipo 1</text>
+            <rect x="60" y="114" width="80" height="30" rx="6" fill="#1c2230" stroke="#4f9cf9"/>
+            <text x="100" y="133" fill="#e6edf3" font-size="11">VM Linux</text>
+            <rect x="150" y="114" width="80" height="30" rx="6" fill="#1c2230" stroke="#4f9cf9"/>
+            <text x="190" y="133" fill="#e6edf3" font-size="11">VM Windows</text>
+            <rect x="240" y="114" width="80" height="30" rx="6" fill="#1c2230" stroke="#a78bfa"/>
+            <text x="280" y="133" fill="#e6edf3" font-size="11">CT LXC</text>
+            <text x="190" y="175" fill="#9aa7b8" font-size="11">Proxmox · ESXi · Hyper-V · KVM</text>
+            <!-- TIPO 2 -->
+            <text x="570" y="20" fill="#f59e0b" font-weight="700" font-size="14">TIPO 2 — Hosted</text>
+            <rect x="440" y="30" width="260" height="36" rx="7" fill="#1c2230" stroke="#2b3242"/>
+            <text x="570" y="53" fill="#9aa7b8">Hardware físico</text>
+            <rect x="440" y="72" width="260" height="36" rx="7" fill="#1c2230" stroke="#2b3242"/>
+            <text x="570" y="95" fill="#9aa7b8">Sistema Operativo Host (Windows/Linux)</text>
+            <rect x="440" y="114" width="260" height="36" rx="7" fill="#1c2230" stroke="#f59e0b"/>
+            <text x="570" y="137" fill="#f59e0b" font-weight="700">Hypervisor Tipo 2</text>
+            <rect x="450" y="156" width="100" height="30" rx="6" fill="#1c2230" stroke="#4f9cf9"/>
+            <text x="500" y="175" fill="#e6edf3" font-size="11">VM Linux</text>
+            <rect x="590" y="156" width="100" height="30" rx="6" fill="#1c2230" stroke="#4f9cf9"/>
+            <text x="640" y="175" fill="#e6edf3" font-size="11">VM Windows</text>
+            <text x="570" y="210" fill="#9aa7b8" font-size="11">VirtualBox · VMware Workstation</text>
+          </g>
+        </svg>
+        <div class="cap">Tipo 1 es más eficiente porque no tiene OS intermediario. Tipo 2 es más sencillo de instalar y usar para laboratorios y desarrollo.</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="lab">
+    <div class="wrap block-body">
+      <h2 class="h"><span class="lead">Laboratorio 5</span> — Virtualización en Digital Ocean</h2>
+      <ol class="steps">
+        <li>Crear una cuenta gratuita en Digital Ocean (digitalocean.com).</li>
+        <li>Crear un Droplet (VM) Linux Ubuntu 22.04 — tamaño mínimo (1 vCPU, 1 GB RAM).</li>
+        <li>Conectarse por SSH usando el terminal: <code>ssh root@IP_DEL_DROPLET</code>.</li>
+        <li>Crear un segundo Droplet con Windows Server — observar la diferencia de recursos requeridos.</li>
+        <li>Verificar si los servicios son accesibles públicamente por IP (HTTP, SSH).</li>
+        <li>Destruir ambos Droplets al finalizar para no generar cargos.</li>
+      </ol>
+      <div class="callout tip">
+        <span class="label">Alternativa local</span>
+        Si no puedes usar Digital Ocean, instala <strong>VirtualBox</strong> (Tipo 2) y crea una VM de Ubuntu Server 22.04 en tu máquina. Los conceptos son idénticos.
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="flash">
+    <div class="wrap block-body">
+      <h2 class="h"><span class="lead">Flashcards</span></h2>
+      <p class="subtitle">Haz clic en cada tarjeta para ver la respuesta.</p>
+      <div class="fc-grid">
+        <div class="flashcard"><div class="inner">
+          <div class="face front">¿Qué es un hypervisor Tipo 1?</div>
+          <div class="face back">Se instala directamente sobre el hardware (bare-metal) sin OS intermediario. Más eficiente. Ej: Proxmox, ESXi, Hyper-V.</div>
+        </div></div>
+        <div class="flashcard"><div class="inner">
+          <div class="face front">¿Qué es KVM?</div>
+          <div class="face back">Kernel-Based Virtual Machine — módulo del kernel Linux que lo convierte en hypervisor Tipo 1. Es el motor de VMs en Proxmox.</div>
+        </div></div>
+        <div class="flashcard"><div class="inner">
+          <div class="face front">¿Diferencia entre VM y Container LXC?</div>
+          <div class="face back">Una VM virtualiza el hardware completo y tiene su propio kernel. Un Container LXC comparte el kernel del host — más ligero y rápido.</div>
+        </div></div>
+        <div class="flashcard"><div class="inner">
+          <div class="face front">¿En qué se basa Proxmox VE?</div>
+          <div class="face back">En Debian Linux. Integra KVM para VMs completas y LXC para containers. Incluye interfaz web, clustering y backup.</div>
+        </div></div>
+        <div class="flashcard"><div class="inner">
+          <div class="face front">¿Qué es un Snapshot en virtualización?</div>
+          <div class="face back">Una foto del estado completo de una VM en un instante. Permite revertir la VM a ese estado si algo falla (rollback).</div>
+        </div></div>
+        <div class="flashcard"><div class="inner">
+          <div class="face front">¿Por qué se dice que LXC arranca en segundos?</div>
+          <div class="face back">Porque comparte el kernel del host y no necesita arrancar un OS completo — solo inicializa el entorno de usuario aislado.</div>
+        </div></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="quiz">
+    <div class="wrap block-body">
+      <h2 class="h"><span class="lead">Cuestionario</span></h2>
+      <div class="quiz" id="quiz5">
+        <div class="q" data-answer="a">
+          <div class="qt">1. Un hypervisor Tipo 1 se instala…</div>
+          <label><input type="radio" name="q1" value="a"> Directamente sobre el hardware (bare-metal)</label>
+          <label><input type="radio" name="q1" value="b"> Sobre Windows o Linux como aplicación</label>
+          <label><input type="radio" name="q1" value="c"> Solo en la nube</label>
+          <div class="explain">Bare-metal significa sin OS intermediario — el hypervisor gestiona el hardware directamente.</div>
+        </div>
+        <div class="q" data-answer="b">
+          <div class="qt">2. KVM es un sistema de virtualización del…</div>
+          <label><input type="radio" name="q2" value="a"> Kernel de Windows Server</label>
+          <label><input type="radio" name="q2" value="b"> Kernel de Linux</label>
+          <label><input type="radio" name="q2" value="c"> Firmware UEFI del servidor</label>
+          <div class="explain">KVM es un módulo del kernel de Linux que lo convierte en hypervisor. Fue adquirido por Red Hat en 2008.</div>
+        </div>
+        <div class="q" data-answer="c">
+          <div class="qt">3. Un container LXC frente a una VM…</div>
+          <label><input type="radio" name="q3" value="a"> Requiere más RAM y CPU</label>
+          <label><input type="radio" name="q3" value="b"> Puede ejecutar cualquier sistema operativo</label>
+          <label><input type="radio" name="q3" value="c"> Es más ligero porque comparte el kernel del host</label>
+          <div class="explain">LXC comparte el kernel, por lo que no necesita emular hardware. Arranca en segundos y consume menos recursos.</div>
+        </div>
+        <div class="q" data-answer="a">
+          <div class="qt">4. Proxmox VE está basado en…</div>
+          <label><input type="radio" name="q4" value="a"> Debian Linux</label>
+          <label><input type="radio" name="q4" value="b"> Red Hat Enterprise Linux</label>
+          <label><input type="radio" name="q4" value="c"> Windows Server Core</label>
+          <div class="explain">Proxmox VE es una distribución bare-metal basada en Debian que integra KVM y LXC con gestión web.</div>
+        </div>
+        <div class="q" data-answer="b">
+          <div class="qt">5. VirtualBox es un ejemplo de hypervisor…</div>
+          <label><input type="radio" name="q5" value="a"> Tipo 1</label>
+          <label><input type="radio" name="q5" value="b"> Tipo 2</label>
+          <label><input type="radio" name="q5" value="c"> Tipo 3</label>
+          <div class="explain">VirtualBox se ejecuta como aplicación sobre Windows o Linux — es un hypervisor Tipo 2 (hosted).</div>
+        </div>
+        <button class="btn" onclick="checkQuiz('quiz5')">Comprobar respuestas</button>
+        <button class="btn ghost" onclick="resetQuiz('quiz5')">Reiniciar</button>
+        <div class="quiz-result"></div>
+      </div>
+    </div>
+  </section>
+
+  <nav class="block-nav wrap">
+    <a class="prev" href="bloque4.html"><div class="dir">← Anterior</div><div class="ttl">Redes Inalámbricas</div></a>
+    <a class="next disabled" href="index.html"><div class="dir">Siguiente →</div><div class="ttl">Fin del curso</div></a>
+  </nav>
+</main>
+<footer><div class="wrap">Módulo 5 de 5 · Curso de Redes Básicas · Ing. Stevenson Canó</div></footer>
+<script src="script.js"></script>
+</body>
+</html>

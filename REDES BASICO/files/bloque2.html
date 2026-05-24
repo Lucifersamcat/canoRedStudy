@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Módulo 2 · Conceptos y Protocolos — Redes Básicas</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<header class="topnav">
+  <div class="wrap">
+    <span class="brand">Redes<span class="dot">.</span>Básicas</span>
+    <nav>
+      <a href="index.html">Inicio</a>
+      <a href="bloque1.html">1 · Intro</a>
+      <a href="bloque2.html">2 · Protocolos</a>
+      <a href="bloque3.html">3 · Servicios IP</a>
+      <a href="bloque4.html">4 · Wireless</a>
+      <a href="bloque5.html">5 · Virtualización</a>
+    </nav>
+  </div>
+</header>
+<main>
+  <section class="block-head wrap">
+    <div class="num">MÓDULO 02</div>
+    <h1>Conceptos y Protocolos de Red</h1>
+    <p>Topologías, el modelo OSI, TCP/UDP, puertos, dominios de broadcast y colisión, VLANs, ARP y la tabla de direcciones MAC. El marco conceptual que explica cómo se comunican los equipos de red.</p>
+    <div class="progress-dots">
+      <span class="on"></span><span class="on"></span><span></span><span></span><span></span>
+    </div>
+    <div class="toc">
+      <a href="#teoria">Teoría</a><a href="#conceptos">Conceptos</a>
+      <a href="#diagrama">Diagrama OSI</a><a href="#lab">Laboratorio</a>
+      <a href="#flash">Flashcards</a><a href="#quiz">Cuestionario</a>
+    </div>
+  </section>
+
+  <section class="section" id="teoria">
+    <div class="wrap block-body">
+      <h2 class="h"><span class="lead">Teoría</span> ampliada</h2>
+
+      <h3>Topologías de red</h3>
+      <p>La <strong>topología</strong> define cómo están físicamente o lógicamente conectados los equipos. Las más importantes son: <strong>BUS</strong> (todos comparten un mismo cable, obsoleta), <strong>RING</strong> (cada equipo se conecta al siguiente en círculo), <strong>STAR</strong> (todos conectan a un switch central — la más usada hoy), <strong>MESH</strong> (cada equipo tiene múltiples rutas, alta redundancia) y <strong>Peer to Peer</strong> (dos equipos directamente conectados).</p>
+
+      <h3>Tipos de redes por alcance</h3>
+      <ul class="bullets">
+        <li><strong>LAN / WLAN:</strong> Red de área local dentro de un edificio o campus.</li>
+        <li><strong>MAN:</strong> Red metropolitana que interconecta edificios en una misma ciudad, generalmente por fibra o radioenlaces.</li>
+        <li><strong>WAN:</strong> Red de área amplia que conecta ciudades, países o continentes — es la red de Internet.</li>
+      </ul>
+
+      <h3>Modelo OSI — 7 capas</h3>
+      <p>El modelo OSI describe cómo los equipos se comunican dividiéndola en 7 capas independientes. Cada capa tiene una responsabilidad específica y se comunica solo con la capa inmediatamente superior e inferior.</p>
+      <table>
+        <tr><th>#</th><th>Capa</th><th>Función</th><th>Ejemplos</th></tr>
+        <tr><td>7</td><td>Aplicación</td><td>Interfaz con el usuario</td><td>HTTP, FTP, DNS, SMTP</td></tr>
+        <tr><td>6</td><td>Presentación</td><td>Formato, cifrado, compresión</td><td>SSL/TLS, JPEG, ASCII</td></tr>
+        <tr><td>5</td><td>Sesión</td><td>Gestión de sesiones</td><td>NetBIOS, RPC</td></tr>
+        <tr><td>4</td><td>Transporte</td><td>Entrega extremo a extremo</td><td>TCP, UDP</td></tr>
+        <tr><td>3</td><td>Red</td><td>Enrutamiento por IP</td><td>IP, ICMP, OSPF</td></tr>
+        <tr><td>2</td><td>Enlace de datos</td><td>Entrega por MAC en el segmento</td><td>Ethernet, VLANs, ARP</td></tr>
+        <tr><td>1</td><td>Física</td><td>Señal eléctrica/óptica/RF</td><td>UTP, Fibra, WiFi</td></tr>
+      </table>
+
+      <h3>TCP vs UDP</h3>
+      <p><strong>TCP (Transmission Control Protocol)</strong> establece una sesión con el 3-way handshake (SYN → SYN/ACK → ACK) y confirma la entrega de cada segmento. Si un paquete se pierde, TCP lo retransmite. Es fiable pero más lento. Se usa para HTTP, SSH, FTP, correo.</p>
+      <p><strong>UDP (User Datagram Protocol)</strong> envía datos sin establecer sesión ni confirmar entrega. Es más rápido y con menor latencia. Se usa para VoIP, DNS, DHCP, video streaming y juegos en tiempo real.</p>
+      <div class="callout note">
+        <span class="label">Para recordar</span>
+        <strong>TCP = Llamada telefónica</strong> (se establece la comunicación antes de hablar). <strong>UDP = Carta postal</strong> (se envía y no se sabe si llegó).
+      </div>
+
+      <h3>Dominios de broadcast y colisión</h3>
+      <p>Un <strong>dominio de colisión</strong> es el segmento donde dos equipos pueden interferirse al transmitir simultáneamente. Los switches crean un dominio de colisión por puerto (full-duplex, sin colisiones). Los hubs crean un dominio de colisión único para todos los puertos.</p>
+      <p>Un <strong>dominio de broadcast</strong> es el conjunto de dispositivos que reciben tramas broadcast. Un switch sin VLANs tiene un solo dominio de broadcast. Los routers separan dominios de broadcast. Las <strong>VLANs</strong> crean dominios de broadcast lógicos dentro del mismo switch.</p>
+
+      <h3>VLANs</h3>
+      <p>Una VLAN (Virtual LAN) permite segmentar lógicamente los puertos de un switch. Los equipos en VLAN 10 no pueden comunicarse directamente con los de VLAN 20 sin un router o switch L3. Beneficios: seguridad, reducción de broadcast, flexibilidad y ahorro de costos.</p>
+
+      <h3>ARP y MAC Address Table</h3>
+      <p>El protocolo <strong>ARP</strong> resuelve una dirección IPv4 a su dirección MAC correspondiente. Cuando un equipo quiere comunicarse con una IP, envía un broadcast ARP preguntando "¿quién tiene esta IP?"; el dueño responde con su MAC.</p>
+      <p>El switch mantiene una <strong>MAC Address Table</strong> que asocia cada dirección MAC con el puerto por el que fue aprendida. Esta tabla es volátil (se borra al reiniciar). Si la MAC de destino no está en la tabla, el switch hace <em>flooding</em> por todos los puertos de esa VLAN.</p>
+    </div>
+  </section>
+
+  <section class="section" id="conceptos">
+    <div class="wrap block-body">
+      <h2 class="h"><span class="lead">Conceptos</span> clave</h2>
+      <table>
+        <tr><th>Concepto</th><th>Descripción</th></tr>
+        <tr><td>Topología STAR</td><td>Todos los equipos conectan a un switch central — estándar actual</td></tr>
+        <tr><td>LAN</td><td>Red de área local — mismo edificio o campus</td></tr>
+        <tr><td>WAN</td><td>Red de área amplia — Internet</td></tr>
+        <tr><td>Modelo OSI</td><td>Marco de 7 capas que describe la comunicación en red</td></tr>
+        <tr><td>TCP</td><td>Protocolo orientado a conexión con confirmación de entrega</td></tr>
+        <tr><td>UDP</td><td>Protocolo sin conexión, baja latencia, sin garantía de entrega</td></tr>
+        <tr><td>3-Way Handshake</td><td>SYN → SYN/ACK → ACK — inicio de sesión TCP</td></tr>
+        <tr><td>Puerto bien conocido</td><td>Puertos 0-1023 reservados para servicios estándar (HTTP=80, SSH=22)</td></tr>
+        <tr><td>Dominio de broadcast</td><td>Área donde llegan las tramas broadcast; un switch sin VLANs = uno solo</td></tr>
+        <tr><td>VLAN</td><td>Segmentación lógica de puertos; rompe dominios de broadcast</td></tr>
+        <tr><td>ARP</td><td>Protocolo que resuelve IP → MAC</td></tr>
+        <tr><td>MAC Address Table</td><td>Tabla del switch que mapea MAC ↔ puerto (volátil)</td></tr>
+      </table>
+    </div>
+  </section>
+
+  <section class="section" id="diagrama">
+    <div class="wrap block-body">
+      <h2 class="h"><span class="lead">Diagrama</span> — Modelo OSI</h2>
+      <div class="diagram">
+        <svg viewBox="0 0 760 300" xmlns="http://www.w3.org/2000/svg" font-family="Segoe UI, sans-serif">
+          <g font-size="12" text-anchor="middle" font-family="Segoe UI, sans-serif">
+            <rect x="60" y="10" width="200" height="34" rx="7" fill="#1c2230" stroke="#f472b6"/>
+            <text x="160" y="32" fill="#e6edf3" font-weight="700">7 · Aplicación</text>
+            <text x="500" y="32" fill="#9aa7b8">HTTP · FTP · DNS · SMTP</text>
+            <rect x="60" y="52" width="200" height="34" rx="7" fill="#1c2230" stroke="#a78bfa"/>
+            <text x="160" y="74" fill="#e6edf3" font-weight="700">6 · Presentación</text>
+            <text x="500" y="74" fill="#9aa7b8">SSL/TLS · cifrado · compresión</text>
+            <rect x="60" y="94" width="200" height="34" rx="7" fill="#1c2230" stroke="#f59e0b"/>
+            <text x="160" y="116" fill="#e6edf3" font-weight="700">5 · Sesión</text>
+            <text x="500" y="116" fill="#9aa7b8">NetBIOS · RPC · gestión sesiones</text>
+            <rect x="60" y="136" width="200" height="34" rx="7" fill="#1c2230" stroke="#f59e0b"/>
+            <text x="160" y="158" fill="#e6edf3" font-weight="700">4 · Transporte</text>
+            <text x="500" y="158" fill="#9aa7b8">TCP · UDP · puertos</text>
+            <rect x="60" y="178" width="200" height="34" rx="7" fill="#1c2230" stroke="#34d399"/>
+            <text x="160" y="200" fill="#e6edf3" font-weight="700">3 · Red</text>
+            <text x="500" y="200" fill="#9aa7b8">IP · ICMP · routing</text>
+            <rect x="60" y="220" width="200" height="34" rx="7" fill="#1c2230" stroke="#4f9cf9"/>
+            <text x="160" y="242" fill="#e6edf3" font-weight="700">2 · Enlace de datos</text>
+            <text x="500" y="242" fill="#9aa7b8">Ethernet · MAC · VLANs · ARP</text>
+            <rect x="60" y="262" width="200" height="34" rx="7" fill="#1c2230" stroke="#22d3ee"/>
+            <text x="160" y="284" fill="#e6edf3" font-weight="700">1 · Física</text>
+            <text x="500" y="284" fill="#9aa7b8">UTP · Fibra · WiFi · señal eléctrica</text>
+            <line x1="260" y1="27" x2="350" y2="27" stroke="#9aa7b8" stroke-width="1.5" stroke-dasharray="4 3"/>
+            <line x1="260" y1="69" x2="350" y2="69" stroke="#9aa7b8" stroke-width="1.5" stroke-dasharray="4 3"/>
+            <line x1="260" y1="111" x2="350" y2="111" stroke="#9aa7b8" stroke-width="1.5" stroke-dasharray="4 3"/>
+            <line x1="260" y1="153" x2="350" y2="153" stroke="#9aa7b8" stroke-width="1.5" stroke-dasharray="4 3"/>
+            <line x1="260" y1="195" x2="350" y2="195" stroke="#9aa7b8" stroke-width="1.5" stroke-dasharray="4 3"/>
+            <line x1="260" y1="237" x2="350" y2="237" stroke="#9aa7b8" stroke-width="1.5" stroke-dasharray="4 3"/>
+            <line x1="260" y1="279" x2="350" y2="279" stroke="#9aa7b8" stroke-width="1.5" stroke-dasharray="4 3"/>
+          </g>
+        </svg>
+        <div class="cap">Las 7 capas del modelo OSI. El tráfico baja por las capas en el emisor y sube en el receptor.</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="lab">
+    <div class="wrap block-body">
+      <h2 class="h"><span class="lead">Laboratorio 2</span> — Packet Tracer y escaneo de red</h2>
+      <ol class="steps">
+        <li>Instalar Cisco Packet Tracer y crear una topología simple: 3 PCs conectadas a un switch.</li>
+        <li>Asignar IPs estáticas a las PCs: 192.168.1.10, .11 y .12 con máscara /24.</li>
+        <li>Verificar conectividad con <code>ping 192.168.1.11</code> desde una PC.</li>
+        <li>Abrir CMD en Windows, ejecutar <code>ipconfig /all</code> y localizar la MAC Address.</li>
+        <li>Ingresar la MAC en <a href="https://macvendors.com" target="_blank">macvendors.com</a> para identificar el fabricante.</li>
+        <li>Descargar Network Scanner (softperfect.com), escanear la red y listar todos los equipos activos.</li>
+      </ol>
+      <div class="callout tip">
+        <span class="label">Comandos útiles</span>
+        <code>ipconfig /all</code> — ver IP, MAC y DNS · <code>ping 8.8.8.8</code> — probar conectividad · <code>tracert google.com</code> — ver el camino de los paquetes.
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="flash">
+    <div class="wrap block-body">
+      <h2 class="h"><span class="lead">Flashcards</span></h2>
+      <p class="subtitle">Haz clic en cada tarjeta para ver la respuesta.</p>
+      <div class="fc-grid">
+        <div class="flashcard"><div class="inner">
+          <div class="face front">¿Cuántas capas tiene el modelo OSI?</div>
+          <div class="face back">7 capas: Física, Enlace, Red, Transporte, Sesión, Presentación y Aplicación.</div>
+        </div></div>
+        <div class="flashcard"><div class="inner">
+          <div class="face front">¿Qué protocolo garantiza la entrega de datos?</div>
+          <div class="face back">TCP — usa el 3-way handshake y confirmaciones ACK para garantizar que cada segmento llegue.</div>
+        </div></div>
+        <div class="flashcard"><div class="inner">
+          <div class="face front">¿Qué puerto usa HTTP?</div>
+          <div class="face back">Puerto 80 (TCP). HTTPS usa el puerto 443. SSH usa el 22.</div>
+        </div></div>
+        <div class="flashcard"><div class="inner">
+          <div class="face front">¿Qué hace el protocolo ARP?</div>
+          <div class="face back">Resuelve una dirección IPv4 a su dirección MAC, enviando un broadcast en la red local.</div>
+        </div></div>
+        <div class="flashcard"><div class="inner">
+          <div class="face front">¿Qué separa los dominios de broadcast?</div>
+          <div class="face back">Los routers (capa 3) separan dominios de broadcast. Las VLANs crean dominios de broadcast lógicos dentro de un switch.</div>
+        </div></div>
+        <div class="flashcard"><div class="inner">
+          <div class="face front">¿Qué es la topología STAR?</div>
+          <div class="face back">Todos los equipos se conectan a un switch central. Es la topología estándar en las redes locales actuales.</div>
+        </div></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="quiz">
+    <div class="wrap block-body">
+      <h2 class="h"><span class="lead">Cuestionario</span></h2>
+      <div class="quiz" id="quiz2">
+        <div class="q" data-answer="b">
+          <div class="qt">1. ¿Cuántas capas tiene el modelo OSI?</div>
+          <label><input type="radio" name="q1" value="a"> 4</label>
+          <label><input type="radio" name="q1" value="b"> 7</label>
+          <label><input type="radio" name="q1" value="c"> 5</label>
+          <div class="explain">OSI tiene 7 capas: Física, Enlace, Red, Transporte, Sesión, Presentación, Aplicación.</div>
+        </div>
+        <div class="q" data-answer="a">
+          <div class="qt">2. ¿Qué protocolo usa el 3-way handshake?</div>
+          <label><input type="radio" name="q2" value="a"> TCP</label>
+          <label><input type="radio" name="q2" value="b"> UDP</label>
+          <label><input type="radio" name="q2" value="c"> ICMP</label>
+          <div class="explain">TCP usa SYN → SYN/ACK → ACK para establecer la sesión antes de enviar datos.</div>
+        </div>
+        <div class="q" data-answer="c">
+          <div class="qt">3. Una VLAN en un switch…</div>
+          <label><input type="radio" name="q3" value="a"> Enruta tráfico entre redes</label>
+          <label><input type="radio" name="q3" value="b"> Duplica el tráfico broadcast</label>
+          <label><input type="radio" name="q3" value="c"> Separa puertos en dominios de broadcast lógicos</label>
+          <div class="explain">Las VLANs crean dominios de broadcast separados de forma lógica dentro del mismo switch físico.</div>
+        </div>
+        <div class="q" data-answer="a">
+          <div class="qt">4. El puerto 443 corresponde al protocolo…</div>
+          <label><input type="radio" name="q4" value="a"> HTTPS</label>
+          <label><input type="radio" name="q4" value="b"> FTP</label>
+          <label><input type="radio" name="q4" value="c"> SSH</label>
+          <div class="explain">HTTPS usa el puerto 443; HTTP usa el 80; SSH usa el 22; FTP usa el 20/21.</div>
+        </div>
+        <div class="q" data-answer="b">
+          <div class="qt">5. ARP resuelve…</div>
+          <label><input type="radio" name="q5" value="a"> Un nombre de dominio a dirección IP</label>
+          <label><input type="radio" name="q5" value="b"> Una dirección IP a dirección MAC</label>
+          <label><input type="radio" name="q5" value="c"> Una VLAN a un puerto físico</label>
+          <div class="explain">ARP (Address Resolution Protocol) asocia una IP a la MAC del dispositivo en la misma red.</div>
+        </div>
+        <button class="btn" onclick="checkQuiz('quiz2')">Comprobar respuestas</button>
+        <button class="btn ghost" onclick="resetQuiz('quiz2')">Reiniciar</button>
+        <div class="quiz-result"></div>
+      </div>
+    </div>
+  </section>
+
+  <nav class="block-nav wrap">
+    <a class="prev" href="bloque1.html"><div class="dir">← Anterior</div><div class="ttl">Introducción a las Redes</div></a>
+    <a class="next" href="bloque3.html"><div class="dir">Siguiente →</div><div class="ttl">Direccionamiento IP y Servicios</div></a>
+  </nav>
+</main>
+<footer><div class="wrap">Módulo 2 de 5 · Curso de Redes Básicas · Ing. Stevenson Canó</div></footer>
+<script src="script.js"></script>
+</body>
+</html>

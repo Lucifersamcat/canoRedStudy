@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Módulo 1 · Introducción al Cableado Estructurado</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<header class="topnav">
+  <div class="wrap">
+    <span class="brand">Cableado<span class="dot">.</span>Estructurado</span>
+    <nav>
+      <a href="index.html">Inicio</a>
+      <a href="bloque1.html">1 · Intro</a>
+      <a href="bloque2.html">2 · Canalización</a>
+      <a href="bloque3.html">3 · Data Center</a>
+      <a href="bloque4.html">4 · Campo</a>
+      <a href="bloque5.html">5 · Fibra</a>
+      <a href="bloque6.html">6 · Profesional</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <section class="block-head wrap">
+    <div class="num">MÓDULO 01</div>
+    <h1>Introducción al Cableado Estructurado</h1>
+    <p>Los cimientos del cableado profesional: normas, medios físicos, categorías de cable, terminaciones T568A/B, patch panels, jacks y las herramientas que un instalador usa cada día.</p>
+    <div class="progress-dots">
+      <span class="on"></span><span></span><span></span><span></span><span></span><span></span>
+    </div>
+    <div class="toc">
+      <a href="#teoria">Teoría</a>
+      <a href="#conceptos">Conceptos</a>
+      <a href="#herramientas">Herramientas</a>
+      <a href="#diagrama">Diagrama</a>
+      <a href="#lab">Laboratorio</a>
+      <a href="#flash">Flashcards</a>
+      <a href="#quiz">Cuestionario</a>
+    </div>
+  </section>
+
+  <!-- ===== TEORÍA ===== -->
+  <section class="section" id="teoria">
+    <div class="wrap block-body">
+      <h2 class="h"><span class="lead">Teoría</span> ampliada</h2>
+
+      <h3>¿Qué es el Cableado Estructurado?</h3>
+      <p>El <strong>cableado estructurado</strong> es un sistema de infraestructura de telecomunicaciones estandarizado que organiza el cableado de un edificio en un conjunto ordenado de elementos. Sigue normas como <strong>ANSI/TIA-568</strong> e <strong>ISO/IEC 11801</strong> para garantizar interoperabilidad, escalabilidad y orden. Se utiliza para voz, datos, video y control.</p>
+
+      <h3>Medios de la Capa Física</h3>
+      <p>La capa física (Capa 1 del modelo OSI) define el medio por el que viajan las señales. Los tres tipos principales:</p>
+      <ul class="bullets">
+        <li><strong>Cobre (UTP/STP/Coaxial):</strong> señal eléctrica, económico, distancia limitada (~100 m para UTP).</li>
+        <li><strong>Fibra óptica:</strong> señal de luz, inmune a interferencias, larga distancia (hasta km).</li>
+        <li><strong>Inalámbrico (RF):</strong> ondas de radio, flexible, con limitaciones de ancho de banda y seguridad.</li>
+      </ul>
+
+      <h3>Categorías de Cable UTP</h3>
+      <p>Los pares trenzados cancelan interferencia por inducción mutua. La categoría define el ancho de banda soportado:</p>
+      <table>
+        <tr><th>Categoría</th><th>Velocidad máx.</th><th>Banda</th><th>Uso típico</th></tr>
+        <tr><td>Cat5e</td><td>1 Gbps</td><td>100 MHz</td><td>LAN básica</td></tr>
+        <tr><td>Cat6</td><td>1 Gbps (10G a 55 m)</td><td>250 MHz</td><td>LAN empresarial estándar</td></tr>
+        <tr><td>Cat6A</td><td>10 Gbps</td><td>500 MHz</td><td>Data centers, backbone horizontal</td></tr>
+        <tr><td>Cat7</td><td>10 Gbps</td><td>600 MHz</td><td>Centros de datos exigentes</td></tr>
+        <tr><td>Cat8</td><td>25–40 Gbps</td><td>2000 MHz</td><td>Data center short-run</td></tr>
+      </table>
+
+      <h3>Estándares de Terminación: T568A y T568B</h3>
+      <p>La norma TIA-568 define dos secuencias de color para los 4 pares (8 hilos). <strong>T568B</strong> es el estándar más usado en Latinoamérica y EE.UU.:</p>
+      <table>
+        <tr><th>Pin</th><th>T568A</th><th>T568B</th></tr>
+        <tr><td>1</td><td>Blanco/Verde</td><td>Blanco/Naranja</td></tr>
+        <tr><td>2</td><td>Verde</td><td>Naranja</td></tr>
+        <tr><td>3</td><td>Blanco/Naranja</td><td>Blanco/Verde</td></tr>
+        <tr><td>4</td><td>Azul</td><td>Azul</td></tr>
+        <tr><td>5</td><td>Blanco/Azul</td><td>Blanco/Azul</td></tr>
+        <tr><td>6</td><td>Naranja</td><td>Verde</td></tr>
+        <tr><td>7</td><td>Blanco/Café</td><td>Blanco/Café</td></tr>
+        <tr><td>8</td><td>Café</td><td>Café</td></tr>
+      </table>
+
+      <div class="callout tip">
+        <span class="label">Regla práctica</span>
+        Un cable con <strong>T568B en ambos extremos</strong> es straight-through (PC ↔ switch). Con T568A en un extremo y T568B en el otro es crossover (equipo a equipo, hoy obsoleto con auto-MDIX).
+      </div>
+
+      <h3>Patch Panels, Jacks y Patch Cords</h3>
+      <p>Un <strong>patch panel</strong> es un panel de puertos RJ-45 montado en rack donde terminan todos los cables horizontales del edificio. Centraliza la administración de conexiones. Tipos: 110 punch-down, Keystone modular, Cat6A blindado.</p>
+      <p>Un <strong>jack</strong> (módulo keystone) se instala en la caja de pared. Recibe el cable UTP por punchdown y expone un puerto RJ-45 al usuario.</p>
+      <p>Los <strong>patch cords</strong> son cables cortos con RJ-45 en ambos extremos que conectan patch panel ↔ switch y jack ↔ dispositivo. Existen en cobre (Cat5e, Cat6, Cat6A) y fibra (LC-LC, SC-LC).</p>
+    </div>
+  </section>
+
+  <!-- ===== CONCEPTOS ===== -->
+  <section class="section" id="conceptos">
+    <div class="wrap block-body">
+      <h2 class="h"><span class="lead">Conceptos</span> clave</h2>
+      <table>
+        <tr><th>Término</th><th>Definición</th></tr>
+        <tr><td>Cableado estructurado</td><td>Sistema de infraestructura de telecomunicaciones organizado según TIA-568 / ISO 11801</td></tr>
+        <tr><td>UTP</td><td>Unshielded Twisted Pair — cable de 4 pares trenzados sin blindaje</td></tr>
+        <tr><td>STP</td><td>Shielded Twisted Pair — cable con blindaje por par o global para entornos con interferencia</td></tr>
+        <tr><td>T568B</td><td>Terminación más usada en Latinoamérica; pines 1-2 naranja, 3-6 verde, 4-5 azul, 7-8 café</td></tr>
+        <tr><td>Cat6A</td><td>10 Gbps a 100 m · 500 MHz · recomendado para instalaciones nuevas y data centers</td></tr>
+        <tr><td>Patch Panel</td><td>Panel de puertos RJ-45 en rack donde terminan los cables horizontales del edificio</td></tr>
+        <tr><td>Jack Keystone</td><td>Módulo instalado en caja de pared; recibe UTP por punchdown y expone RJ-45 al usuario</td></tr>
+        <tr><td>Patch Cord</td><td>Cable corto RJ-45 ↔ RJ-45 para patch panel ↔ switch o jack ↔ dispositivo final</td></tr>
+        <tr><td>Punch Down</td><td>Técnica de terminación donde los hilos se insertan a presión en bloques 110 o Krone</td></tr>
+        <tr><td>NEXT</td><td>Near-End CrossTalk — interferencia entre pares en el extremo de origen; parámetro crítico de certificación</td></tr>
+      </table>
+    </div>
+  </section>
+
+  <!-- ===== HERRAMIENTAS ===== -->
+  <section class="section" id="herramientas">
+    <div class="wrap block-body">
+      <h2 class="h"><span class="lead">Herramientas</span> del instalador</h2>
+      <table>
+        <tr><th>Herramienta</th><th>Función</th></tr>
+        <tr><td>Punch Down Tool</td><td>Terminar hilos en patch panel o jacks 110 / Krone; corta el exceso automáticamente</td></tr>
+        <tr><td>Crimping Tool</td><td>Montar conectores RJ-45 sobre cable UTP</td></tr>
+        <tr><td>Cable Stripper</td><td>Retirar chaqueta sin dañar la aislación de los pares</td></tr>
+        <tr><td>Tijeras de cableado</td><td>Cortar el cable a medida exacta</td></tr>
+        <tr><td>Pass-Thru Crimper</td><td>Crimping con guía que empuja los hilos hasta el extremo del conector</td></tr>
+        <tr><td>Cable Tester</td><td>Verificar continuidad y orden de pines (wiremap)</td></tr>
+        <tr><td>Fluke DSX-8000</td><td>Certificar parámetros: NEXT, insertion loss, return loss; equipo de referencia del mercado</td></tr>
+      </table>
+    </div>
+  </section>
+
+  <!-- ===== DIAGRAMA ===== -->
+  <section class="section" id="diagrama">
+    <div class="wrap block-body">
+      <h2 class="h"><span class="lead">Diagrama</span> — Componentes del enlace horizontal</h2>
+      <div class="diagram">
+        <svg viewBox="0 0 760 220" xmlns="http://www.w3.org/2000/svg" font-family="Segoe UI, sans-serif" font-size="12">
+          <defs>
+            <marker id="a" markerWidth="8" markerHeight="8" refX="5" refY="3" orient="auto">
+              <path d="M0,0 L8,3 L0,6 Z" fill="#9aa7b8"/>
+            </marker>
+          </defs>
+
+          <!-- MDF Rack -->
+          <rect x="20" y="40" width="130" height="140" rx="8" fill="#1c2230" stroke="#a78bfa" stroke-width="2"/>
+          <text x="85" y="62" fill="#a78bfa" font-weight="bold" text-anchor="middle" font-size="11">RACK MDF</text>
+          <rect x="35" y="74" width="100" height="22" rx="3" fill="#1a2a40" stroke="#f59e0b" stroke-width="1.5"/>
+          <text x="85" y="89" fill="#f59e0b" text-anchor="middle" font-size="10">Patch Panel</text>
+          <rect x="35" y="104" width="100" height="22" rx="3" fill="#1a2a40" stroke="#34d399" stroke-width="1.5"/>
+          <text x="85" y="119" fill="#34d399" text-anchor="middle" font-size="10">Switch 24p</text>
+
+          <!-- Patch cord panel-switch -->
+          <line x1="85" y1="96" x2="85" y2="104" stroke="#f59e0b" stroke-width="1.5" stroke-dasharray="3,2"/>
+
+          <!-- Cable horizontal -->
+          <line x1="150" y1="85" x2="370" y2="85" stroke="#4f9cf9" stroke-width="2.5" marker-end="url(#a)"/>
+          <text x="260" y="76" fill="#4f9cf9" text-anchor="middle" font-size="11">Cable horizontal UTP Cat6</text>
+          <text x="260" y="100" fill="#9aa7b8" text-anchor="middle" font-size="10">máx. 90 m · canal 100 m</text>
+
+          <!-- Jack -->
+          <rect x="370" y="64" width="90" height="42" rx="6" fill="#1c2230" stroke="#34d399" stroke-width="2"/>
+          <text x="415" y="82" fill="#34d399" font-weight="bold" text-anchor="middle" font-size="11">Jack</text>
+          <text x="415" y="97" fill="#9aa7b8" text-anchor="middle" font-size="10">Keystone RJ45</text>
+
+          <!-- Patch cord jack-PC -->
+          <line x1="460" y1="85" x2="570" y2="85" stroke="#f59e0b" stroke-width="2" stroke-dasharray="5,3" marker-end="url(#a)"/>
+          <text x="515" y="76" fill="#f59e0b" text-anchor="middle" font-size="10">patch cord</text>
+
+          <!-- PC -->
+          <rect x="570" y="55" width="120" height="60" rx="8" fill="#1c2230" stroke="#22d3ee" stroke-width="2"/>
+          <text x="630" y="82" fill="#22d3ee" font-weight="bold" text-anchor="middle" font-size="12">PC / IP Phone</text>
+          <text x="630" y="98" fill="#9aa7b8" text-anchor="middle" font-size="10">Área de trabajo</text>
+
+          <!-- T568B color legend -->
+          <rect x="20" y="195" width="12" height="12" rx="2" fill="#f97316"/>
+          <text x="36" y="205" fill="#9aa7b8" font-size="10">Naranja (1-2)</text>
+          <rect x="145" y="195" width="12" height="12" rx="2" fill="#22c55e"/>
+          <text x="161" y="205" fill="#9aa7b8" font-size="10">Verde (3-6)</text>
+          <rect x="260" y="195" width="12" height="12" rx="2" fill="#3b82f6"/>
+          <text x="276" y="205" fill="#9aa7b8" font-size="10">Azul (4-5)</text>
+          <rect x="370" y="195" width="12" height="12" rx="2" fill="#92400e"/>
+          <text x="386" y="205" fill="#9aa7b8" font-size="10">Café (7-8)</text>
+          <text x="530" y="205" fill="#9aa7b8" font-size="10">T568B — orden de colores</text>
+        </svg>
+        <div class="cap">Enlace horizontal completo: patch cord de equipo → switch → patch panel → cable horizontal (máx. 90 m) → jack → patch cord → PC.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== LABORATORIO ===== -->
+  <section class="section" id="lab">
+    <div class="wrap block-body">
+      <h2 class="h"><span class="lead">Laboratorio 1</span> — Punchando mi primer jack</h2>
+      <p class="subtitle">Materiales: cable UTP Cat6, jack keystone Cat6, punch down tool, cable stripper, tijeras, cable tester.</p>
+      <ol class="steps">
+        <li>Pelar con el stripper ~3 cm de chaqueta. No dañar la aislación de los pares. Conservar el ripcord (hilo de tracción).</li>
+        <li>Separar los pares desenrollando lo mínimo necesario para alcanzar los canales del jack. Mantener el trenzado lo más cerca posible.</li>
+        <li>Posicionar hilos según <strong>T568B</strong>: colocar cada hilo en su canal marcado en el plástico del jack.</li>
+        <li>Punchdown: presionar la herramienta sobre cada hilo. La cuchilla corta el exceso automáticamente. El lado de corte va hacia afuera del jack.</li>
+        <li>Montar el jack en la faceplate o caja de pared. Etiquetar el outlet con un identificador único.</li>
+        <li>Probar con el cable tester: conectar en el jack y en el patch panel. Verificar wiremap 1:1 — los 8 pines en orden correcto.</li>
+      </ol>
+      <div class="callout tip">
+        <span class="label">Regla de oro</span>
+        Nunca desenrollar más de <strong>13 mm</strong> de par en la terminación. A más desenrollado, mayor NEXT y peor certificación.
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== RESUMEN ===== -->
+  <section class="section">
+    <div class="wrap block-body">
+      <h2 class="h"><span class="lead">Resumen</span> del módulo</h2>
+      <ul class="bullets">
+        <li>El cableado estructurado se rige por TIA-568 e ISO 11801; garantiza interoperabilidad y escalabilidad.</li>
+        <li>Cat6A (500 MHz, 10 Gbps a 100 m) es la categoría mínima recomendada para instalaciones nuevas.</li>
+        <li>T568B: pines 1-2 naranja, 3-6 verde, 4-5 azul, 7-8 café — estándar dominante en Latinoamérica.</li>
+        <li>El patch panel centraliza el cableado horizontal; los jacks terminan el cable en el área de trabajo.</li>
+        <li>NEXT es el parámetro de certificación más crítico; lo degrada el exceso de desenrollado en la terminación.</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- ===== FLASHCARDS ===== -->
+  <section class="section" id="flash">
+    <div class="wrap block-body">
+      <h2 class="h"><span class="lead">Flashcards</span></h2>
+      <p class="subtitle">Haz clic en cada tarjeta para ver la respuesta.</p>
+      <div class="fc-grid">
+        <div class="flashcard"><div class="inner">
+          <div class="face front">¿Qué normas rigen el cableado estructurado?</div>
+          <div class="face back"><strong>ANSI/TIA-568</strong> (EE.UU. / Latinoamérica) e <strong>ISO/IEC 11801</strong> (internacional). Definen categorías, distancias y terminaciones.</div>
+        </div></div>
+        <div class="flashcard"><div class="inner">
+          <div class="face front">Distancia máxima del cable horizontal UTP</div>
+          <div class="face back"><strong>90 m</strong> para el cable permanente. El canal completo (incluyendo patch cords) puede llegar a <strong>100 m</strong>.</div>
+        </div></div>
+        <div class="flashcard"><div class="inner">
+          <div class="face front">¿En qué difieren T568A y T568B?</div>
+          <div class="face back">Los pares naranja y verde están invertidos. T568B: pins 1-2 naranja, 3-6 verde. T568A: pins 1-2 verde, 3-6 naranja.</div>
+        </div></div>
+        <div class="flashcard"><div class="inner">
+          <div class="face front">¿Qué es NEXT?</div>
+          <div class="face back"><strong>Near-End CrossTalk</strong>: interferencia entre pares en el extremo de origen. Se degrada por demasiado desenrollado en la terminación.</div>
+        </div></div>
+        <div class="flashcard"><div class="inner">
+          <div class="face front">Cat6 vs Cat6A — diferencia clave</div>
+          <div class="face back">Cat6: 250 MHz, 10G solo a 55 m. Cat6A: <strong>500 MHz, 10 Gbps a 100 m</strong>. Cat6A también soporta PoE++ con menor temperatura.</div>
+        </div></div>
+        <div class="flashcard"><div class="inner">
+          <div class="face front">¿Para qué sirve la punch down tool?</div>
+          <div class="face back">Inserta y corta los hilos del cable UTP en los bloques <strong>110 o Krone</strong> del patch panel y jacks. Garantiza contacto eléctrico sin soldar.</div>
+        </div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== QUIZ ===== -->
+  <section class="section" id="quiz">
+    <div class="wrap block-body">
+      <h2 class="h"><span class="lead">Cuestionario</span></h2>
+      <div class="quiz" id="quiz1">
+
+        <div class="q" data-answer="c">
+          <div class="qt">1. ¿Cuál es la banda de frecuencia del cable Cat6A?</div>
+          <label><input type="radio" name="q1a" value="a"> 100 MHz</label>
+          <label><input type="radio" name="q1a" value="b"> 250 MHz</label>
+          <label><input type="radio" name="q1a" value="c"> 500 MHz</label>
+          <div class="explain">Cat5e = 100 MHz, Cat6 = 250 MHz, Cat6A = 500 MHz — soporta 10 Gbps a 100 m.</div>
+        </div>
+
+        <div class="q" data-answer="b">
+          <div class="qt">2. En T568B, los pines 1 y 2 son de color…</div>
+          <label><input type="radio" name="q2a" value="a"> Blanco/Verde y Verde</label>
+          <label><input type="radio" name="q2a" value="b"> Blanco/Naranja y Naranja</label>
+          <label><input type="radio" name="q2a" value="c"> Blanco/Azul y Azul</label>
+          <div class="explain">T568B: pins 1-2 naranja, 3-6 verde. T568A tiene estos colores invertidos.</div>
+        </div>
+
+        <div class="q" data-answer="a">
+          <div class="qt">3. Longitud máxima del cable horizontal permanente según TIA-568</div>
+          <label><input type="radio" name="q3a" value="a"> 90 m</label>
+          <label><input type="radio" name="q3a" value="b"> 100 m</label>
+          <label><input type="radio" name="q3a" value="c"> 70 m</label>
+          <div class="explain">90 m para el cable permanente (horizontal). El canal completo (+ patch cords) puede llegar a 100 m.</div>
+        </div>
+
+        <div class="q" data-answer="b">
+          <div class="qt">4. ¿Qué herramienta inserta los hilos del UTP sin soldar?</div>
+          <label><input type="radio" name="q4a" value="a"> Crimping tool</label>
+          <label><input type="radio" name="q4a" value="b"> Punch down tool</label>
+          <label><input type="radio" name="q4a" value="c"> Cable stripper</label>
+          <div class="explain">La punch down tool (herramienta de impacto) inserta los hilos en bloques 110/Krone y corta el exceso.</div>
+        </div>
+
+        <div class="q" data-answer="a">
+          <div class="qt">5. NEXT significa…</div>
+          <label><input type="radio" name="q5a" value="a"> Near-End CrossTalk</label>
+          <label><input type="radio" name="q5a" value="b"> Network Extended Transfer</label>
+          <label><input type="radio" name="q5a" value="c"> Noise Equalization Transfer</label>
+          <div class="explain">Near-End CrossTalk: interferencia entre pares medida en el extremo donde se inyecta la señal.</div>
+        </div>
+
+        <button class="btn" onclick="checkQuiz('quiz1')">Comprobar respuestas</button>
+        <button class="btn ghost" onclick="resetQuiz('quiz1')">Reiniciar</button>
+        <div class="quiz-result"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== REPASO ===== -->
+  <section class="section">
+    <div class="wrap block-body">
+      <h2 class="h"><span class="lead">Preguntas</span> de repaso</h2>
+      <ul class="review">
+        <li>¿Por qué los pares del cable UTP están trenzados? ¿Qué fenómeno físico aprovechan?</li>
+        <li>Explica la diferencia entre un cable straight-through y uno crossover en términos de T568.</li>
+        <li>¿Cuándo usarías STP en lugar de UTP? Da dos ejemplos de ambientes donde se prefiere STP.</li>
+        <li>¿Qué parámetros mide un certificador Fluke DSX? ¿Por qué no basta un cable tester básico?</li>
+        <li>¿Cuál es la diferencia funcional entre un patch panel y un switch?</li>
+      </ul>
+    </div>
+  </section>
+
+  <nav class="block-nav wrap">
+    <a class="prev disabled" href="index.html"><div class="dir">← Anterior</div><div class="ttl">Inicio</div></a>
+    <a class="next" href="bloque2.html"><div class="dir">Siguiente →</div><div class="ttl">Canalización</div></a>
+  </nav>
+</main>
+
+<footer><div class="wrap">Módulo 1 de 6 · Curso de Cableado Estructurado</div></footer>
+<script src="script.js"></script>
+</body>
+</html>

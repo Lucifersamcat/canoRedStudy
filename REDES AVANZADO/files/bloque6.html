@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Bloque 6 · Multicast con Cisco — Curso de Redes Avanzado</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<header class="topnav">
+  <div class="wrap">
+    <span class="brand">Redes<span class="dot">.</span>Avanzado</span>
+    <nav>
+      <a href="index.html">Inicio</a>
+      <a href="bloque1.html">1 · Cisco</a>
+      <a href="bloque2.html">2 · VLANs/STP</a>
+      <a href="bloque3.html">3 · Ubiquiti</a>
+      <a href="bloque4.html">4 · RADIUS</a>
+      <a href="bloque5.html">5 · WiFi</a>
+      <a href="bloque6.html">6 · Multicast</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <section class="block-head wrap">
+    <div class="num">BLOQUE 06</div>
+    <h1>Multicast con Cisco</h1>
+    <p>Cuando un mismo contenido — IPTV, videoconferencia — debe llegar a muchos receptores, enviar una copia por cada uno satura la red. Multicast envía un único flujo que la red replica solo donde hace falta. PIM e IGMP hacen posible esa magia.</p>
+    <div class="progress-dots"><span></span><span></span><span></span><span></span><span></span><span class="on"></span></div>
+    <div class="toc">
+      <a href="#teoria">Teoría ampliada</a>
+      <a href="#conceptos">Conceptos clave</a>
+      <a href="#comandos">Comandos</a>
+      <a href="#diagrama">Diagrama</a>
+      <a href="#lab">Laboratorio</a>
+      <a href="#flash">Flashcards</a>
+      <a href="#quiz">Cuestionario</a>
+    </div>
+  </section>
+
+  <section class="section" id="teoria">
+    <div class="wrap block-body">
+      <h2 class="h"><span class="lead">Teoría</span> ampliada</h2>
+
+      <h3>Unicast, broadcast y multicast</h3>
+      <p>Hay tres formas de entregar tráfico IP:</p>
+      <ul class="bullets">
+        <li><strong>Unicast:</strong> uno a uno. Para 100 espectadores de un video, el servidor envía 100 flujos idénticos — desperdicio masivo de ancho de banda.</li>
+        <li><strong>Broadcast:</strong> uno a todos en la red. Todos reciben, quieran o no; no cruza routers.</li>
+        <li><strong>Multicast:</strong> uno a un <em>grupo</em>. El servidor envía <strong>un solo flujo</strong> y la red lo duplica únicamente en los puntos donde se bifurca hacia receptores interesados.</li>
+      </ul>
+
+      <h3>Grupos multicast</h3>
+      <p>Un grupo multicast se identifica con una dirección IP <strong>clase D</strong>, en el rango <code>224.0.0.0 – 239.255.255.255</code>. El rango <code>239.0.0.0/8</code> es de uso administrativo/privado (similar a las IP privadas) — típico para IPTV interna. Un receptor "se suscribe" a un grupo; un emisor envía hacia esa dirección de grupo.</p>
+
+      <h3>IGMP: la suscripción del host</h3>
+      <p><strong>IGMP</strong> (Internet Group Management Protocol) es el protocolo con el que un host le dice a su router <em>local</em> "quiero recibir el grupo 239.1.1.1" (un <em>IGMP Join</em>) o "ya no lo quiero" (<em>Leave</em>). IGMP funciona solo entre el host y su router; no propaga el flujo por la red.</p>
+
+      <h3>IGMP Snooping en el switch</h3>
+      <p>Un switch, por defecto, trata el multicast como broadcast: lo inunda por todos los puertos de la VLAN. <strong>IGMP Snooping</strong> hace que el switch "espíe" los mensajes IGMP y aprenda qué puertos tienen receptores interesados, enviando el flujo <em>solo</em> a esos puertos. Sin snooping, un stream de video llega incluso a quien no lo pidió.</p>
+
+      <h3>PIM: el enrutamiento multicast</h3>
+      <p><strong>PIM</strong> (Protocol Independent Multicast) construye los árboles de distribución que llevan el flujo entre routers. Es "independiente del protocolo" porque usa la tabla de enrutamiento unicast existente (RIP, OSPF, etc.). Dos modos:</p>
+      <ul class="bullets">
+        <li><strong>PIM Dense Mode (DM):</strong> asume que casi todos quieren el flujo. Inunda toda la red y luego <em>poda</em> (prune) las ramas sin receptores. Simple, pero ineficiente; solo para redes pequeñas.</li>
+        <li><strong>PIM Sparse Mode (SM):</strong> asume que pocos quieren el flujo. Nadie recibe nada hasta que lo pide explícitamente. Usa un <strong>árbol compartido</strong> con raíz en el RP. Es el modo recomendado.</li>
+      </ul>
+
+      <h3>El Rendezvous Point (RP)</h3>
+      <p>En PIM-SM, el <strong>RP</strong> es un router que actúa de "punto de encuentro": los emisores registran su tráfico en el RP y los receptores van al RP a buscarlo. Una vez establecido el flujo, los routers pueden optimizar pasando del árbol compartido a un árbol de camino más corto (SPT). El RP se define de forma <strong>estática</strong> o <strong>dinámica</strong> (Auto-RP o BSR).</p>
+
+      <h3>RPF: anti-loop del multicast</h3>
+      <p><strong>RPF</strong> (Reverse Path Forwarding) es el mecanismo que evita loops: cuando un router recibe un paquete multicast, comprueba que llegó por la interfaz que usaría para <em>enviar tráfico unicast hacia el origen</em>. Si no, lo descarta. Así garantiza que el flujo viaja "alejándose" de la fuente sin dar vueltas.</p>
+
+      <div class="callout fix">
+        <span class="label">Corrección al material original</span>
+        El material usa <code>ip multicast-routing distributed</code>: la palabra <code>distributed</code> solo aplica a plataformas con line cards distribuidas (routers de gama alta) y dará error en equipos comunes o simuladores. Lo correcto en general es simplemente <code>ip multicast-routing</code>. En RouterOS, además, el paquete PIM se instala aparte y la sintaxis exacta varía según la versión.
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="conceptos">
+    <div class="wrap block-body">
+      <h2 class="h"><span class="lead">Conceptos</span> clave</h2>
+      <table>
+        <tr><th>Concepto</th><th>Descripción</th></tr>
+        <tr><td>Multicast</td><td>Envío de un único flujo a un grupo de receptores suscritos</td></tr>
+        <tr><td>Grupo multicast</td><td>Dirección IP clase D (224.0.0.0 – 239.255.255.255)</td></tr>
+        <tr><td>IGMP</td><td>Protocolo con que un host se suscribe/desuscribe a grupos ante su router</td></tr>
+        <tr><td>IGMP Snooping</td><td>El switch inspecciona IGMP para enviar el flujo solo a puertos interesados</td></tr>
+        <tr><td>PIM</td><td>Protocol Independent Multicast: enrutamiento de tráfico multicast</td></tr>
+        <tr><td>PIM-SM</td><td>Sparse Mode: eficiente, árbol compartido con RP</td></tr>
+        <tr><td>PIM-DM</td><td>Dense Mode: inundación + poda; solo redes pequeñas</td></tr>
+        <tr><td>RP</td><td>Rendezvous Point: punto de encuentro emisores/receptores en PIM-SM</td></tr>
+        <tr><td>RPF</td><td>Reverse Path Forwarding: mecanismo anti-loop del multicast</td></tr>
+      </table>
+    </div>
+  </section>
+
+  <section class="section" id="comandos">
+    <div class="wrap block-body">
+      <h2 class="h"><span class="lead">Comandos</span> esenciales — Cisco</h2>
+      <pre><code><span class="cmt"># Habilitar el enrutamiento multicast globalmente</span>
+<span class="kw">ip multicast-routing</span>
+
+<span class="cmt"># Activar PIM Sparse-Mode en cada interfaz relevante</span>
+<span class="kw">interface</span> gi0/0
+ <span class="kw">ip pim sparse-mode</span>
+<span class="kw">interface</span> gi0/1
+ <span class="kw">ip pim sparse-mode</span>
+
+<span class="cmt"># Rendezvous Point estático</span>
+<span class="kw">ip pim rp-address</span> <span class="val">10.0.0.1</span>
+
+<span class="cmt"># Rendezvous Point dinámico (Auto-RP)</span>
+<span class="kw">ip pim send-rp-announce</span> loopback0 <span class="kw">scope</span> 16
+<span class="kw">ip pim send-rp-discovery</span> loopback0 <span class="kw">scope</span> 16
+
+<span class="cmt"># IGMP Snooping en el switch</span>
+<span class="kw">ip igmp snooping</span>
+<span class="kw">ip igmp snooping vlan</span> 10
+
+<span class="cmt"># Verificación</span>
+<span class="kw">show ip mroute</span>
+<span class="kw">show ip mroute</span> <span class="val">239.1.1.1</span>
+<span class="kw">show ip pim neighbor</span>
+<span class="kw">show ip pim rp mapping</span>
+<span class="kw">show ip igmp groups</span></code></pre>
+
+      <h3>Interoperabilidad con MikroTik (RouterOS)</h3>
+      <pre><code><span class="cmt"># PIM (requiere el paquete correspondiente instalado)</span>
+/routing pim
+set enabled=yes
+
+<span class="cmt"># Alternativa sencilla: IGMP Proxy</span>
+/routing igmp-proxy
+add interface=ether1 upstream=yes      <span class="cmt"># hacia la fuente</span>
+add interface=ether2                   <span class="cmt"># hacia los receptores</span></code></pre>
+      <div class="callout note">
+        <span class="label">Nota</span>
+        Las versiones recientes de RouterOS reorganizan los menús de routing. Verifica la sintaxis exacta de PIM/IGMP-proxy en la versión que estés usando antes de aplicar estos comandos.
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="diagrama">
+    <div class="wrap block-body">
+      <h2 class="h"><span class="lead">Diagrama</span> de la topología</h2>
+      <div class="diagram">
+        <svg viewBox="0 0 780 320" xmlns="http://www.w3.org/2000/svg" font-family="Segoe UI, sans-serif">
+          <defs><marker id="a6" markerWidth="9" markerHeight="9" refX="7" refY="3" orient="auto"><path d="M0,0 L7,3 L0,6 Z" fill="#22d3ee"/></marker></defs>
+          <g stroke="#22d3ee" stroke-width="2.5" fill="none" marker-end="url(#a6)">
+            <line x1="180" y1="60" x2="340" y2="60"/>
+            <line x1="540" y1="75" x2="540" y2="120"/>
+            <line x1="500" y1="170" x2="360" y2="225"/>
+            <line x1="580" y1="170" x2="720" y2="225"/>
+          </g>
+          <g font-size="13" fill="#e6edf3" text-anchor="middle">
+            <rect x="30" y="34" width="150" height="52" rx="9" fill="#1c2230" stroke="#22d3ee"/>
+            <text x="105" y="56" font-weight="700">Servidor Video</text>
+            <text x="105" y="74" font-size="11" fill="#9aa7b8">→ 239.1.1.1</text>
+
+            <rect x="340" y="34" width="200" height="52" rx="9" fill="#1c2230" stroke="#4f9cf9"/>
+            <text x="440" y="56" font-weight="700">Router Cisco (RP)</text>
+            <text x="440" y="74" font-size="11" fill="#9aa7b8">PIM Sparse-Mode</text>
+
+            <rect x="440" y="122" width="200" height="50" rx="9" fill="#1c2230" stroke="#a78bfa"/>
+            <text x="540" y="143" font-weight="700">Switch</text>
+            <text x="540" y="160" font-size="11" fill="#9aa7b8">IGMP Snooping</text>
+
+            <rect x="250" y="226" width="180" height="58" rx="9" fill="#1c2230" stroke="#34d399"/>
+            <text x="340" y="248" font-weight="700">Cliente 1</text>
+            <text x="340" y="266" font-size="11" fill="#9aa7b8">IGMP Join 239.1.1.1</text>
+
+            <rect x="640" y="226" width="180" height="58" rx="9" fill="#1c2230" stroke="#34d399"/>
+            <text x="730" y="248" font-weight="700">Cliente 2</text>
+            <text x="730" y="266" font-size="11" fill="#9aa7b8">IGMP Join 239.1.1.1</text>
+          </g>
+          <text x="540" y="305" font-size="11" fill="#9aa7b8" text-anchor="middle">Un solo flujo desde el servidor; la red lo replica solo donde el árbol se bifurca.</text>
+        </svg>
+        <div class="cap">Laboratorio 6: el router replica el stream una sola vez; añadir clientes no duplica el tráfico en el enlace de origen.</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="lab">
+    <div class="wrap block-body">
+      <h2 class="h"><span class="lead">Laboratorio 6</span> — Multicast IPTV</h2>
+      <p class="subtitle">Topología: Servidor de Video → Router Cisco (PIM-SM) → Switch → Clientes.</p>
+      <ol class="steps">
+        <li>Habilitar <code>ip multicast-routing</code> en el router Cisco.</li>
+        <li>Configurar PIM Sparse-Mode en todas las interfaces relevantes.</li>
+        <li>Definir el RP (puede ser el mismo router).</li>
+        <li>Habilitar IGMP Snooping en el switch para la VLAN de los clientes.</li>
+        <li>Desde el servidor, enviar el stream al grupo <code>239.1.1.1</code>.</li>
+        <li>Desde un cliente, suscribirse con VLC: <code>udp://@239.1.1.1:1234</code>.</li>
+        <li>Verificar con <code>show ip mroute</code> que el flujo está activo.</li>
+        <li>Agregar un segundo cliente y comprobar que el router NO duplica el tráfico en el enlace de origen.</li>
+      </ol>
+      <div class="callout tip">
+        <span class="label">Verificación</span>
+        Con dos clientes viendo el video, el ancho de banda en el enlace servidor→router debe mantenerse en <strong>un único flujo</strong>; en <code>show ip mroute</code> aparece la entrada <code>(*, 239.1.1.1)</code> con las interfaces salientes pobladas.
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="wrap block-body">
+      <h2 class="h"><span class="lead">Comparativa</span> Unicast / Broadcast / Multicast</h2>
+      <table>
+        <tr><th>Tipo</th><th>Destinatarios</th><th>Ancho de banda</th><th>Caso de uso</th></tr>
+        <tr><td>Unicast</td><td>1</td><td>Alto (1 flujo por cliente)</td><td>HTTP, FTP</td></tr>
+        <tr><td>Broadcast</td><td>Todos en la red</td><td>Medio (1 flujo, todos reciben)</td><td>ARP, DHCP</td></tr>
+        <tr><td>Multicast</td><td>Grupo suscrito</td><td>Bajo (1 flujo, N receptores)</td><td>IPTV, videoconferencia</td></tr>
+      </table>
+      <h3>Resumen del bloque</h3>
+      <ul class="bullets">
+        <li>Multicast envía un solo flujo a un grupo; la red lo replica solo donde se bifurca.</li>
+        <li>Los grupos usan direcciones clase D (224.0.0.0 – 239.255.255.255).</li>
+        <li>IGMP suscribe al host con su router; IGMP Snooping evita que el switch inunde.</li>
+        <li>PIM enruta el multicast entre routers usando la tabla unicast existente.</li>
+        <li>PIM-SM (con RP) es eficiente; PIM-DM inunda y poda, solo para redes pequeñas.</li>
+        <li>RPF descarta paquetes que no llegan por la interfaz correcta hacia el origen, evitando loops.</li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="section" id="flash">
+    <div class="wrap block-body">
+      <h2 class="h"><span class="lead">Flashcards</span></h2>
+      <p class="subtitle">Haz clic en cada tarjeta para ver la respuesta.</p>
+      <div class="fc-grid">
+        <div class="flashcard"><div class="inner">
+          <div class="face front">¿Por qué multicast es más eficiente que unicast para streaming?</div>
+          <div class="face back">Envía un único flujo que la red replica solo donde hace falta, en vez de una copia por cada cliente.</div>
+        </div></div>
+        <div class="flashcard"><div class="inner">
+          <div class="face front">¿Qué rango de IP usan los grupos multicast?</div>
+          <div class="face back">Clase D: 224.0.0.0 – 239.255.255.255.</div>
+        </div></div>
+        <div class="flashcard"><div class="inner">
+          <div class="face front">¿Para qué sirve IGMP?</div>
+          <div class="face back">Para que un host se suscriba o desuscriba a un grupo multicast ante su router local.</div>
+        </div></div>
+        <div class="flashcard"><div class="inner">
+          <div class="face front">¿Qué hace IGMP Snooping en un switch?</div>
+          <div class="face back">Inspecciona IGMP y envía el flujo solo a los puertos con receptores, en vez de inundar la VLAN.</div>
+        </div></div>
+        <div class="flashcard"><div class="inner">
+          <div class="face front">PIM-SM vs PIM-DM</div>
+          <div class="face back">SM no envía nada hasta que se pide (árbol con RP); DM inunda todo y luego poda.</div>
+        </div></div>
+        <div class="flashcard"><div class="inner">
+          <div class="face front">¿Qué es RPF?</div>
+          <div class="face back">Reverse Path Forwarding: descarta paquetes que no llegan por la interfaz hacia el origen; evita loops.</div>
+        </div></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="quiz">
+    <div class="wrap block-body">
+      <h2 class="h"><span class="lead">Cuestionario</span></h2>
+      <div class="quiz" id="quiz6">
+        <div class="q" data-answer="b">
+          <div class="qt">1. ¿Qué rango de direcciones corresponde a multicast?</div>
+          <label><input type="radio" name="q1f" value="a"> 10.0.0.0 – 10.255.255.255</label>
+          <label><input type="radio" name="q1f" value="b"> 224.0.0.0 – 239.255.255.255</label>
+          <label><input type="radio" name="q1f" value="c"> 192.168.0.0 – 192.168.255.255</label>
+          <div class="explain">Los grupos multicast son direcciones clase D.</div>
+        </div>
+        <div class="q" data-answer="c">
+          <div class="qt">2. ¿Cuál es la función del Rendezvous Point en PIM-SM?</div>
+          <label><input type="radio" name="q2f" value="a"> Cifrar el tráfico de video</label>
+          <label><input type="radio" name="q2f" value="b"> Sustituir al servidor de video</label>
+          <label><input type="radio" name="q2f" value="c"> Ser el punto de encuentro entre emisores y receptores</label>
+          <div class="explain">El RP registra emisores y atiende a los receptores hasta optimizar el árbol.</div>
+        </div>
+        <div class="q" data-answer="a">
+          <div class="qt">3. ¿Qué hace IGMP Snooping?</div>
+          <label><input type="radio" name="q3f" value="a"> Envía el flujo solo a los puertos con receptores interesados</label>
+          <label><input type="radio" name="q3f" value="b"> Cifra el tráfico multicast</label>
+          <label><input type="radio" name="q3f" value="c"> Convierte multicast en unicast</label>
+          <div class="explain">Sin snooping, el switch inunda la VLAN; con snooping, dirige el flujo.</div>
+        </div>
+        <div class="q" data-answer="b">
+          <div class="qt">4. PIM Dense Mode es apropiado principalmente para…</div>
+          <label><input type="radio" name="q4f" value="a"> Redes muy grandes con pocos receptores</label>
+          <label><input type="radio" name="q4f" value="b"> Redes pequeñas donde casi todos quieren el flujo</label>
+          <label><input type="radio" name="q4f" value="c"> Reemplazar a IGMP</label>
+          <div class="explain">DM inunda y poda; eficiente solo si la mayoría son receptores y la red es chica.</div>
+        </div>
+        <div class="q" data-answer="c">
+          <div class="qt">5. ¿Qué problema previene RPF?</div>
+          <label><input type="radio" name="q5f" value="a"> El robo de contraseñas</label>
+          <label><input type="radio" name="q5f" value="b"> La pérdida de paquetes por congestión</label>
+          <label><input type="radio" name="q5f" value="c"> Los loops de tráfico multicast</label>
+          <div class="explain">RPF verifica la interfaz de entrada hacia el origen; si no concuerda, descarta el paquete.</div>
+        </div>
+        <button class="btn" onclick="checkQuiz('quiz6')">Comprobar respuestas</button>
+        <button class="btn ghost" onclick="resetQuiz('quiz6')">Reiniciar</button>
+        <div class="quiz-result"></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="wrap block-body">
+      <h2 class="h"><span class="lead">Preguntas</span> de repaso</h2>
+      <ul class="review">
+        <li>¿Por qué multicast es más eficiente que unicast para streaming?</li>
+        <li>¿Qué función cumple el Rendezvous Point en PIM-SM?</li>
+        <li>¿Cuál es la diferencia entre PIM-SM y PIM-DM?</li>
+        <li>¿Qué es RPF y por qué es importante?</li>
+        <li>¿Qué hace el IGMP Snooping en un switch?</li>
+      </ul>
+    </div>
+  </section>
+
+  <nav class="block-nav wrap">
+    <a class="prev" href="bloque5.html"><div class="dir">← Anterior</div><div class="ttl">WiFi Empresarial Ubiquiti</div></a>
+    <a class="next" href="index.html"><div class="dir">Fin del curso →</div><div class="ttl">Volver al inicio</div></a>
+  </nav>
+</main>
+
+<footer><div class="wrap">Bloque 6 de 6 · Curso de Redes Avanzado</div></footer>
+<script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,1093 @@
+{
+  "nodes": [
+    {
+      "id": "menu_principal",
+      "label": "Portal Principal de Cursos",
+      "file_type": "document",
+      "source_file": "MENU_PRINCIPAL.html",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "cab_index",
+      "label": "Cableado Estructurado \u2014 \u00cdndice",
+      "file_type": "document",
+      "source_file": "CABLEADO ESTRUCTURADO/files/index.html",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "cab_bloque1",
+      "label": "Cableado B1 \u2014 Introducci\u00f3n al Cableado Estructurado",
+      "file_type": "document",
+      "source_file": "CABLEADO ESTRUCTURADO/files/bloque1.html",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "cab_bloque2",
+      "label": "Cableado B2 \u2014 Canalizaci\u00f3n Profesional",
+      "file_type": "document",
+      "source_file": "CABLEADO ESTRUCTURADO/files/bloque2.html",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "cab_bloque3",
+      "label": "Cableado B3 \u2014 Elementos del Data Center",
+      "file_type": "document",
+      "source_file": "CABLEADO ESTRUCTURADO/files/bloque3.html",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "cab_bloque4",
+      "label": "Cableado B4 \u2014 En el Campo de Trabajo",
+      "file_type": "document",
+      "source_file": "CABLEADO ESTRUCTURADO/files/bloque4.html",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "cab_bloque5",
+      "label": "Cableado B5 \u2014 Introducci\u00f3n a Fibra \u00d3ptica",
+      "file_type": "document",
+      "source_file": "CABLEADO ESTRUCTURADO/files/bloque5.html",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "cab_bloque6",
+      "label": "Cableado B6 \u2014 Consideraciones Profesionales",
+      "file_type": "document",
+      "source_file": "CABLEADO ESTRUCTURADO/files/bloque6.html",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "cab_script",
+      "label": "Cableado script.js (flashcards/quiz)",
+      "file_type": "code",
+      "source_file": "CABLEADO ESTRUCTURADO/files/script.js",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "adv_index",
+      "label": "Redes Avanzado \u2014 \u00cdndice",
+      "file_type": "document",
+      "source_file": "REDES AVANZADO/files/index.html",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "adv_bloque1",
+      "label": "Avanzado B1 \u2014 Switches Cisco Fundamentos",
+      "file_type": "document",
+      "source_file": "REDES AVANZADO/files/bloque1.html",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "adv_bloque2",
+      "label": "Avanzado B2 \u2014 VLANs y Spanning Tree",
+      "file_type": "document",
+      "source_file": "REDES AVANZADO/files/bloque2.html",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "adv_bloque3",
+      "label": "Avanzado B3 \u2014 Switches Ubiquiti",
+      "file_type": "document",
+      "source_file": "REDES AVANZADO/files/bloque3.html",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "adv_bloque4",
+      "label": "Avanzado B4 \u2014 RADIUS Server Windows",
+      "file_type": "document",
+      "source_file": "REDES AVANZADO/files/bloque4.html",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "adv_bloque5",
+      "label": "Avanzado B5 \u2014 WiFi Empresarial Ubiquiti",
+      "file_type": "document",
+      "source_file": "REDES AVANZADO/files/bloque5.html",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "adv_bloque6",
+      "label": "Avanzado B6 \u2014 Multicast con Cisco",
+      "file_type": "document",
+      "source_file": "REDES AVANZADO/files/bloque6.html",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "adv_script",
+      "label": "Avanzado script.js",
+      "file_type": "code",
+      "source_file": "REDES AVANZADO/files/script.js",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "bas_index",
+      "label": "Redes B\u00e1sico \u2014 \u00cdndice",
+      "file_type": "document",
+      "source_file": "REDES BASICO/files/index.html",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "bas_bloque1",
+      "label": "B\u00e1sico B1 \u2014 Introducci\u00f3n a Redes de Datos",
+      "file_type": "document",
+      "source_file": "REDES BASICO/files/bloque1.html",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "bas_bloque2",
+      "label": "B\u00e1sico B2 \u2014 Conceptos y Protocolos de Red",
+      "file_type": "document",
+      "source_file": "REDES BASICO/files/bloque2.html",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "bas_bloque3",
+      "label": "B\u00e1sico B3 \u2014 Direccionamiento IP y Servicios",
+      "file_type": "document",
+      "source_file": "REDES BASICO/files/bloque3.html",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "bas_bloque4",
+      "label": "B\u00e1sico B4 \u2014 Redes Inal\u00e1mbricas",
+      "file_type": "document",
+      "source_file": "REDES BASICO/files/bloque4.html",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "bas_bloque5",
+      "label": "B\u00e1sico B5 \u2014 Virtualizaci\u00f3n (Proxmox)",
+      "file_type": "document",
+      "source_file": "REDES BASICO/files/bloque5.html",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "bas_script",
+      "label": "B\u00e1sico script.js",
+      "file_type": "code",
+      "source_file": "REDES BASICO/files/script.js",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "concept_osi",
+      "label": "Modelo OSI",
+      "file_type": "rationale",
+      "source_file": "REDES BASICO/files/bloque2.html",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "concept_tcpip",
+      "label": "TCP/IP",
+      "file_type": "rationale",
+      "source_file": "REDES BASICO/files/bloque2.html",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "concept_ip_addressing",
+      "label": "Direccionamiento IP / Subnetting",
+      "file_type": "rationale",
+      "source_file": "REDES BASICO/files/bloque3.html",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "concept_dhcp",
+      "label": "DHCP",
+      "file_type": "rationale",
+      "source_file": "REDES BASICO/files/bloque3.html",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "concept_dns",
+      "label": "DNS",
+      "file_type": "rationale",
+      "source_file": "REDES BASICO/files/bloque3.html",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "concept_ntp",
+      "label": "NTP",
+      "file_type": "rationale",
+      "source_file": "REDES BASICO/files/bloque3.html",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "concept_wifi",
+      "label": "Redes Inal\u00e1mbricas (WiFi)",
+      "file_type": "rationale",
+      "source_file": "REDES BASICO/files/bloque4.html",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "concept_virtualization",
+      "label": "Virtualizaci\u00f3n / Proxmox",
+      "file_type": "rationale",
+      "source_file": "REDES BASICO/files/bloque5.html",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "concept_topologies",
+      "label": "Topolog\u00edas de Red",
+      "file_type": "rationale",
+      "source_file": "REDES BASICO/files/bloque1.html",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "concept_cisco_ios",
+      "label": "Cisco IOS / Switches Cisco",
+      "file_type": "rationale",
+      "source_file": "REDES AVANZADO/files/bloque1.html",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "concept_vlan",
+      "label": "VLAN",
+      "file_type": "rationale",
+      "source_file": "REDES AVANZADO/files/bloque2.html",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "concept_stp",
+      "label": "Spanning Tree Protocol (STP)",
+      "file_type": "rationale",
+      "source_file": "REDES AVANZADO/files/bloque2.html",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "concept_ubiquiti",
+      "label": "Ubiquiti UniFi",
+      "file_type": "rationale",
+      "source_file": "REDES AVANZADO/files/bloque3.html",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "concept_radius",
+      "label": "RADIUS / 802.1X",
+      "file_type": "rationale",
+      "source_file": "REDES AVANZADO/files/bloque4.html",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "concept_wifi_enterprise",
+      "label": "WiFi Empresarial",
+      "file_type": "rationale",
+      "source_file": "REDES AVANZADO/files/bloque5.html",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "concept_multicast_pim",
+      "label": "Multicast / PIM",
+      "file_type": "rationale",
+      "source_file": "REDES AVANZADO/files/bloque6.html",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "concept_copper_media",
+      "label": "Medios de Cobre (UTP/STP)",
+      "file_type": "rationale",
+      "source_file": "CABLEADO ESTRUCTURADO/files/bloque1.html",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "concept_canalizacion",
+      "label": "Canalizaci\u00f3n (Bandejas/Conduit)",
+      "file_type": "rationale",
+      "source_file": "CABLEADO ESTRUCTURADO/files/bloque2.html",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "concept_datacenter",
+      "label": "Data Center / Rack",
+      "file_type": "rationale",
+      "source_file": "CABLEADO ESTRUCTURADO/files/bloque3.html",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "concept_field_work",
+      "label": "Trabajo de Campo / Instalaci\u00f3n",
+      "file_type": "rationale",
+      "source_file": "CABLEADO ESTRUCTURADO/files/bloque4.html",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "concept_fiber_optic",
+      "label": "Fibra \u00d3ptica",
+      "file_type": "rationale",
+      "source_file": "CABLEADO ESTRUCTURADO/files/bloque5.html",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "concept_standards",
+      "label": "Normas/Est\u00e1ndares (TIA/EIA)",
+      "file_type": "rationale",
+      "source_file": "CABLEADO ESTRUCTURADO/files/bloque6.html",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    }
+  ],
+  "edges": [
+    {
+      "source": "menu_principal",
+      "target": "bas_index",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "MENU_PRINCIPAL.html",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "menu_principal",
+      "target": "adv_index",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "MENU_PRINCIPAL.html",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "menu_principal",
+      "target": "cab_index",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "MENU_PRINCIPAL.html",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "cab_index",
+      "target": "cab_bloque1",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "CABLEADO ESTRUCTURADO/files/index.html",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "cab_index",
+      "target": "cab_bloque2",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "CABLEADO ESTRUCTURADO/files/index.html",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "cab_index",
+      "target": "cab_bloque3",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "CABLEADO ESTRUCTURADO/files/index.html",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "cab_index",
+      "target": "cab_bloque4",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "CABLEADO ESTRUCTURADO/files/index.html",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "cab_index",
+      "target": "cab_bloque5",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "CABLEADO ESTRUCTURADO/files/index.html",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "cab_index",
+      "target": "cab_bloque6",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "CABLEADO ESTRUCTURADO/files/index.html",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "adv_index",
+      "target": "adv_bloque1",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "REDES AVANZADO/files/index.html",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "adv_index",
+      "target": "adv_bloque2",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "REDES AVANZADO/files/index.html",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "adv_index",
+      "target": "adv_bloque3",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "REDES AVANZADO/files/index.html",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "adv_index",
+      "target": "adv_bloque4",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "REDES AVANZADO/files/index.html",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "adv_index",
+      "target": "adv_bloque5",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "REDES AVANZADO/files/index.html",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "adv_index",
+      "target": "adv_bloque6",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "REDES AVANZADO/files/index.html",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "bas_index",
+      "target": "bas_bloque1",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "REDES BASICO/files/index.html",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "bas_index",
+      "target": "bas_bloque2",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "REDES BASICO/files/index.html",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "bas_index",
+      "target": "bas_bloque3",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "REDES BASICO/files/index.html",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "bas_index",
+      "target": "bas_bloque4",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "REDES BASICO/files/index.html",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "bas_index",
+      "target": "bas_bloque5",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "REDES BASICO/files/index.html",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "bas_bloque1",
+      "target": "concept_topologies",
+      "relation": "rationale_for",
+      "confidence": "INFERRED",
+      "confidence_score": 0.85,
+      "source_file": "REDES BASICO/files/bloque1.html",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "bas_bloque2",
+      "target": "concept_osi",
+      "relation": "rationale_for",
+      "confidence": "INFERRED",
+      "confidence_score": 0.95,
+      "source_file": "REDES BASICO/files/bloque2.html",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "bas_bloque2",
+      "target": "concept_tcpip",
+      "relation": "rationale_for",
+      "confidence": "INFERRED",
+      "confidence_score": 0.95,
+      "source_file": "REDES BASICO/files/bloque2.html",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "bas_bloque3",
+      "target": "concept_ip_addressing",
+      "relation": "rationale_for",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "REDES BASICO/files/bloque3.html",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "bas_bloque3",
+      "target": "concept_dhcp",
+      "relation": "rationale_for",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "REDES BASICO/files/bloque3.html",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "bas_bloque3",
+      "target": "concept_dns",
+      "relation": "rationale_for",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "REDES BASICO/files/bloque3.html",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "bas_bloque3",
+      "target": "concept_ntp",
+      "relation": "rationale_for",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "REDES BASICO/files/bloque3.html",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "bas_bloque4",
+      "target": "concept_wifi",
+      "relation": "rationale_for",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "REDES BASICO/files/bloque4.html",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "bas_bloque5",
+      "target": "concept_virtualization",
+      "relation": "rationale_for",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "REDES BASICO/files/bloque5.html",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "adv_bloque1",
+      "target": "concept_cisco_ios",
+      "relation": "rationale_for",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "REDES AVANZADO/files/bloque1.html",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "adv_bloque2",
+      "target": "concept_vlan",
+      "relation": "rationale_for",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "REDES AVANZADO/files/bloque2.html",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "adv_bloque2",
+      "target": "concept_stp",
+      "relation": "rationale_for",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "REDES AVANZADO/files/bloque2.html",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "adv_bloque3",
+      "target": "concept_ubiquiti",
+      "relation": "rationale_for",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "REDES AVANZADO/files/bloque3.html",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "adv_bloque4",
+      "target": "concept_radius",
+      "relation": "rationale_for",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "REDES AVANZADO/files/bloque4.html",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "adv_bloque5",
+      "target": "concept_wifi_enterprise",
+      "relation": "rationale_for",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "REDES AVANZADO/files/bloque5.html",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "adv_bloque5",
+      "target": "concept_radius",
+      "relation": "conceptually_related_to",
+      "confidence": "INFERRED",
+      "confidence_score": 0.85,
+      "source_file": "REDES AVANZADO/files/bloque5.html",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "adv_bloque6",
+      "target": "concept_multicast_pim",
+      "relation": "rationale_for",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "REDES AVANZADO/files/bloque6.html",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "cab_bloque1",
+      "target": "concept_copper_media",
+      "relation": "rationale_for",
+      "confidence": "INFERRED",
+      "confidence_score": 0.85,
+      "source_file": "CABLEADO ESTRUCTURADO/files/bloque1.html",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "cab_bloque2",
+      "target": "concept_canalizacion",
+      "relation": "rationale_for",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "CABLEADO ESTRUCTURADO/files/bloque2.html",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "cab_bloque3",
+      "target": "concept_datacenter",
+      "relation": "rationale_for",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "CABLEADO ESTRUCTURADO/files/bloque3.html",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "cab_bloque4",
+      "target": "concept_field_work",
+      "relation": "rationale_for",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "CABLEADO ESTRUCTURADO/files/bloque4.html",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "cab_bloque5",
+      "target": "concept_fiber_optic",
+      "relation": "rationale_for",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "CABLEADO ESTRUCTURADO/files/bloque5.html",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "cab_bloque6",
+      "target": "concept_standards",
+      "relation": "rationale_for",
+      "confidence": "INFERRED",
+      "confidence_score": 0.75,
+      "source_file": "CABLEADO ESTRUCTURADO/files/bloque6.html",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "bas_bloque4",
+      "target": "adv_bloque5",
+      "relation": "semantically_similar_to",
+      "confidence": "INFERRED",
+      "confidence_score": 0.85,
+      "source_file": null,
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "concept_wifi",
+      "target": "concept_wifi_enterprise",
+      "relation": "semantically_similar_to",
+      "confidence": "INFERRED",
+      "confidence_score": 0.85,
+      "source_file": null,
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "bas_bloque2",
+      "target": "adv_bloque1",
+      "relation": "conceptually_related_to",
+      "confidence": "INFERRED",
+      "confidence_score": 0.75,
+      "source_file": null,
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "bas_bloque3",
+      "target": "adv_bloque2",
+      "relation": "conceptually_related_to",
+      "confidence": "INFERRED",
+      "confidence_score": 0.65,
+      "source_file": null,
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "concept_copper_media",
+      "target": "concept_fiber_optic",
+      "relation": "conceptually_related_to",
+      "confidence": "INFERRED",
+      "confidence_score": 0.85,
+      "source_file": null,
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "bas_index",
+      "target": "adv_index",
+      "relation": "conceptually_related_to",
+      "confidence": "INFERRED",
+      "confidence_score": 0.95,
+      "source_file": "MENU_PRINCIPAL.html",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "adv_index",
+      "target": "cab_index",
+      "relation": "conceptually_related_to",
+      "confidence": "INFERRED",
+      "confidence_score": 0.75,
+      "source_file": "MENU_PRINCIPAL.html",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "cab_bloque1",
+      "target": "cab_script",
+      "relation": "calls",
+      "confidence": "INFERRED",
+      "confidence_score": 0.85,
+      "source_file": "CABLEADO ESTRUCTURADO/files/bloque1.html",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "adv_bloque1",
+      "target": "adv_script",
+      "relation": "calls",
+      "confidence": "INFERRED",
+      "confidence_score": 0.85,
+      "source_file": "REDES AVANZADO/files/bloque1.html",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "bas_bloque1",
+      "target": "bas_script",
+      "relation": "calls",
+      "confidence": "INFERRED",
+      "confidence_score": 0.85,
+      "source_file": "REDES BASICO/files/bloque1.html",
+      "source_location": null,
+      "weight": 1.0
+    }
+  ],
+  "hyperedges": [
+    {
+      "id": "hg_curso_basico",
+      "label": "Curso Redes B\u00e1sico (m\u00f3dulos)",
+      "nodes": [
+        "bas_bloque1",
+        "bas_bloque2",
+        "bas_bloque3",
+        "bas_bloque4",
+        "bas_bloque5"
+      ],
+      "relation": "participate_in",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "REDES BASICO/files/index.html"
+    },
+    {
+      "id": "hg_curso_avanzado",
+      "label": "Curso Redes Avanzado (bloques)",
+      "nodes": [
+        "adv_bloque1",
+        "adv_bloque2",
+        "adv_bloque3",
+        "adv_bloque4",
+        "adv_bloque5",
+        "adv_bloque6"
+      ],
+      "relation": "participate_in",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "REDES AVANZADO/files/index.html"
+    },
+    {
+      "id": "hg_curso_cableado",
+      "label": "Curso Cableado Estructurado (m\u00f3dulos)",
+      "nodes": [
+        "cab_bloque1",
+        "cab_bloque2",
+        "cab_bloque3",
+        "cab_bloque4",
+        "cab_bloque5",
+        "cab_bloque6"
+      ],
+      "relation": "participate_in",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "CABLEADO ESTRUCTURADO/files/index.html"
+    }
+  ],
+  "input_tokens": 50000,
+  "output_tokens": 5706
+}

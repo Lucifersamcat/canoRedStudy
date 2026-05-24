@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>graphify - graphify-out/graph.html</title>
+<script src="https://unpkg.com/vis-network/standalone/umd/vis-network.min.js"></script>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: #0f0f1a; color: #e0e0e0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; display: flex; height: 100vh; overflow: hidden; }
+  #graph { flex: 1; }
+  #sidebar { width: 280px; background: #1a1a2e; border-left: 1px solid #2a2a4e; display: flex; flex-direction: column; overflow: hidden; }
+  #search-wrap { padding: 12px; border-bottom: 1px solid #2a2a4e; }
+  #search { width: 100%; background: #0f0f1a; border: 1px solid #3a3a5e; color: #e0e0e0; padding: 7px 10px; border-radius: 6px; font-size: 13px; outline: none; }
+  #search:focus { border-color: #4E79A7; }
+  #search-results { max-height: 140px; overflow-y: auto; padding: 4px 12px; border-bottom: 1px solid #2a2a4e; display: none; }
+  .search-item { padding: 4px 6px; cursor: pointer; border-radius: 4px; font-size: 12px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .search-item:hover { background: #2a2a4e; }
+  #info-panel { padding: 14px; border-bottom: 1px solid #2a2a4e; min-height: 140px; }
+  #info-panel h3 { font-size: 13px; color: #aaa; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.05em; }
+  #info-content { font-size: 13px; color: #ccc; line-height: 1.6; }
+  #info-content .field { margin-bottom: 5px; }
+  #info-content .field b { color: #e0e0e0; }
+  #info-content .empty { color: #555; font-style: italic; }
+  .neighbor-link { display: block; padding: 2px 6px; margin: 2px 0; border-radius: 3px; cursor: pointer; font-size: 12px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; border-left: 3px solid #333; }
+  .neighbor-link:hover { background: #2a2a4e; }
+  #neighbors-list { max-height: 160px; overflow-y: auto; margin-top: 4px; }
+  #legend-wrap { flex: 1; overflow-y: auto; padding: 12px; }
+  #legend-wrap h3 { font-size: 13px; color: #aaa; margin-bottom: 10px; text-transform: uppercase; letter-spacing: 0.05em; }
+  .legend-item { display: flex; align-items: center; gap: 8px; padding: 4px 0; cursor: pointer; border-radius: 4px; font-size: 12px; }
+  .legend-item:hover { background: #2a2a4e; padding-left: 4px; }
+  .legend-item.dimmed { opacity: 0.35; }
+  .legend-dot { width: 12px; height: 12px; border-radius: 50%; flex-shrink: 0; }
+  .legend-label { flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .legend-count { color: #666; font-size: 11px; }
+  #stats { padding: 10px 14px; border-top: 1px solid #2a2a4e; font-size: 11px; color: #555; }
+  #legend-controls { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; padding: 4px 0; }
+  #legend-controls label { display: flex; align-items: center; gap: 6px; cursor: pointer; font-size: 12px; color: #aaa; user-select: none; }
+  #legend-controls label:hover { color: #e0e0e0; }
+  .legend-cb, #select-all-cb { appearance: none; -webkit-appearance: none; width: 14px; height: 14px; border: 1.5px solid #3a3a5e; border-radius: 3px; background: #0f0f1a; cursor: pointer; position: relative; flex-shrink: 0; }
+  .legend-cb:checked, #select-all-cb:checked { background: #4E79A7; border-color: #4E79A7; }
+  .legend-cb:checked::after, #select-all-cb:checked::after { content: ''; position: absolute; left: 3.5px; top: 1px; width: 4px; height: 7px; border: solid #fff; border-width: 0 2px 2px 0; transform: rotate(45deg); }
+  #select-all-cb:indeterminate { background: #4E79A7; border-color: #4E79A7; }
+  #select-all-cb:indeterminate::after { content: ''; position: absolute; left: 2px; top: 5px; width: 8px; height: 2px; background: #fff; border: none; transform: none; }
+</style>
+</head>
+<body>
+<div id="graph"></div>
+<div id="sidebar">
+  <div id="search-wrap">
+    <input id="search" type="text" placeholder="Search nodes..." autocomplete="off">
+    <div id="search-results"></div>
+  </div>
+  <div id="info-panel">
+    <h3>Node Info</h3>
+    <div id="info-content"><span class="empty">Click a node to inspect it</span></div>
+  </div>
+  <div id="legend-wrap">
+    <h3>Communities</h3>
+    <div id="legend-controls">
+      <label><input type="checkbox" id="select-all-cb" checked onchange="toggleAllCommunities(!this.checked)">Select All</label>
+    </div>
+    <div id="legend"></div>
+  </div>
+  <div id="stats">51 nodes &middot; 59 edges &middot; 13 communities</div>
+</div>
+<script>
+const RAW_NODES = [{"id": "cableado_estructurado_files_script_js", "label": "script.js", "color": {"background": "#59A14F", "border": "#59A14F", "highlight": {"background": "#ffffff", "border": "#59A14F"}}, "size": 16.7, "font": {"size": 12, "color": "#ffffff"}, "title": "script.js", "community": 4, "community_name": "Logica de Quiz (script.js)", "source_file": "CABLEADO ESTRUCTURADO/files/script.js", "file_type": "code", "degree": 2}, {"id": "files_script_checkquiz", "label": "checkQuiz()", "color": {"background": "#59A14F", "border": "#59A14F", "highlight": {"background": "#ffffff", "border": "#59A14F"}}, "size": 20.0, "font": {"size": 12, "color": "#ffffff"}, "title": "checkQuiz()", "community": 4, "community_name": "Logica de Quiz (script.js)", "source_file": "REDES BASICO/files/script.js", "file_type": "code", "degree": 3}, {"id": "files_script_resetquiz", "label": "resetQuiz()", "color": {"background": "#59A14F", "border": "#59A14F", "highlight": {"background": "#ffffff", "border": "#59A14F"}}, "size": 20.0, "font": {"size": 12, "color": "#ffffff"}, "title": "resetQuiz()", "community": 4, "community_name": "Logica de Quiz (script.js)", "source_file": "REDES BASICO/files/script.js", "file_type": "code", "degree": 3}, {"id": "redes_avanzado_files_script_js", "label": "script.js", "color": {"background": "#59A14F", "border": "#59A14F", "highlight": {"background": "#ffffff", "border": "#59A14F"}}, "size": 16.7, "font": {"size": 12, "color": "#ffffff"}, "title": "script.js", "community": 4, "community_name": "Logica de Quiz (script.js)", "source_file": "REDES AVANZADO/files/script.js", "file_type": "code", "degree": 2}, {"id": "redes_basico_files_script_js", "label": "script.js", "color": {"background": "#59A14F", "border": "#59A14F", "highlight": {"background": "#ffffff", "border": "#59A14F"}}, "size": 16.7, "font": {"size": 12, "color": "#ffffff"}, "title": "script.js", "community": 4, "community_name": "Logica de Quiz (script.js)", "source_file": "REDES BASICO/files/script.js", "file_type": "code", "degree": 2}, {"id": "menu_principal", "label": "Portal Principal de Cursos", "color": {"background": "#B07AA1", "border": "#B07AA1", "highlight": {"background": "#ffffff", "border": "#B07AA1"}}, "size": 20.0, "font": {"size": 12, "color": "#ffffff"}, "title": "Portal Principal de Cursos", "community": 6, "community_name": "Navegacion del Portal", "source_file": "MENU_PRINCIPAL.html", "file_type": "document", "degree": 3}, {"id": "cab_index", "label": "Cableado Estructurado \u2014 \u00cdndice", "color": {"background": "#B07AA1", "border": "#B07AA1", "highlight": {"background": "#ffffff", "border": "#B07AA1"}}, "size": 36.7, "font": {"size": 12, "color": "#ffffff"}, "title": "Cableado Estructurado \u2014 \u00cdndice", "community": 6, "community_name": "Navegacion del Portal", "source_file": "CABLEADO ESTRUCTURADO/files/index.html", "file_type": "document", "degree": 8}, {"id": "cab_bloque1", "label": "Cableado B1 \u2014 Introducci\u00f3n al Cableado Estructurado", "color": {"background": "#EDC948", "border": "#EDC948", "highlight": {"background": "#ffffff", "border": "#EDC948"}}, "size": 20.0, "font": {"size": 12, "color": "#ffffff"}, "title": "Cableado B1 \u2014 Introducci\u00f3n al Cableado Estructurado", "community": 5, "community_name": "Medios Fisicos: Cobre y Fibra", "source_file": "CABLEADO ESTRUCTURADO/files/bloque1.html", "file_type": "document", "degree": 3}, {"id": "cab_bloque2", "label": "Cableado B2 \u2014 Canalizaci\u00f3n Profesional", "color": {"background": "#FF9DA7", "border": "#FF9DA7", "highlight": {"background": "#ffffff", "border": "#FF9DA7"}}, "size": 16.7, "font": {"size": 12, "color": "#ffffff"}, "title": "Cableado B2 \u2014 Canalizaci\u00f3n Profesional", "community": 7, "community_name": "Canalizacion", "source_file": "CABLEADO ESTRUCTURADO/files/bloque2.html", "file_type": "document", "degree": 2}, {"id": "cab_bloque3", "label": "Cableado B3 \u2014 Elementos del Data Center", "color": {"background": "#4E79A7", "border": "#4E79A7", "highlight": {"background": "#ffffff", "border": "#4E79A7"}}, "size": 16.7, "font": {"size": 12, "color": "#ffffff"}, "title": "Cableado B3 \u2014 Elementos del Data Center", "community": 10, "community_name": "Data Center y Rack", "source_file": "CABLEADO ESTRUCTURADO/files/bloque3.html", "file_type": "document", "degree": 2}, {"id": "cab_bloque4", "label": "Cableado B4 \u2014 En el Campo de Trabajo", "color": {"background": "#F28E2B", "border": "#F28E2B", "highlight": {"background": "#ffffff", "border": "#F28E2B"}}, "size": 16.7, "font": {"size": 12, "color": "#ffffff"}, "title": "Cableado B4 \u2014 En el Campo de Trabajo", "community": 11, "community_name": "Trabajo de Campo", "source_file": "CABLEADO ESTRUCTURADO/files/bloque4.html", "file_type": "document", "degree": 2}, {"id": "cab_bloque5", "label": "Cableado B5 \u2014 Introducci\u00f3n a Fibra \u00d3ptica", "color": {"background": "#EDC948", "border": "#EDC948", "highlight": {"background": "#ffffff", "border": "#EDC948"}}, "size": 16.7, "font": {"size": 12, "color": "#ffffff"}, "title": "Cableado B5 \u2014 Introducci\u00f3n a Fibra \u00d3ptica", "community": 5, "community_name": "Medios Fisicos: Cobre y Fibra", "source_file": "CABLEADO ESTRUCTURADO/files/bloque5.html", "file_type": "document", "degree": 2}, {"id": "cab_bloque6", "label": "Cableado B6 \u2014 Consideraciones Profesionales", "color": {"background": "#E15759", "border": "#E15759", "highlight": {"background": "#ffffff", "border": "#E15759"}}, "size": 16.7, "font": {"size": 12, "color": "#ffffff"}, "title": "Cableado B6 \u2014 Consideraciones Profesionales", "community": 12, "community_name": "Normas TIA/EIA", "source_file": "CABLEADO ESTRUCTURADO/files/bloque6.html", "file_type": "document", "degree": 2}, {"id": "cab_script", "label": "Cableado script.js (flashcards/quiz)", "color": {"background": "#EDC948", "border": "#EDC948", "highlight": {"background": "#ffffff", "border": "#EDC948"}}, "size": 13.3, "font": {"size": 0, "color": "#ffffff"}, "title": "Cableado script.js (flashcards/quiz)", "community": 5, "community_name": "Medios Fisicos: Cobre y Fibra", "source_file": "CABLEADO ESTRUCTURADO/files/script.js", "file_type": "code", "degree": 1}, {"id": "adv_index", "label": "Redes Avanzado \u2014 \u00cdndice", "color": {"background": "#B07AA1", "border": "#B07AA1", "highlight": {"background": "#ffffff", "border": "#B07AA1"}}, "size": 40.0, "font": {"size": 12, "color": "#ffffff"}, "title": "Redes Avanzado \u2014 \u00cdndice", "community": 6, "community_name": "Navegacion del Portal", "source_file": "REDES AVANZADO/files/index.html", "file_type": "document", "degree": 9}, {"id": "adv_bloque1", "label": "Avanzado B1 \u2014 Switches Cisco Fundamentos", "color": {"background": "#F28E2B", "border": "#F28E2B", "highlight": {"background": "#ffffff", "border": "#F28E2B"}}, "size": 23.3, "font": {"size": 12, "color": "#ffffff"}, "title": "Avanzado B1 \u2014 Switches Cisco Fundamentos", "community": 1, "community_name": "OSI, TCP/IP y Cisco IOS", "source_file": "REDES AVANZADO/files/bloque1.html", "file_type": "document", "degree": 4}, {"id": "adv_bloque2", "label": "Avanzado B2 \u2014 VLANs y Spanning Tree", "color": {"background": "#4E79A7", "border": "#4E79A7", "highlight": {"background": "#ffffff", "border": "#4E79A7"}}, "size": 23.3, "font": {"size": 12, "color": "#ffffff"}, "title": "Avanzado B2 \u2014 VLANs y Spanning Tree", "community": 0, "community_name": "Servicios IP y VLANs", "source_file": "REDES AVANZADO/files/bloque2.html", "file_type": "document", "degree": 4}, {"id": "adv_bloque3", "label": "Avanzado B3 \u2014 Switches Ubiquiti", "color": {"background": "#BAB0AC", "border": "#BAB0AC", "highlight": {"background": "#ffffff", "border": "#BAB0AC"}}, "size": 16.7, "font": {"size": 12, "color": "#ffffff"}, "title": "Avanzado B3 \u2014 Switches Ubiquiti", "community": 9, "community_name": "Switches Ubiquiti", "source_file": "REDES AVANZADO/files/bloque3.html", "file_type": "document", "degree": 2}, {"id": "adv_bloque4", "label": "Avanzado B4 \u2014 RADIUS Server Windows", "color": {"background": "#E15759", "border": "#E15759", "highlight": {"background": "#ffffff", "border": "#E15759"}}, "size": 16.7, "font": {"size": 12, "color": "#ffffff"}, "title": "Avanzado B4 \u2014 RADIUS Server Windows", "community": 2, "community_name": "WiFi Empresarial y RADIUS", "source_file": "REDES AVANZADO/files/bloque4.html", "file_type": "document", "degree": 2}, {"id": "adv_bloque5", "label": "Avanzado B5 \u2014 WiFi Empresarial Ubiquiti", "color": {"background": "#E15759", "border": "#E15759", "highlight": {"background": "#ffffff", "border": "#E15759"}}, "size": 23.3, "font": {"size": 12, "color": "#ffffff"}, "title": "Avanzado B5 \u2014 WiFi Empresarial Ubiquiti", "community": 2, "community_name": "WiFi Empresarial y RADIUS", "source_file": "REDES AVANZADO/files/bloque5.html", "file_type": "document", "degree": 4}, {"id": "adv_bloque6", "label": "Avanzado B6 \u2014 Multicast con Cisco", "color": {"background": "#9C755F", "border": "#9C755F", "highlight": {"background": "#ffffff", "border": "#9C755F"}}, "size": 16.7, "font": {"size": 12, "color": "#ffffff"}, "title": "Avanzado B6 \u2014 Multicast con Cisco", "community": 8, "community_name": "Multicast Cisco", "source_file": "REDES AVANZADO/files/bloque6.html", "file_type": "document", "degree": 2}, {"id": "adv_script", "label": "Avanzado script.js", "color": {"background": "#F28E2B", "border": "#F28E2B", "highlight": {"background": "#ffffff", "border": "#F28E2B"}}, "size": 13.3, "font": {"size": 0, "color": "#ffffff"}, "title": "Avanzado script.js", "community": 1, "community_name": "OSI, TCP/IP y Cisco IOS", "source_file": "REDES AVANZADO/files/script.js", "file_type": "code", "degree": 1}, {"id": "bas_index", "label": "Redes B\u00e1sico \u2014 \u00cdndice", "color": {"background": "#76B7B2", "border": "#76B7B2", "highlight": {"background": "#ffffff", "border": "#76B7B2"}}, "size": 33.3, "font": {"size": 12, "color": "#ffffff"}, "title": "Redes B\u00e1sico \u2014 \u00cdndice", "community": 3, "community_name": "Fundamentos y Virtualizacion", "source_file": "REDES BASICO/files/index.html", "file_type": "document", "degree": 7}, {"id": "bas_bloque1", "label": "B\u00e1sico B1 \u2014 Introducci\u00f3n a Redes de Datos", "color": {"background": "#76B7B2", "border": "#76B7B2", "highlight": {"background": "#ffffff", "border": "#76B7B2"}}, "size": 20.0, "font": {"size": 12, "color": "#ffffff"}, "title": "B\u00e1sico B1 \u2014 Introducci\u00f3n a Redes de Datos", "community": 3, "community_name": "Fundamentos y Virtualizacion", "source_file": "REDES BASICO/files/bloque1.html", "file_type": "document", "degree": 3}, {"id": "bas_bloque2", "label": "B\u00e1sico B2 \u2014 Conceptos y Protocolos de Red", "color": {"background": "#F28E2B", "border": "#F28E2B", "highlight": {"background": "#ffffff", "border": "#F28E2B"}}, "size": 23.3, "font": {"size": 12, "color": "#ffffff"}, "title": "B\u00e1sico B2 \u2014 Conceptos y Protocolos de Red", "community": 1, "community_name": "OSI, TCP/IP y Cisco IOS", "source_file": "REDES BASICO/files/bloque2.html", "file_type": "document", "degree": 4}, {"id": "bas_bloque3", "label": "B\u00e1sico B3 \u2014 Direccionamiento IP y Servicios", "color": {"background": "#4E79A7", "border": "#4E79A7", "highlight": {"background": "#ffffff", "border": "#4E79A7"}}, "size": 30.0, "font": {"size": 12, "color": "#ffffff"}, "title": "B\u00e1sico B3 \u2014 Direccionamiento IP y Servicios", "community": 0, "community_name": "Servicios IP y VLANs", "source_file": "REDES BASICO/files/bloque3.html", "file_type": "document", "degree": 6}, {"id": "bas_bloque4", "label": "B\u00e1sico B4 \u2014 Redes Inal\u00e1mbricas", "color": {"background": "#E15759", "border": "#E15759", "highlight": {"background": "#ffffff", "border": "#E15759"}}, "size": 20.0, "font": {"size": 12, "color": "#ffffff"}, "title": "B\u00e1sico B4 \u2014 Redes Inal\u00e1mbricas", "community": 2, "community_name": "WiFi Empresarial y RADIUS", "source_file": "REDES BASICO/files/bloque4.html", "file_type": "document", "degree": 3}, {"id": "bas_bloque5", "label": "B\u00e1sico B5 \u2014 Virtualizaci\u00f3n (Proxmox)", "color": {"background": "#76B7B2", "border": "#76B7B2", "highlight": {"background": "#ffffff", "border": "#76B7B2"}}, "size": 16.7, "font": {"size": 12, "color": "#ffffff"}, "title": "B\u00e1sico B5 \u2014 Virtualizaci\u00f3n (Proxmox)", "community": 3, "community_name": "Fundamentos y Virtualizacion", "source_file": "REDES BASICO/files/bloque5.html", "file_type": "document", "degree": 2}, {"id": "bas_script", "label": "B\u00e1sico script.js", "color": {"background": "#76B7B2", "border": "#76B7B2", "highlight": {"background": "#ffffff", "border": "#76B7B2"}}, "size": 13.3, "font": {"size": 0, "color": "#ffffff"}, "title": "B\u00e1sico script.js", "community": 3, "community_name": "Fundamentos y Virtualizacion", "source_file": "REDES BASICO/files/script.js", "file_type": "code", "degree": 1}, {"id": "concept_osi", "label": "Modelo OSI", "color": {"background": "#F28E2B", "border": "#F28E2B", "highlight": {"background": "#ffffff", "border": "#F28E2B"}}, "size": 13.3, "font": {"size": 0, "color": "#ffffff"}, "title": "Modelo OSI", "community": 1, "community_name": "OSI, TCP/IP y Cisco IOS", "source_file": "REDES BASICO/files/bloque2.html", "file_type": "rationale", "degree": 1}, {"id": "concept_tcpip", "label": "TCP/IP", "color": {"background": "#F28E2B", "border": "#F28E2B", "highlight": {"background": "#ffffff", "border": "#F28E2B"}}, "size": 13.3, "font": {"size": 0, "color": "#ffffff"}, "title": "TCP/IP", "community": 1, "community_name": "OSI, TCP/IP y Cisco IOS", "source_file": "REDES BASICO/files/bloque2.html", "file_type": "rationale", "degree": 1}, {"id": "concept_ip_addressing", "label": "Direccionamiento IP / Subnetting", "color": {"background": "#4E79A7", "border": "#4E79A7", "highlight": {"background": "#ffffff", "border": "#4E79A7"}}, "size": 13.3, "font": {"size": 0, "color": "#ffffff"}, "title": "Direccionamiento IP / Subnetting", "community": 0, "community_name": "Servicios IP y VLANs", "source_file": "REDES BASICO/files/bloque3.html", "file_type": "rationale", "degree": 1}, {"id": "concept_dhcp", "label": "DHCP", "color": {"background": "#4E79A7", "border": "#4E79A7", "highlight": {"background": "#ffffff", "border": "#4E79A7"}}, "size": 13.3, "font": {"size": 0, "color": "#ffffff"}, "title": "DHCP", "community": 0, "community_name": "Servicios IP y VLANs", "source_file": "REDES BASICO/files/bloque3.html", "file_type": "rationale", "degree": 1}, {"id": "concept_dns", "label": "DNS", "color": {"background": "#4E79A7", "border": "#4E79A7", "highlight": {"background": "#ffffff", "border": "#4E79A7"}}, "size": 13.3, "font": {"size": 0, "color": "#ffffff"}, "title": "DNS", "community": 0, "community_name": "Servicios IP y VLANs", "source_file": "REDES BASICO/files/bloque3.html", "file_type": "rationale", "degree": 1}, {"id": "concept_ntp", "label": "NTP", "color": {"background": "#4E79A7", "border": "#4E79A7", "highlight": {"background": "#ffffff", "border": "#4E79A7"}}, "size": 13.3, "font": {"size": 0, "color": "#ffffff"}, "title": "NTP", "community": 0, "community_name": "Servicios IP y VLANs", "source_file": "REDES BASICO/files/bloque3.html", "file_type": "rationale", "degree": 1}, {"id": "concept_wifi", "label": "Redes Inal\u00e1mbricas (WiFi)", "color": {"background": "#E15759", "border": "#E15759", "highlight": {"background": "#ffffff", "border": "#E15759"}}, "size": 16.7, "font": {"size": 12, "color": "#ffffff"}, "title": "Redes Inal\u00e1mbricas (WiFi)", "community": 2, "community_name": "WiFi Empresarial y RADIUS", "source_file": "REDES BASICO/files/bloque4.html", "file_type": "rationale", "degree": 2}, {"id": "concept_virtualization", "label": "Virtualizaci\u00f3n / Proxmox", "color": {"background": "#76B7B2", "border": "#76B7B2", "highlight": {"background": "#ffffff", "border": "#76B7B2"}}, "size": 13.3, "font": {"size": 0, "color": "#ffffff"}, "title": "Virtualizaci\u00f3n / Proxmox", "community": 3, "community_name": "Fundamentos y Virtualizacion", "source_file": "REDES BASICO/files/bloque5.html", "file_type": "rationale", "degree": 1}, {"id": "concept_topologies", "label": "Topolog\u00edas de Red", "color": {"background": "#76B7B2", "border": "#76B7B2", "highlight": {"background": "#ffffff", "border": "#76B7B2"}}, "size": 13.3, "font": {"size": 0, "color": "#ffffff"}, "title": "Topolog\u00edas de Red", "community": 3, "community_name": "Fundamentos y Virtualizacion", "source_file": "REDES BASICO/files/bloque1.html", "file_type": "rationale", "degree": 1}, {"id": "concept_cisco_ios", "label": "Cisco IOS / Switches Cisco", "color": {"background": "#F28E2B", "border": "#F28E2B", "highlight": {"background": "#ffffff", "border": "#F28E2B"}}, "size": 13.3, "font": {"size": 0, "color": "#ffffff"}, "title": "Cisco IOS / Switches Cisco", "community": 1, "community_name": "OSI, TCP/IP y Cisco IOS", "source_file": "REDES AVANZADO/files/bloque1.html", "file_type": "rationale", "degree": 1}, {"id": "concept_vlan", "label": "VLAN", "color": {"background": "#4E79A7", "border": "#4E79A7", "highlight": {"background": "#ffffff", "border": "#4E79A7"}}, "size": 13.3, "font": {"size": 0, "color": "#ffffff"}, "title": "VLAN", "community": 0, "community_name": "Servicios IP y VLANs", "source_file": "REDES AVANZADO/files/bloque2.html", "file_type": "rationale", "degree": 1}, {"id": "concept_stp", "label": "Spanning Tree Protocol (STP)", "color": {"background": "#4E79A7", "border": "#4E79A7", "highlight": {"background": "#ffffff", "border": "#4E79A7"}}, "size": 13.3, "font": {"size": 0, "color": "#ffffff"}, "title": "Spanning Tree Protocol (STP)", "community": 0, "community_name": "Servicios IP y VLANs", "source_file": "REDES AVANZADO/files/bloque2.html", "file_type": "rationale", "degree": 1}, {"id": "concept_ubiquiti", "label": "Ubiquiti UniFi", "color": {"background": "#BAB0AC", "border": "#BAB0AC", "highlight": {"background": "#ffffff", "border": "#BAB0AC"}}, "size": 13.3, "font": {"size": 0, "color": "#ffffff"}, "title": "Ubiquiti UniFi", "community": 9, "community_name": "Switches Ubiquiti", "source_file": "REDES AVANZADO/files/bloque3.html", "file_type": "rationale", "degree": 1}, {"id": "concept_radius", "label": "RADIUS / 802.1X", "color": {"background": "#E15759", "border": "#E15759", "highlight": {"background": "#ffffff", "border": "#E15759"}}, "size": 16.7, "font": {"size": 12, "color": "#ffffff"}, "title": "RADIUS / 802.1X", "community": 2, "community_name": "WiFi Empresarial y RADIUS", "source_file": "REDES AVANZADO/files/bloque4.html", "file_type": "rationale", "degree": 2}, {"id": "concept_wifi_enterprise", "label": "WiFi Empresarial", "color": {"background": "#E15759", "border": "#E15759", "highlight": {"background": "#ffffff", "border": "#E15759"}}, "size": 16.7, "font": {"size": 12, "color": "#ffffff"}, "title": "WiFi Empresarial", "community": 2, "community_name": "WiFi Empresarial y RADIUS", "source_file": "REDES AVANZADO/files/bloque5.html", "file_type": "rationale", "degree": 2}, {"id": "concept_multicast_pim", "label": "Multicast / PIM", "color": {"background": "#9C755F", "border": "#9C755F", "highlight": {"background": "#ffffff", "border": "#9C755F"}}, "size": 13.3, "font": {"size": 0, "color": "#ffffff"}, "title": "Multicast / PIM", "community": 8, "community_name": "Multicast Cisco", "source_file": "REDES AVANZADO/files/bloque6.html", "file_type": "rationale", "degree": 1}, {"id": "concept_copper_media", "label": "Medios de Cobre (UTP/STP)", "color": {"background": "#EDC948", "border": "#EDC948", "highlight": {"background": "#ffffff", "border": "#EDC948"}}, "size": 16.7, "font": {"size": 12, "color": "#ffffff"}, "title": "Medios de Cobre (UTP/STP)", "community": 5, "community_name": "Medios Fisicos: Cobre y Fibra", "source_file": "CABLEADO ESTRUCTURADO/files/bloque1.html", "file_type": "rationale", "degree": 2}, {"id": "concept_canalizacion", "label": "Canalizaci\u00f3n (Bandejas/Conduit)", "color": {"background": "#FF9DA7", "border": "#FF9DA7", "highlight": {"background": "#ffffff", "border": "#FF9DA7"}}, "size": 13.3, "font": {"size": 0, "color": "#ffffff"}, "title": "Canalizaci\u00f3n (Bandejas/Conduit)", "community": 7, "community_name": "Canalizacion", "source_file": "CABLEADO ESTRUCTURADO/files/bloque2.html", "file_type": "rationale", "degree": 1}, {"id": "concept_datacenter", "label": "Data Center / Rack", "color": {"background": "#4E79A7", "border": "#4E79A7", "highlight": {"background": "#ffffff", "border": "#4E79A7"}}, "size": 13.3, "font": {"size": 0, "color": "#ffffff"}, "title": "Data Center / Rack", "community": 10, "community_name": "Data Center y Rack", "source_file": "CABLEADO ESTRUCTURADO/files/bloque3.html", "file_type": "rationale", "degree": 1}, {"id": "concept_field_work", "label": "Trabajo de Campo / Instalaci\u00f3n", "color": {"background": "#F28E2B", "border": "#F28E2B", "highlight": {"background": "#ffffff", "border": "#F28E2B"}}, "size": 13.3, "font": {"size": 0, "color": "#ffffff"}, "title": "Trabajo de Campo / Instalaci\u00f3n", "community": 11, "community_name": "Trabajo de Campo", "source_file": "CABLEADO ESTRUCTURADO/files/bloque4.html", "file_type": "rationale", "degree": 1}, {"id": "concept_fiber_optic", "label": "Fibra \u00d3ptica", "color": {"background": "#EDC948", "border": "#EDC948", "highlight": {"background": "#ffffff", "border": "#EDC948"}}, "size": 16.7, "font": {"size": 12, "color": "#ffffff"}, "title": "Fibra \u00d3ptica", "community": 5, "community_name": "Medios Fisicos: Cobre y Fibra", "source_file": "CABLEADO ESTRUCTURADO/files/bloque5.html", "file_type": "rationale", "degree": 2}, {"id": "concept_standards", "label": "Normas/Est\u00e1ndares (TIA/EIA)", "color": {"background": "#E15759", "border": "#E15759", "highlight": {"background": "#ffffff", "border": "#E15759"}}, "size": 13.3, "font": {"size": 0, "color": "#ffffff"}, "title": "Normas/Est\u00e1ndares (TIA/EIA)", "community": 12, "community_name": "Normas TIA/EIA", "source_file": "CABLEADO ESTRUCTURADO/files/bloque6.html", "file_type": "rationale", "degree": 1}];
+const RAW_EDGES = [{"from": "cableado_estructurado_files_script_js", "to": "files_script_checkquiz", "label": "contains", "title": "contains [EXTRACTED]", "dashes": false, "width": 2, "color": {"opacity": 0.7}, "confidence": "EXTRACTED"}, {"from": "cableado_estructurado_files_script_js", "to": "files_script_resetquiz", "label": "contains", "title": "contains [EXTRACTED]", "dashes": false, "width": 2, "color": {"opacity": 0.7}, "confidence": "EXTRACTED"}, {"from": "redes_avanzado_files_script_js", "to": "files_script_checkquiz", "label": "contains", "title": "contains [EXTRACTED]", "dashes": false, "width": 2, "color": {"opacity": 0.7}, "confidence": "EXTRACTED"}, {"from": "redes_basico_files_script_js", "to": "files_script_checkquiz", "label": "contains", "title": "contains [EXTRACTED]", "dashes": false, "width": 2, "color": {"opacity": 0.7}, "confidence": "EXTRACTED"}, {"from": "redes_avanzado_files_script_js", "to": "files_script_resetquiz", "label": "contains", "title": "contains [EXTRACTED]", "dashes": false, "width": 2, "color": {"opacity": 0.7}, "confidence": "EXTRACTED"}, {"from": "redes_basico_files_script_js", "to": "files_script_resetquiz", "label": "contains", "title": "contains [EXTRACTED]", "dashes": false, "width": 2, "color": {"opacity": 0.7}, "confidence": "EXTRACTED"}, {"from": "menu_principal", "to": "bas_index", "label": "references", "title": "references [EXTRACTED]", "dashes": false, "width": 2, "color": {"opacity": 0.7}, "confidence": "EXTRACTED"}, {"from": "menu_principal", "to": "adv_index", "label": "references", "title": "references [EXTRACTED]", "dashes": false, "width": 2, "color": {"opacity": 0.7}, "confidence": "EXTRACTED"}, {"from": "menu_principal", "to": "cab_index", "label": "references", "title": "references [EXTRACTED]", "dashes": false, "width": 2, "color": {"opacity": 0.7}, "confidence": "EXTRACTED"}, {"from": "cab_index", "to": "cab_bloque1", "label": "references", "title": "references [EXTRACTED]", "dashes": false, "width": 2, "color": {"opacity": 0.7}, "confidence": "EXTRACTED"}, {"from": "cab_index", "to": "cab_bloque2", "label": "references", "title": "references [EXTRACTED]", "dashes": false, "width": 2, "color": {"opacity": 0.7}, "confidence": "EXTRACTED"}, {"from": "cab_index", "to": "cab_bloque3", "label": "references", "title": "references [EXTRACTED]", "dashes": false, "width": 2, "color": {"opacity": 0.7}, "confidence": "EXTRACTED"}, {"from": "cab_index", "to": "cab_bloque4", "label": "references", "title": "references [EXTRACTED]", "dashes": false, "width": 2, "color": {"opacity": 0.7}, "confidence": "EXTRACTED"}, {"from": "cab_index", "to": "cab_bloque5", "label": "references", "title": "references [EXTRACTED]", "dashes": false, "width": 2, "color": {"opacity": 0.7}, "confidence": "EXTRACTED"}, {"from": "cab_index", "to": "cab_bloque6", "label": "references", "title": "references [EXTRACTED]", "dashes": false, "width": 2, "color": {"opacity": 0.7}, "confidence": "EXTRACTED"}, {"from": "adv_index", "to": "cab_index", "label": "conceptually_related_to", "title": "conceptually_related_to [INFERRED]", "dashes": true, "width": 1, "color": {"opacity": 0.35}, "confidence": "INFERRED"}, {"from": "cab_bloque1", "to": "concept_copper_media", "label": "rationale_for", "title": "rationale_for [INFERRED]", "dashes": true, "width": 1, "color": {"opacity": 0.35}, "confidence": "INFERRED"}, {"from": "cab_bloque1", "to": "cab_script", "label": "calls", "title": "calls [INFERRED]", "dashes": true, "width": 1, "color": {"opacity": 0.35}, "confidence": "INFERRED"}, {"from": "cab_bloque2", "to": "concept_canalizacion", "label": "rationale_for", "title": "rationale_for [EXTRACTED]", "dashes": false, "width": 2, "color": {"opacity": 0.7}, "confidence": "EXTRACTED"}, {"from": "cab_bloque3", "to": "concept_datacenter", "label": "rationale_for", "title": "rationale_for [EXTRACTED]", "dashes": false, "width": 2, "color": {"opacity": 0.7}, "confidence": "EXTRACTED"}, {"from": "cab_bloque4", "to": "concept_field_work", "label": "rationale_for", "title": "rationale_for [EXTRACTED]", "dashes": false, "width": 2, "color": {"opacity": 0.7}, "confidence": "EXTRACTED"}, {"from": "cab_bloque5", "to": "concept_fiber_optic", "label": "rationale_for", "title": "rationale_for [EXTRACTED]", "dashes": false, "width": 2, "color": {"opacity": 0.7}, "confidence": "EXTRACTED"}, {"from": "cab_bloque6", "to": "concept_standards", "label": "rationale_for", "title": "rationale_for [INFERRED]", "dashes": true, "width": 1, "color": {"opacity": 0.35}, "confidence": "INFERRED"}, {"from": "adv_index", "to": "adv_bloque1", "label": "references", "title": "references [EXTRACTED]", "dashes": false, "width": 2, "color": {"opacity": 0.7}, "confidence": "EXTRACTED"}, {"from": "adv_index", "to": "adv_bloque2", "label": "references", "title": "references [EXTRACTED]", "dashes": false, "width": 2, "color": {"opacity": 0.7}, "confidence": "EXTRACTED"}, {"from": "adv_index", "to": "adv_bloque3", "label": "references", "title": "references [EXTRACTED]", "dashes": false, "width": 2, "color": {"opacity": 0.7}, "confidence": "EXTRACTED"}, {"from": "adv_index", "to": "adv_bloque4", "label": "references", "title": "references [EXTRACTED]", "dashes": false, "width": 2, "color": {"opacity": 0.7}, "confidence": "EXTRACTED"}, {"from": "adv_index", "to": "adv_bloque5", "label": "references", "title": "references [EXTRACTED]", "dashes": false, "width": 2, "color": {"opacity": 0.7}, "confidence": "EXTRACTED"}, {"from": "adv_index", "to": "adv_bloque6", "label": "references", "title": "references [EXTRACTED]", "dashes": false, "width": 2, "color": {"opacity": 0.7}, "confidence": "EXTRACTED"}, {"from": "bas_index", "to": "adv_index", "label": "conceptually_related_to", "title": "conceptually_related_to [INFERRED]", "dashes": true, "width": 1, "color": {"opacity": 0.35}, "confidence": "INFERRED"}, {"from": "adv_bloque1", "to": "concept_cisco_ios", "label": "rationale_for", "title": "rationale_for [EXTRACTED]", "dashes": false, "width": 2, "color": {"opacity": 0.7}, "confidence": "EXTRACTED"}, {"from": "bas_bloque2", "to": "adv_bloque1", "label": "conceptually_related_to", "title": "conceptually_related_to [INFERRED]", "dashes": true, "width": 1, "color": {"opacity": 0.35}, "confidence": "INFERRED"}, {"from": "adv_bloque1", "to": "adv_script", "label": "calls", "title": "calls [INFERRED]", "dashes": true, "width": 1, "color": {"opacity": 0.35}, "confidence": "INFERRED"}, {"from": "adv_bloque2", "to": "concept_vlan", "label": "rationale_for", "title": "rationale_for [EXTRACTED]", "dashes": false, "width": 2, "color": {"opacity": 0.7}, "confidence": "EXTRACTED"}, {"from": "adv_bloque2", "to": "concept_stp", "label": "rationale_for", "title": "rationale_for [EXTRACTED]", "dashes": false, "width": 2, "color": {"opacity": 0.7}, "confidence": "EXTRACTED"}, {"from": "bas_bloque3", "to": "adv_bloque2", "label": "conceptually_related_to", "title": "conceptually_related_to [INFERRED]", "dashes": true, "width": 1, "color": {"opacity": 0.35}, "confidence": "INFERRED"}, {"from": "adv_bloque3", "to": "concept_ubiquiti", "label": "rationale_for", "title": "rationale_for [EXTRACTED]", "dashes": false, "width": 2, "color": {"opacity": 0.7}, "confidence": "EXTRACTED"}, {"from": "adv_bloque4", "to": "concept_radius", "label": "rationale_for", "title": "rationale_for [EXTRACTED]", "dashes": false, "width": 2, "color": {"opacity": 0.7}, "confidence": "EXTRACTED"}, {"from": "adv_bloque5", "to": "concept_wifi_enterprise", "label": "rationale_for", "title": "rationale_for [EXTRACTED]", "dashes": false, "width": 2, "color": {"opacity": 0.7}, "confidence": "EXTRACTED"}, {"from": "adv_bloque5", "to": "concept_radius", "label": "conceptually_related_to", "title": "conceptually_related_to [INFERRED]", "dashes": true, "width": 1, "color": {"opacity": 0.35}, "confidence": "INFERRED"}, {"from": "bas_bloque4", "to": "adv_bloque5", "label": "semantically_similar_to", "title": "semantically_similar_to [INFERRED]", "dashes": true, "width": 1, "color": {"opacity": 0.35}, "confidence": "INFERRED"}, {"from": "adv_bloque6", "to": "concept_multicast_pim", "label": "rationale_for", "title": "rationale_for [EXTRACTED]", "dashes": false, "width": 2, "color": {"opacity": 0.7}, "confidence": "EXTRACTED"}, {"from": "bas_index", "to": "bas_bloque1", "label": "references", "title": "references [EXTRACTED]", "dashes": false, "width": 2, "color": {"opacity": 0.7}, "confidence": "EXTRACTED"}, {"from": "bas_index", "to": "bas_bloque2", "label": "references", "title": "references [EXTRACTED]", "dashes": false, "width": 2, "color": {"opacity": 0.7}, "confidence": "EXTRACTED"}, {"from": "bas_index", "to": "bas_bloque3", "label": "references", "title": "references [EXTRACTED]", "dashes": false, "width": 2, "color": {"opacity": 0.7}, "confidence": "EXTRACTED"}, {"from": "bas_index", "to": "bas_bloque4", "label": "references", "title": "references [EXTRACTED]", "dashes": false, "width": 2, "color": {"opacity": 0.7}, "confidence": "EXTRACTED"}, {"from": "bas_index", "to": "bas_bloque5", "label": "references", "title": "references [EXTRACTED]", "dashes": false, "width": 2, "color": {"opacity": 0.7}, "confidence": "EXTRACTED"}, {"from": "bas_bloque1", "to": "concept_topologies", "label": "rationale_for", "title": "rationale_for [INFERRED]", "dashes": true, "width": 1, "color": {"opacity": 0.35}, "confidence": "INFERRED"}, {"from": "bas_bloque1", "to": "bas_script", "label": "calls", "title": "calls [INFERRED]", "dashes": true, "width": 1, "color": {"opacity": 0.35}, "confidence": "INFERRED"}, {"from": "bas_bloque2", "to": "concept_osi", "label": "rationale_for", "title": "rationale_for [INFERRED]", "dashes": true, "width": 1, "color": {"opacity": 0.35}, "confidence": "INFERRED"}, {"from": "bas_bloque2", "to": "concept_tcpip", "label": "rationale_for", "title": "rationale_for [INFERRED]", "dashes": true, "width": 1, "color": {"opacity": 0.35}, "confidence": "INFERRED"}, {"from": "bas_bloque3", "to": "concept_ip_addressing", "label": "rationale_for", "title": "rationale_for [EXTRACTED]", "dashes": false, "width": 2, "color": {"opacity": 0.7}, "confidence": "EXTRACTED"}, {"from": "bas_bloque3", "to": "concept_dhcp", "label": "rationale_for", "title": "rationale_for [EXTRACTED]", "dashes": false, "width": 2, "color": {"opacity": 0.7}, "confidence": "EXTRACTED"}, {"from": "bas_bloque3", "to": "concept_dns", "label": "rationale_for", "title": "rationale_for [EXTRACTED]", "dashes": false, "width": 2, "color": {"opacity": 0.7}, "confidence": "EXTRACTED"}, {"from": "bas_bloque3", "to": "concept_ntp", "label": "rationale_for", "title": "rationale_for [EXTRACTED]", "dashes": false, "width": 2, "color": {"opacity": 0.7}, "confidence": "EXTRACTED"}, {"from": "bas_bloque4", "to": "concept_wifi", "label": "rationale_for", "title": "rationale_for [EXTRACTED]", "dashes": false, "width": 2, "color": {"opacity": 0.7}, "confidence": "EXTRACTED"}, {"from": "bas_bloque5", "to": "concept_virtualization", "label": "rationale_for", "title": "rationale_for [EXTRACTED]", "dashes": false, "width": 2, "color": {"opacity": 0.7}, "confidence": "EXTRACTED"}, {"from": "concept_wifi", "to": "concept_wifi_enterprise", "label": "semantically_similar_to", "title": "semantically_similar_to [INFERRED]", "dashes": true, "width": 1, "color": {"opacity": 0.35}, "confidence": "INFERRED"}, {"from": "concept_copper_media", "to": "concept_fiber_optic", "label": "conceptually_related_to", "title": "conceptually_related_to [INFERRED]", "dashes": true, "width": 1, "color": {"opacity": 0.35}, "confidence": "INFERRED"}];
+const LEGEND = [{"cid": 0, "color": "#4E79A7", "label": "Servicios IP y VLANs", "count": 8}, {"cid": 1, "color": "#F28E2B", "label": "OSI, TCP/IP y Cisco IOS", "count": 6}, {"cid": 2, "color": "#E15759", "label": "WiFi Empresarial y RADIUS", "count": 6}, {"cid": 3, "color": "#76B7B2", "label": "Fundamentos y Virtualizacion", "count": 6}, {"cid": 4, "color": "#59A14F", "label": "Logica de Quiz (script.js)", "count": 5}, {"cid": 5, "color": "#EDC948", "label": "Medios Fisicos: Cobre y Fibra", "count": 5}, {"cid": 6, "color": "#B07AA1", "label": "Navegacion del Portal", "count": 3}, {"cid": 7, "color": "#FF9DA7", "label": "Canalizacion", "count": 2}, {"cid": 8, "color": "#9C755F", "label": "Multicast Cisco", "count": 2}, {"cid": 9, "color": "#BAB0AC", "label": "Switches Ubiquiti", "count": 2}, {"cid": 10, "color": "#4E79A7", "label": "Data Center y Rack", "count": 2}, {"cid": 11, "color": "#F28E2B", "label": "Trabajo de Campo", "count": 2}, {"cid": 12, "color": "#E15759", "label": "Normas TIA/EIA", "count": 2}];
+
+// HTML-escape helper — prevents XSS when injecting graph data into innerHTML
+function esc(s) {
+  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');
+}
+
+// Build vis datasets
+const nodesDS = new vis.DataSet(RAW_NODES.map(n => ({
+  id: n.id, label: n.label, color: n.color, size: n.size,
+  font: n.font, title: n.title,
+  _community: n.community, _community_name: n.community_name,
+  _source_file: n.source_file, _file_type: n.file_type, _degree: n.degree,
+})));
+
+const edgesDS = new vis.DataSet(RAW_EDGES.map((e, i) => ({
+  id: i, from: e.from, to: e.to,
+  label: '',
+  title: e.title,
+  dashes: e.dashes,
+  width: e.width,
+  color: e.color,
+  arrows: { to: { enabled: true, scaleFactor: 0.5 } },
+})));
+
+const container = document.getElementById('graph');
+const network = new vis.Network(container, { nodes: nodesDS, edges: edgesDS }, {
+  physics: {
+    enabled: true,
+    solver: 'forceAtlas2Based',
+    forceAtlas2Based: {
+      gravitationalConstant: -60,
+      centralGravity: 0.005,
+      springLength: 120,
+      springConstant: 0.08,
+      damping: 0.4,
+      avoidOverlap: 0.8,
+    },
+    stabilization: { iterations: 200, fit: true },
+  },
+  interaction: {
+    hover: true,
+    tooltipDelay: 100,
+    hideEdgesOnDrag: true,
+    navigationButtons: false,
+    keyboard: false,
+  },
+  nodes: { shape: 'dot', borderWidth: 1.5 },
+  edges: { smooth: { type: 'continuous', roundness: 0.2 }, selectionWidth: 3 },
+});
+
+network.once('stabilizationIterationsDone', () => {
+  network.setOptions({ physics: { enabled: false } });
+});
+
+function showInfo(nodeId) {
+  const n = nodesDS.get(nodeId);
+  if (!n) return;
+  const neighborIds = network.getConnectedNodes(nodeId);
+  const neighborItems = neighborIds.map(nid => {
+    const nb = nodesDS.get(nid);
+    const color = nb ? nb.color.background : '#555';
+    return `<span class="neighbor-link" style="border-left-color:${esc(color)}" onclick="focusNode(${JSON.stringify(nid)})">${esc(nb ? nb.label : nid)}</span>`;
+  }).join('');
+  document.getElementById('info-content').innerHTML = `
+    <div class="field"><b>${esc(n.label)}</b></div>
+    <div class="field">Type: ${esc(n._file_type || 'unknown')}</div>
+    <div class="field">Community: ${esc(n._community_name)}</div>
+    <div class="field">Source: ${esc(n._source_file || '-')}</div>
+    <div class="field">Degree: ${n._degree}</div>
+    ${neighborIds.length ? `<div class="field" style="margin-top:8px;color:#aaa;font-size:11px">Neighbors (${neighborIds.length})</div><div id="neighbors-list">${neighborItems}</div>` : ''}
+  `;
+}
+
+function focusNode(nodeId) {
+  network.focus(nodeId, { scale: 1.4, animation: true });
+  network.selectNodes([nodeId]);
+  showInfo(nodeId);
+}
+
+// Track hovered node — hover detection is more reliable than click params
+let hoveredNodeId = null;
+network.on('hoverNode', params => {
+  hoveredNodeId = params.node;
+  container.style.cursor = 'pointer';
+});
+network.on('blurNode', () => {
+  hoveredNodeId = null;
+  container.style.cursor = 'default';
+});
+container.addEventListener('click', () => {
+  if (hoveredNodeId !== null) {
+    showInfo(hoveredNodeId);
+    network.selectNodes([hoveredNodeId]);
+  }
+});
+network.on('click', params => {
+  if (params.nodes.length > 0) {
+    showInfo(params.nodes[0]);
+  } else if (hoveredNodeId === null) {
+    document.getElementById('info-content').innerHTML = '<span class="empty">Click a node to inspect it</span>';
+  }
+});
+
+const searchInput = document.getElementById('search');
+const searchResults = document.getElementById('search-results');
+searchInput.addEventListener('input', () => {
+  const q = searchInput.value.toLowerCase().trim();
+  searchResults.innerHTML = '';
+  if (!q) { searchResults.style.display = 'none'; return; }
+  const matches = RAW_NODES.filter(n => n.label.toLowerCase().includes(q)).slice(0, 20);
+  if (!matches.length) { searchResults.style.display = 'none'; return; }
+  searchResults.style.display = 'block';
+  matches.forEach(n => {
+    const el = document.createElement('div');
+    el.className = 'search-item';
+    el.textContent = n.label;
+    el.style.borderLeft = `3px solid ${n.color.background}`;
+    el.style.paddingLeft = '8px';
+    el.onclick = () => {
+      network.focus(n.id, { scale: 1.5, animation: true });
+      network.selectNodes([n.id]);
+      showInfo(n.id);
+      searchResults.style.display = 'none';
+      searchInput.value = '';
+    };
+    searchResults.appendChild(el);
+  });
+});
+document.addEventListener('click', e => {
+  if (!searchResults.contains(e.target) && e.target !== searchInput)
+    searchResults.style.display = 'none';
+});
+
+const hiddenCommunities = new Set();
+
+const selectAllCb = document.getElementById('select-all-cb');
+
+function updateSelectAllState() {
+  const total = LEGEND.length;
+  const hidden = hiddenCommunities.size;
+  selectAllCb.checked = hidden === 0;
+  selectAllCb.indeterminate = hidden > 0 && hidden < total;
+}
+
+function toggleAllCommunities(hide) {
+  document.querySelectorAll('.legend-item').forEach(item => {
+    hide ? item.classList.add('dimmed') : item.classList.remove('dimmed');
+  });
+  document.querySelectorAll('.legend-cb').forEach(cb => {
+    cb.checked = !hide;
+  });
+  LEGEND.forEach(c => {
+    if (hide) hiddenCommunities.add(c.cid); else hiddenCommunities.delete(c.cid);
+  });
+  const updates = RAW_NODES.map(n => ({ id: n.id, hidden: hide }));
+  nodesDS.update(updates);
+  updateSelectAllState();
+}
+
+const legendEl = document.getElementById('legend');
+LEGEND.forEach(c => {
+  const item = document.createElement('div');
+  item.className = 'legend-item';
+  const cb = document.createElement('input');
+  cb.type = 'checkbox';
+  cb.className = 'legend-cb';
+  cb.checked = true;
+  cb.addEventListener('change', (e) => {
+    e.stopPropagation();
+    if (cb.checked) {
+      hiddenCommunities.delete(c.cid);
+      item.classList.remove('dimmed');
+    } else {
+      hiddenCommunities.add(c.cid);
+      item.classList.add('dimmed');
+    }
+    const updates = RAW_NODES
+      .filter(n => n.community === c.cid)
+      .map(n => ({ id: n.id, hidden: !cb.checked }));
+    nodesDS.update(updates);
+    updateSelectAllState();
+  });
+  item.innerHTML = `<div class="legend-dot" style="background:${c.color}"></div>
+    <span class="legend-label">${c.label}</span>
+    <span class="legend-count">${c.count}</span>`;
+  item.prepend(cb);
+  item.onclick = (e) => {
+    if (e.target === cb) return;
+    cb.checked = !cb.checked;
+    cb.dispatchEvent(new Event('change'));
+  };
+  legendEl.appendChild(item);
+});
+</script>
+<script>
+// Render hyperedges as shaded regions
+const hyperedges = [{"id": "hg_curso_basico", "label": "Curso Redes B\u00e1sico (m\u00f3dulos)", "nodes": ["bas_bloque1", "bas_bloque2", "bas_bloque3", "bas_bloque4", "bas_bloque5"], "relation": "participate_in", "confidence": "EXTRACTED", "confidence_score": 1.0, "source_file": "REDES BASICO/files/index.html"}, {"id": "hg_curso_avanzado", "label": "Curso Redes Avanzado (bloques)", "nodes": ["adv_bloque1", "adv_bloque2", "adv_bloque3", "adv_bloque4", "adv_bloque5", "adv_bloque6"], "relation": "participate_in", "confidence": "EXTRACTED", "confidence_score": 1.0, "source_file": "REDES AVANZADO/files/index.html"}, {"id": "hg_curso_cableado", "label": "Curso Cableado Estructurado (m\u00f3dulos)", "nodes": ["cab_bloque1", "cab_bloque2", "cab_bloque3", "cab_bloque4", "cab_bloque5", "cab_bloque6"], "relation": "participate_in", "confidence": "EXTRACTED", "confidence_score": 1.0, "source_file": "CABLEADO ESTRUCTURADO/files/index.html"}];
+// afterDrawing passes ctx already transformed to network coordinate space.
+// Draw node positions raw — no manual pan/zoom/DPR math needed.
+network.on('afterDrawing', function(ctx) {
+    hyperedges.forEach(h => {
+        const positions = h.nodes
+            .map(nid => network.getPositions([nid])[nid])
+            .filter(p => p !== undefined);
+        if (positions.length < 2) return;
+        ctx.save();
+        ctx.globalAlpha = 0.12;
+        ctx.fillStyle = '#6366f1';
+        ctx.strokeStyle = '#6366f1';
+        ctx.lineWidth = 2;
+        ctx.beginPath();
+        // Centroid and expanded hull in network coordinates
+        const cx = positions.reduce((s, p) => s + p.x, 0) / positions.length;
+        const cy = positions.reduce((s, p) => s + p.y, 0) / positions.length;
+        const expanded = positions.map(p => ({
+            x: cx + (p.x - cx) * 1.15,
+            y: cy + (p.y - cy) * 1.15
+        }));
+        ctx.moveTo(expanded[0].x, expanded[0].y);
+        expanded.slice(1).forEach(p => ctx.lineTo(p.x, p.y));
+        ctx.closePath();
+        ctx.fill();
+        ctx.globalAlpha = 0.4;
+        ctx.stroke();
+        // Label
+        ctx.globalAlpha = 0.8;
+        ctx.fillStyle = '#4f46e5';
+        ctx.font = 'bold 11px sans-serif';
+        ctx.textAlign = 'center';
+        ctx.fillText(h.label, cx, cy - 5);
+        ctx.restore();
+    });
+});
+</script>
+</body>
+</html>

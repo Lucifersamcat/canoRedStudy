@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Redes Básicas — Plan de Estudio</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<header class="topnav">
+  <div class="wrap">
+    <span class="brand">Redes<span class="dot">.</span>Básicas</span>
+    <nav>
+      <a href="index.html">Inicio</a>
+      <a href="bloque1.html">1 · Intro</a>
+      <a href="bloque2.html">2 · Protocolos</a>
+      <a href="bloque3.html">3 · Servicios IP</a>
+      <a href="bloque4.html">4 · Wireless</a>
+      <a href="bloque5.html">5 · Virtualización</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+
+  <!-- ===== Hero ===== -->
+  <section class="hero wrap">
+    <div class="kicker">Material de estudio interactivo</div>
+    <h1>Curso de <span class="grad">Redes Básicas</span></h1>
+    <p>Cinco módulos progresivos: desde los fundamentos de las redes hasta wireless y virtualización con Proxmox. El punto de partida ideal para técnicos, integradores y administradores de infraestructura.</p>
+    <div class="meta">
+      <span class="pill">5 módulos</span>
+      <span class="pill">Laboratorios prácticos</span>
+      <span class="pill">Packet Tracer</span>
+      <span class="pill">Proxmox</span>
+    </div>
+  </section>
+
+  <!-- ===== Diagrama de topología ===== -->
+  <section class="section">
+    <div class="wrap">
+      <h2 class="h"><span class="lead">Topología</span> completa del curso</h2>
+      <p class="subtitle">Cómo encajan los cinco módulos en una red empresarial real.</p>
+      <div class="diagram">
+        <svg viewBox="0 0 860 400" xmlns="http://www.w3.org/2000/svg" font-family="Segoe UI, sans-serif">
+          <defs>
+            <marker id="arr" markerWidth="9" markerHeight="9" refX="7" refY="3" orient="auto">
+              <path d="M0,0 L7,3 L0,6 Z" fill="#9aa7b8"/>
+            </marker>
+          </defs>
+
+          <!-- Líneas de conexión -->
+          <g stroke="#9aa7b8" stroke-width="2" fill="none" marker-end="url(#arr)">
+            <!-- ISP → Router -->
+            <line x1="430" y1="54" x2="430" y2="90"/>
+            <!-- Router → Switch -->
+            <line x1="430" y1="148" x2="430" y2="185"/>
+            <!-- Switch → Servidores -->
+            <line x1="370" y1="243" x2="175" y2="287"/>
+            <!-- Switch → Clientes LAN -->
+            <line x1="430" y1="243" x2="430" y2="287"/>
+            <!-- Switch → WiFi -->
+            <line x1="490" y1="243" x2="678" y2="287"/>
+          </g>
+
+          <!-- Nodos -->
+          <g font-size="13" fill="#e6edf3" text-anchor="middle" font-family="Segoe UI, sans-serif">
+
+            <!-- ISP / Internet -->
+            <rect x="330" y="14" width="200" height="40" rx="9" fill="#1c2230" stroke="#2b3242"/>
+            <text x="430" y="39">Internet / ISP</text>
+
+            <!-- Router / Firewall (Módulo 2) -->
+            <rect x="295" y="92" width="270" height="56" rx="9" fill="#1c2230" stroke="#4f9cf9"/>
+            <text x="430" y="115" font-weight="700">Router / Firewall</text>
+            <text x="430" y="131" font-size="11" fill="#9aa7b8">Gateway · NAT · Default Route</text>
+            <text x="430" y="145" font-size="10" fill="#4f9cf9">Módulo 2 · Protocolos TCP/IP</text>
+
+            <!-- Switch Core + VLANs (Módulo 2) -->
+            <rect x="295" y="187" width="270" height="56" rx="9" fill="#1c2230" stroke="#f59e0b"/>
+            <text x="430" y="210" font-weight="700">Switch Core + VLANs</text>
+            <text x="430" y="226" font-size="11" fill="#9aa7b8">MAC Table · ARP · Dominios broadcast</text>
+            <text x="430" y="240" font-size="10" fill="#f59e0b">Módulo 2 · VLANs · OSI L2</text>
+
+            <!-- Servidores Virtuales (Módulo 5) -->
+            <rect x="60" y="289" width="230" height="56" rx="9" fill="#1c2230" stroke="#a78bfa"/>
+            <text x="175" y="312" font-weight="700">Servidores Virtuales</text>
+            <text x="175" y="328" font-size="11" fill="#9aa7b8">Proxmox · KVM · LXC</text>
+            <text x="175" y="342" font-size="10" fill="#a78bfa">Módulo 5 · Virtualización</text>
+
+            <!-- Clientes LAN + Servicios (Módulo 3) -->
+            <rect x="320" y="289" width="220" height="56" rx="9" fill="#1c2230" stroke="#34d399"/>
+            <text x="430" y="312" font-weight="700">Clientes LAN</text>
+            <text x="430" y="328" font-size="11" fill="#9aa7b8">DHCP · DNS · NTP</text>
+            <text x="430" y="342" font-size="10" fill="#34d399">Módulo 3 · Servicios IP</text>
+
+            <!-- APs WiFi (Módulo 4) -->
+            <rect x="558" y="289" width="242" height="56" rx="9" fill="#1c2230" stroke="#f472b6"/>
+            <text x="679" y="312" font-weight="700">APs Inalámbricos</text>
+            <text x="679" y="328" font-size="11" fill="#9aa7b8">2.4 GHz · 5 GHz · Canales</text>
+            <text x="679" y="342" font-size="10" fill="#f472b6">Módulo 4 · Wireless</text>
+
+          </g>
+
+          <!-- Anotación Módulo 1 -->
+          <rect x="10" y="90" width="180" height="44" rx="8" fill="#1c2230" stroke="#34d399" stroke-dasharray="4 3"/>
+          <text x="100" y="109" font-size="11" fill="#34d399" text-anchor="middle" font-family="Segoe UI, sans-serif" font-weight="700">Módulo 1 · Fundamentos</text>
+          <text x="100" y="126" font-size="10" fill="#9aa7b8" text-anchor="middle" font-family="Segoe UI, sans-serif">Medios · Componentes · MDF/IDF</text>
+          <line x1="190" y1="112" x2="294" y2="112" stroke="#34d399" stroke-width="1.5" stroke-dasharray="4 3" fill="none"/>
+
+        </svg>
+        <div class="cap">La red fluye de Internet hacia el router/firewall, baja al switch core donde se segmenta en VLANs, y se distribuye a servidores virtuales, clientes LAN con sus servicios y puntos de acceso inalámbrico.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== Módulos del curso ===== -->
+  <section class="section">
+    <div class="wrap">
+      <h2 class="h"><span class="lead">Los 5</span> módulos del curso</h2>
+      <p class="subtitle">Estudio progresivo: cada módulo construye sobre el anterior.</p>
+      <div class="grid">
+
+        <a class="card b1" href="bloque1.html">
+          <span class="bar"></span>
+          <span class="num">MÓDULO 01</span>
+          <h3>Introducción a las Redes de Datos</h3>
+          <p>¿Qué es una red?, medios de transmisión (cobre, fibra, radio frecuencia), componentes de red, MDF/IDF y herramientas de cableado estructurado.</p>
+          <div class="tags"><span class="tag">LAN</span><span class="tag">MDF / IDF</span><span class="tag">UTP · Fibra</span></div>
+        </a>
+
+        <a class="card b2" href="bloque2.html">
+          <span class="bar"></span>
+          <span class="num">MÓDULO 02</span>
+          <h3>Conceptos y Protocolos de Red</h3>
+          <p>Topologías (BUS, RING, STAR, MESH), tipos de red LAN/MAN/WAN, modelo OSI de 7 capas, TCP/UDP, puertos, dominios de broadcast y colisión, VLANs, ARP y MAC Address Table.</p>
+          <div class="tags"><span class="tag">OSI</span><span class="tag">TCP / UDP</span><span class="tag">VLANs</span></div>
+        </a>
+
+        <a class="card b3" href="bloque3.html">
+          <span class="bar"></span>
+          <span class="num">MÓDULO 03</span>
+          <h3>Direccionamiento IP y Servicios</h3>
+          <p>IPv4, redes privadas y públicas, Classful vs Classless, subnetting con prefijos, y los tres servicios esenciales: DHCP (4 etapas DORA), DNS (URL/TLD/SLD) y NTP.</p>
+          <div class="tags"><span class="tag">IPv4</span><span class="tag">DHCP</span><span class="tag">DNS · NTP</span></div>
+        </a>
+
+        <a class="card b4" href="bloque4.html">
+          <span class="bar"></span>
+          <span class="num">MÓDULO 04</span>
+          <h3>Redes Inalámbricas</h3>
+          <p>Radio frecuencia, longitud de onda, canales y ancho de canal (20/40/80 MHz), bandas 2.4 GHz y 5 GHz, sub-bandas U-NII, interferencias Co-Channel y Adjacent.</p>
+          <div class="tags"><span class="tag">2.4 GHz</span><span class="tag">5 GHz</span><span class="tag">802.11ac</span></div>
+        </a>
+
+        <a class="card b5" href="bloque5.html">
+          <span class="bar"></span>
+          <span class="num">MÓDULO 05</span>
+          <h3>Virtualización</h3>
+          <p>Beneficios de la virtualización, hipervisores Tipo 1 y Tipo 2, diferencias entre VMs y Containers, KVM, LXC, Docker, Proxmox y práctica con Digital Ocean.</p>
+          <div class="tags"><span class="tag">Proxmox</span><span class="tag">KVM · LXC</span><span class="tag">Docker</span></div>
+        </a>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== Cómo estudiar ===== -->
+  <section class="section">
+    <div class="wrap">
+      <h2 class="h"><span class="lead">Cómo</span> aprovechar este material</h2>
+      <div class="two-col">
+        <div>
+          <h3>Ruta recomendada</h3>
+          <ol class="steps">
+            <li>Lee la teoría del módulo y comprende cada concepto antes de avanzar.</li>
+            <li>Instala Packet Tracer y reproduce los laboratorios de red.</li>
+            <li>Practica los comandos de diagnóstico (ping, ipconfig, nmap).</li>
+            <li>Repasa con las flashcards hasta responderlas sin dudar.</li>
+            <li>Completa el cuestionario; si bajas del 70 %, vuelve a la teoría.</li>
+          </ol>
+        </div>
+        <div>
+          <h3>Qué incluye cada módulo</h3>
+          <ul class="bullets">
+            <li><strong>Teoría ampliada</strong> con el fundamento técnico de cada protocolo.</li>
+            <li><strong>Tablas comparativas</strong> (TCP vs UDP, 2.4 vs 5 GHz, VM vs CT).</li>
+            <li><strong>Diagramas</strong> de topología y flujos de protocolos.</li>
+            <li><strong>Laboratorios</strong> paso a paso con Packet Tracer y herramientas reales.</li>
+            <li><strong>Flashcards</strong> interactivas (clic para girar).</li>
+            <li><strong>Cuestionario</strong> autoevaluable con explicaciones.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== Para quién es ===== -->
+  <section class="section">
+    <div class="wrap">
+      <h2 class="h"><span class="lead">¿Para</span> quién es este curso?</h2>
+      <p class="subtitle">El primer paso sólido en redes para estos cuatro perfiles.</p>
+      <div class="aud-grid">
+
+        <div class="aud-card">
+          <span class="aud-tag b2">SOPORTE IT</span>
+          <h3>Técnicos de Soporte</h3>
+          <p>Si atiendes tickets de conectividad sin entender la red que hay detrás, este curso te da el fundamento que necesitas para diagnosticar con criterio.</p>
+        </div>
+
+        <div class="aud-card">
+          <span class="aud-tag b4">INTEGRADORES</span>
+          <h3>Integradores CCTV / VoIP</h3>
+          <p>Toda instalación de cámaras IP o centrales telefónicas requiere entender VLANs, DHCP y puertos TCP/UDP. Este curso cubre exactamente eso.</p>
+        </div>
+
+        <div class="aud-card">
+          <span class="aud-tag b3">ADMINISTRADORES</span>
+          <h3>Admins de Infraestructura</h3>
+          <p>Si gestionas la red de una pyme sin formación formal en networking, aquí encontrarás los conceptos que te permiten hacerlo con más seguridad y menos errores.</p>
+        </div>
+
+        <div class="aud-card">
+          <span class="aud-tag b5">ESTUDIANTES</span>
+          <h3>Estudiantes de Telecomunicaciones</h3>
+          <p>El curso ideal como complemento práctico a la teoría universitaria. Lleva los conceptos del aula a un laboratorio real desde el primer día.</p>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    Curso de Redes Básicas · Ing. Stevenson Canó · Material de estudio interactivo · Actualiza tus notas a medida que avances.
+  </div>
+</footer>
+
+<script src="script.js"></script>
+</body>
+</html>

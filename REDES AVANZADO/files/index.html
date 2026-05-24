@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Curso de Redes Avanzado</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<header class="topnav">
+  <div class="wrap">
+    <span class="brand">Redes<span class="dot">.</span>Avanzado</span>
+    <nav>
+      <a href="index.html">Inicio</a>
+      <a href="bloque1.html">1 · Cisco</a>
+      <a href="bloque2.html">2 · VLANs/STP</a>
+      <a href="bloque3.html">3 · Ubiquiti</a>
+      <a href="bloque4.html">4 · RADIUS</a>
+      <a href="bloque5.html">5 · WiFi</a>
+      <a href="bloque6.html">6 · Multicast</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <section class="hero wrap">
+    <div class="kicker">Material de estudio interactivo</div>
+    <h1>Curso de <span class="grad">Redes Avanzado</span></h1>
+    <p>Seis bloques progresivos: switching Cisco, VLANs y Spanning Tree, infraestructura Ubiquiti, RADIUS, WiFi empresarial y multicast. Cada bloque incluye teoría ampliada, comandos, laboratorios, diagramas, flashcards y cuestionarios.</p>
+    <div class="meta">
+      <span class="pill">6 bloques</span>
+      <span class="pill">6 laboratorios</span>
+      <span class="pill">Flashcards + quizzes</span>
+      <span class="pill">Diagramas SVG</span>
+    </div>
+  </section>
+
+  <!-- ===== Mapa visual del curso ===== -->
+  <section class="section">
+    <div class="wrap">
+      <h2 class="h"><span class="lead">Mapa</span> de la red completa</h2>
+      <p class="subtitle">Cómo encajan los seis bloques en una infraestructura empresarial real.</p>
+      <div class="diagram">
+        <svg viewBox="0 0 860 520" xmlns="http://www.w3.org/2000/svg" font-family="Segoe UI, sans-serif">
+          <defs>
+            <marker id="arr" markerWidth="9" markerHeight="9" refX="7" refY="3" orient="auto">
+              <path d="M0,0 L7,3 L0,6 Z" fill="#9aa7b8"/>
+            </marker>
+          </defs>
+          <!-- líneas -->
+          <g stroke="#9aa7b8" stroke-width="2" fill="none" marker-end="url(#arr)">
+            <line x1="430" y1="58"  x2="430" y2="92"/>
+            <line x1="430" y1="142" x2="430" y2="176"/>
+            <line x1="430" y1="226" x2="430" y2="260"/>
+            <line x1="350" y1="310" x2="230" y2="344"/>
+            <line x1="510" y1="310" x2="630" y2="344"/>
+            <line x1="210" y1="394" x2="210" y2="428"/>
+            <line x1="650" y1="394" x2="650" y2="428"/>
+            <line x1="720" y1="290" x2="790" y2="290"/>
+          </g>
+          <!-- nodos -->
+          <g font-size="13" fill="#e6edf3" text-anchor="middle">
+            <rect x="350" y="20" width="160" height="40" rx="9" fill="#1c2230" stroke="#2b3242"/>
+            <text x="430" y="44">Internet</text>
+
+            <rect x="330" y="94" width="200" height="48" rx="9" fill="#1c2230" stroke="#f59e0b"/>
+            <text x="430" y="123">Router / Firewall</text>
+
+            <rect x="320" y="178" width="220" height="48" rx="9" fill="#1c2230" stroke="#4f9cf9"/>
+            <text x="430" y="200" font-weight="700">Switch Core Cisco</text>
+            <text x="430" y="216" font-size="11" fill="#9aa7b8">Bloques 1 · 2 · 6</text>
+
+            <rect x="310" y="262" width="240" height="48" rx="9" fill="#1c2230" stroke="#a78bfa"/>
+            <text x="430" y="284" font-weight="700">Switch de distribución</text>
+            <text x="430" y="300" font-size="11" fill="#9aa7b8">Trunks 802.1Q · STP</text>
+
+            <rect x="110" y="346" width="200" height="48" rx="9" fill="#1c2230" stroke="#34d399"/>
+            <text x="210" y="368" font-weight="700">Switch Ubiquiti</text>
+            <text x="210" y="384" font-size="11" fill="#9aa7b8">Bloque 3 · UniFi</text>
+
+            <rect x="550" y="346" width="200" height="48" rx="9" fill="#1c2230" stroke="#2b3242"/>
+            <text x="650" y="368" font-weight="700">Clientes cableados</text>
+            <text x="650" y="384" font-size="11" fill="#9aa7b8">PCs · VoIP · IPTV</text>
+
+            <rect x="110" y="430" width="200" height="60" rx="9" fill="#1c2230" stroke="#f472b6"/>
+            <text x="210" y="452" font-weight="700">APs UniFi</text>
+            <text x="210" y="468" font-size="11" fill="#9aa7b8">SSID Empresa → VLAN10</text>
+            <text x="210" y="482" font-size="11" fill="#9aa7b8">SSID Invitados → VLAN20</text>
+
+            <rect x="550" y="430" width="200" height="60" rx="9" fill="#1c2230" stroke="#22d3ee"/>
+            <text x="650" y="452" font-weight="700">Servidor de Video</text>
+            <text x="650" y="468" font-size="11" fill="#9aa7b8">Multicast 239.1.1.1</text>
+            <text x="650" y="482" font-size="11" fill="#9aa7b8">Bloque 6 · PIM-SM</text>
+
+            <rect x="790" y="266" width="64" height="48" rx="9" fill="#1c2230" stroke="#f59e0b"/>
+            <text x="822" y="288" font-size="12" font-weight="700">NPS</text>
+            <text x="822" y="304" font-size="10" fill="#9aa7b8">+ AD</text>
+          </g>
+          <text x="700" y="258" font-size="11" fill="#9aa7b8">Bloques 4 · 5</text>
+          <text x="745" y="282" font-size="10" fill="#9aa7b8">RADIUS</text>
+        </svg>
+        <div class="cap">Flujo lógico: el tráfico baja desde Internet hasta los clientes; RADIUS (NPS+AD) autentica usuarios WiFi y el servidor de video distribuye multicast.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== Bloques ===== -->
+  <section class="section">
+    <div class="wrap">
+      <h2 class="h"><span class="lead">Los 6</span> bloques del curso</h2>
+      <p class="subtitle">Estudio progresivo: cada bloque construye sobre el anterior.</p>
+      <div class="grid">
+
+        <a class="card b1" href="bloque1.html">
+          <span class="bar"></span>
+          <span class="num">BLOQUE 01</span>
+          <h3>Switches Cisco — Fundamentos</h3>
+          <p>Primeros pasos en IOS: modos de operación, IP de gestión, acceso remoto SSH y la primera VLAN.</p>
+          <div class="tags"><span class="tag">IOS CLI</span><span class="tag">SVI</span><span class="tag">SSH</span></div>
+        </a>
+
+        <a class="card b2" href="bloque2.html">
+          <span class="bar"></span>
+          <span class="num">BLOQUE 02</span>
+          <h3>VLANs y Spanning Tree</h3>
+          <p>Segmentación L2, puertos trunk 802.1Q, propagación multi-switch y prevención de loops con STP/RSTP/MSTP.</p>
+          <div class="tags"><span class="tag">802.1Q</span><span class="tag">Trunk</span><span class="tag">RSTP</span></div>
+        </a>
+
+        <a class="card b3" href="bloque3.html">
+          <span class="bar"></span>
+          <span class="num">BLOQUE 03</span>
+          <h3>Switches Ubiquiti</h3>
+          <p>Instalación del UniFi Controller, adopción de equipos y gestión gráfica de VLANs y perfiles de puerto.</p>
+          <div class="tags"><span class="tag">UniFi</span><span class="tag">Adoption</span><span class="tag">PoE</span></div>
+        </a>
+
+        <a class="card b4" href="bloque4.html">
+          <span class="bar"></span>
+          <span class="num">BLOQUE 04</span>
+          <h3>RADIUS Server Windows</h3>
+          <p>NPS de Microsoft, integración con UniFi y gestión centralizada de usuarios desde Active Directory.</p>
+          <div class="tags"><span class="tag">NPS</span><span class="tag">RADIUS</span><span class="tag">AD</span></div>
+        </a>
+
+        <a class="card b5" href="bloque5.html">
+          <span class="bar"></span>
+          <span class="num">BLOQUE 05</span>
+          <h3>WiFi Empresarial Ubiquiti</h3>
+          <p>Redes wireless multi-VLAN, autenticación 802.1X/EAP y despliegue de WPA2/WPA3-Enterprise.</p>
+          <div class="tags"><span class="tag">802.1X</span><span class="tag">EAP</span><span class="tag">WPA2-Ent</span></div>
+        </a>
+
+        <a class="card b6" href="bloque6.html">
+          <span class="bar"></span>
+          <span class="num">BLOQUE 06</span>
+          <h3>Multicast con Cisco</h3>
+          <p>Distribución eficiente de tráfico, PIM-SM/DM, Rendezvous Point e interoperabilidad con MikroTik.</p>
+          <div class="tags"><span class="tag">PIM</span><span class="tag">IGMP</span><span class="tag">IPTV</span></div>
+        </a>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== Cómo estudiar ===== -->
+  <section class="section">
+    <div class="wrap">
+      <h2 class="h"><span class="lead">Cómo</span> aprovechar este material</h2>
+      <div class="two-col">
+        <div>
+          <h3>Ruta recomendada</h3>
+          <ol class="steps">
+            <li>Lee la teoría ampliada y los conceptos clave del bloque.</li>
+            <li>Reproduce los comandos en un simulador (Packet Tracer / GNS3) o equipo real.</li>
+            <li>Completa el laboratorio paso a paso.</li>
+            <li>Repasa con las flashcards hasta responderlas sin dudar.</li>
+            <li>Haz el cuestionario; si bajas de 70%, vuelve a la teoría.</li>
+          </ol>
+        </div>
+        <div>
+          <h3>Qué incluye cada bloque</h3>
+          <ul class="bullets">
+            <li><strong>Teoría ampliada</strong> con el porqué de cada tecnología.</li>
+            <li><strong>Tablas de conceptos</strong> y comparativas.</li>
+            <li><strong>Comandos comentados</strong> listos para copiar.</li>
+            <li><strong>Diagrama SVG</strong> de la topología del laboratorio.</li>
+            <li><strong>Flashcards</strong> interactivas (clic para girar).</li>
+            <li><strong>Cuestionario</strong> autoevaluable con explicaciones.</li>
+            <li><strong>Correcciones técnicas</strong> sobre el material original.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    Curso de Redes Avanzado · Material de estudio interactivo · Actualiza tus notas a medida que avances.
+  </div>
+</footer>
+
+<script src="script.js"></script>
+</body>
+</html>

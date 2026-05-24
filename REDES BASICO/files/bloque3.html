@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Módulo 3 · Direccionamiento IP y Servicios — Redes Básicas</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<header class="topnav">
+  <div class="wrap">
+    <span class="brand">Redes<span class="dot">.</span>Básicas</span>
+    <nav>
+      <a href="index.html">Inicio</a>
+      <a href="bloque1.html">1 · Intro</a>
+      <a href="bloque2.html">2 · Protocolos</a>
+      <a href="bloque3.html">3 · Servicios IP</a>
+      <a href="bloque4.html">4 · Wireless</a>
+      <a href="bloque5.html">5 · Virtualización</a>
+    </nav>
+  </div>
+</header>
+<main>
+  <section class="block-head wrap">
+    <div class="num">MÓDULO 03</div>
+    <h1>Direccionamiento IP y Servicios</h1>
+    <p>IPv4, subnetting, y los tres servicios que mantienen viva cualquier red: DHCP para la asignación automática de IPs, DNS para resolver nombres de dominio, y NTP para sincronizar el tiempo en toda la infraestructura.</p>
+    <div class="progress-dots">
+      <span class="on"></span><span class="on"></span><span class="on"></span><span></span><span></span>
+    </div>
+    <div class="toc">
+      <a href="#teoria">Teoría</a><a href="#conceptos">Conceptos</a>
+      <a href="#diagrama">Diagrama DHCP</a><a href="#lab">Laboratorio</a>
+      <a href="#flash">Flashcards</a><a href="#quiz">Cuestionario</a>
+    </div>
+  </section>
+
+  <section class="section" id="teoria">
+    <div class="wrap block-body">
+      <h2 class="h"><span class="lead">Teoría</span> ampliada</h2>
+
+      <h3>¿Qué es una dirección IPv4?</h3>
+      <p>Una dirección IPv4 es un identificador de 32 bits escrito en cuatro octetos decimales (ej: <code>192.168.1.10</code>). Cada octeto equivale a 8 bits en binario. La dirección tiene dos partes: la <strong>porción de red</strong> (igual para todos los equipos del mismo segmento) y la <strong>porción de host</strong> (única por equipo). La máscara de red define dónde termina una parte y empieza la otra.</p>
+
+      <h3>Redes privadas y públicas</h3>
+      <p>Las IPs privadas no son enrutables en Internet y se usan dentro de las organizaciones:</p>
+      <table>
+        <tr><th>Clase</th><th>Rango</th><th>Uso típico</th></tr>
+        <tr><td>A</td><td>10.0.0.0 – 10.255.255.255</td><td>Empresas grandes</td></tr>
+        <tr><td>B</td><td>172.16.0.0 – 172.31.255.255</td><td>Empresas medianas</td></tr>
+        <tr><td>C</td><td>192.168.0.0 – 192.168.255.255</td><td>Hogares y pymes</td></tr>
+      </table>
+
+      <h3>Classless y subnetting</h3>
+      <p>El sistema classless usa la notación de prefijo (CIDR) para definir exactamente cuántos bits pertenecen a la red. La fórmula para calcular hosts disponibles es <code>2^h − 2</code>, donde <em>h</em> es el número de bits de host. Se restan 2 porque la primera IP es la dirección de red y la última es el broadcast.</p>
+      <table>
+        <tr><th>Prefijo</th><th>Máscara</th><th>Hosts útiles</th></tr>
+        <tr><td>/24</td><td>255.255.255.0</td><td>254</td></tr>
+        <tr><td>/25</td><td>255.255.255.128</td><td>126</td></tr>
+        <tr><td>/26</td><td>255.255.255.192</td><td>62</td></tr>
+        <tr><td>/27</td><td>255.255.255.224</td><td>30</td></tr>
+        <tr><td>/30</td><td>255.255.255.252</td><td>2 (enlaces punto a punto)</td></tr>
+      </table>
+
+      <h3>DHCP — Dynamic Host Configuration Protocol</h3>
+      <p>DHCP asigna automáticamente IP, máscara, gateway y DNS a cualquier equipo que se conecte. Funciona en cuatro etapas conocidas como <strong>DORA</strong>:</p>
+      <ul class="bullets">
+        <li><strong>D — Discovery:</strong> El cliente envía un broadcast (src: 0.0.0.0, dst: 255.255.255.255) buscando un servidor DHCP.</li>
+        <li><strong>O — Offer:</strong> El servidor responde ofreciendo una IP disponible con todos los parámetros.</li>
+        <li><strong>R — Request:</strong> El cliente acepta formalmente la oferta enviando un broadcast (para notificar a otros servidores).</li>
+        <li><strong>A — Acknowledge:</strong> El servidor confirma la asignación y anota la IP en su tabla de leases.</li>
+      </ul>
+      <div class="callout note">
+        <span class="label">Ámbito DHCP (Scope)</span>
+        Un scope define el rango de IPs a distribuir, las IPs excluidas, el gateway, los DNS y el tiempo de arrendamiento (lease time). Si el lease expira y el cliente no renueva, la IP vuelve al pool disponible.
+      </div>
+
+      <h3>DNS — Domain Name System</h3>
+      <p>DNS traduce nombres de dominio a direcciones IP. Cuando escribes <code>canoacademy.com</code>, tu equipo consulta al DNS configurado (por ejemplo 8.8.8.8) que resuelve el nombre a una IP. La estructura de un dominio tiene tres niveles: <strong>TLD</strong> (.com, .org, .net), <strong>SLD</strong> (el nombre comercial, ej: canoacademy) y el <strong>subdominio</strong> (ej: www).</p>
+
+      <h3>NTP — Network Time Protocol</h3>
+      <p>NTP sincroniza el reloj de todos los equipos de la red usando el puerto <strong>UDP 123</strong>. La sincronización es crítica para: correlación de logs de seguridad, certificados SSL, grabadores CCTV, teléfonos IP y backups programados. Los servidores NTP públicos están organizados en pools por región (<code>do.pool.ntp.org</code> para República Dominicana).</p>
+    </div>
+  </section>
+
+  <section class="section" id="conceptos">
+    <div class="wrap block-body">
+      <h2 class="h"><span class="lead">Conceptos</span> clave</h2>
+      <table>
+        <tr><th>Concepto</th><th>Descripción</th></tr>
+        <tr><td>IPv4</td><td>Dirección de 32 bits en 4 octetos — identifica un equipo en la red</td></tr>
+        <tr><td>Máscara de red</td><td>Define qué parte de la IP es red y qué parte es host</td></tr>
+        <tr><td>CIDR / Prefijo</td><td>Notación /24 que indica cuántos bits son de red</td></tr>
+        <tr><td>IP de red</td><td>Primera IP del bloque — identifica el segmento (no asignable)</td></tr>
+        <tr><td>IP de broadcast</td><td>Última IP del bloque — envía a todos los hosts (no asignable)</td></tr>
+        <tr><td>DHCP DORA</td><td>Discovery, Offer, Request, Acknowledge — 4 etapas de asignación</td></tr>
+        <tr><td>Lease time</td><td>Tiempo de arrendamiento de la IP asignada por DHCP</td></tr>
+        <tr><td>DNS</td><td>Resuelve nombres de dominio a IPs — puerto UDP/TCP 53</td></tr>
+        <tr><td>TLD</td><td>Top Level Domain: .com, .net, .org, .do</td></tr>
+        <tr><td>NTP</td><td>Sincroniza el tiempo de los equipos — puerto UDP 123</td></tr>
+        <tr><td>Dirección privada</td><td>10.x, 172.16-31.x, 192.168.x — no enrutable en Internet</td></tr>
+      </table>
+    </div>
+  </section>
+
+  <section class="section" id="diagrama">
+    <div class="wrap block-body">
+      <h2 class="h"><span class="lead">Diagrama</span> — Flujo DHCP DORA</h2>
+      <div class="diagram">
+        <svg viewBox="0 0 760 240" xmlns="http://www.w3.org/2000/svg" font-family="Segoe UI, sans-serif">
+          <defs><marker id="a3" markerWidth="9" markerHeight="9" refX="7" refY="3" orient="auto"><path d="M0,0 L7,3 L0,6 Z" fill="#9aa7b8"/></marker>
+          <marker id="a3r" markerWidth="9" markerHeight="9" refX="2" refY="3" orient="auto"><path d="M9,0 L2,3 L9,6 Z" fill="#9aa7b8"/></marker></defs>
+          <g font-size="12" text-anchor="middle" font-family="Segoe UI, sans-serif">
+            <rect x="30" y="20" width="120" height="40" rx="9" fill="#1c2230" stroke="#34d399"/>
+            <text x="90" y="44" fill="#e6edf3" font-weight="700">PC Cliente</text>
+            <rect x="610" y="20" width="120" height="40" rx="9" fill="#1c2230" stroke="#4f9cf9"/>
+            <text x="670" y="44" fill="#e6edf3" font-weight="700">DHCP Server</text>
+            <line x1="90" y1="60" x2="90" y2="220" stroke="#2b3242" stroke-width="1.5"/>
+            <line x1="670" y1="60" x2="670" y2="220" stroke="#2b3242" stroke-width="1.5"/>
+            <line x1="90" y1="80" x2="670" y2="95" stroke="#34d399" stroke-width="1.5" marker-end="url(#a3)"/>
+            <text x="380" y="82" fill="#34d399">1 · DISCOVER (broadcast)</text>
+            <line x1="670" y1="110" x2="90" y2="125" stroke="#4f9cf9" stroke-width="1.5" marker-end="url(#a3r)"/>
+            <text x="380" y="122" fill="#4f9cf9">2 · OFFER (IP propuesta)</text>
+            <line x1="90" y1="140" x2="670" y2="155" stroke="#f59e0b" stroke-width="1.5" marker-end="url(#a3)"/>
+            <text x="380" y="152" fill="#f59e0b">3 · REQUEST (acepta oferta)</text>
+            <line x1="670" y1="170" x2="90" y2="185" stroke="#f472b6" stroke-width="1.5" marker-end="url(#a3r)"/>
+            <text x="380" y="197" fill="#f472b6">4 · ACKNOWLEDGE (confirma asignación)</text>
+          </g>
+        </svg>
+        <div class="cap">El proceso DORA ocurre en milisegundos. Discovery y Request son broadcasts; Offer y Acknowledge son unicast (o broadcast en algunos casos).</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="lab">
+    <div class="wrap block-body">
+      <h2 class="h"><span class="lead">Laboratorio 3</span> — DHCP, DNS y NTP</h2>
+      <ol class="steps">
+        <li>Abrir CMD: <code>ipconfig /all</code> — identificar IP, gateway, DNS y servidor DHCP asignado.</li>
+        <li>Ejecutar <code>ipconfig /release</code> seguido de <code>ipconfig /renew</code> para observar el proceso DORA.</li>
+        <li>Hacer <code>ping canoacademy.com</code> — observar qué IP devuelve el DNS.</li>
+        <li>Ejecutar <code>nslookup google.com</code> para ver la resolución DNS en detalle.</li>
+        <li>Abrir ajustes de fecha y hora → Sincronizar ahora. Cambiar la zona horaria y verificar la sincronización NTP.</li>
+        <li>Calcular hosts disponibles en la red 10.0.0.0/22 usando la fórmula 2^h − 2.</li>
+      </ol>
+      <div class="callout tip">
+        <span class="label">Cálculo rápido /22</span>
+        /22 deja 10 bits de host → 2^10 − 2 = 1022 hosts. Los prefijos /8, /16 y /24 son los más fáciles de recordar: 16 M, 65 K y 254 hosts respectivamente.
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="flash">
+    <div class="wrap block-body">
+      <h2 class="h"><span class="lead">Flashcards</span></h2>
+      <p class="subtitle">Haz clic en cada tarjeta para ver la respuesta.</p>
+      <div class="fc-grid">
+        <div class="flashcard"><div class="inner">
+          <div class="face front">¿Cuántos hosts útiles tiene una red /24?</div>
+          <div class="face back">254 hosts (2^8 − 2). Una /24 tiene 256 IPs pero la primera es red y la última es broadcast.</div>
+        </div></div>
+        <div class="flashcard"><div class="inner">
+          <div class="face front">¿Qué significan las letras DORA en DHCP?</div>
+          <div class="face back">Discovery, Offer, Request, Acknowledge — las 4 etapas del proceso de asignación de IP por DHCP.</div>
+        </div></div>
+        <div class="flashcard"><div class="inner">
+          <div class="face front">¿Qué hace DNS?</div>
+          <div class="face back">Traduce nombres de dominio (como google.com) a direcciones IP. Opera en el puerto 53 (UDP/TCP).</div>
+        </div></div>
+        <div class="flashcard"><div class="inner">
+          <div class="face front">¿Qué puerto usa NTP?</div>
+          <div class="face back">UDP puerto 123. NTP sincroniza el reloj de los equipos con servidores de tiempo de alta precisión.</div>
+        </div></div>
+        <div class="flashcard"><div class="inner">
+          <div class="face front">¿Cuál es el rango de IPs privadas clase C?</div>
+          <div class="face back">192.168.0.0 – 192.168.255.255. Clase A: 10.0.0.0/8. Clase B: 172.16.0.0 – 172.31.255.255.</div>
+        </div></div>
+        <div class="flashcard"><div class="inner">
+          <div class="face front">¿Por qué se restan 2 al calcular hosts en una subred?</div>
+          <div class="face back">La primera IP es la dirección de red y la última es el broadcast — ninguna se puede asignar a un host.</div>
+        </div></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="quiz">
+    <div class="wrap block-body">
+      <h2 class="h"><span class="lead">Cuestionario</span></h2>
+      <div class="quiz" id="quiz3">
+        <div class="q" data-answer="b">
+          <div class="qt">1. ¿Cuántos hosts útiles tiene la red 192.168.1.0/24?</div>
+          <label><input type="radio" name="q1" value="a"> 256</label>
+          <label><input type="radio" name="q1" value="b"> 254</label>
+          <label><input type="radio" name="q1" value="c"> 252</label>
+          <div class="explain">2^8 − 2 = 254. Se restan la dirección de red (.0) y el broadcast (.255).</div>
+        </div>
+        <div class="q" data-answer="a">
+          <div class="qt">2. Las 4 etapas del DHCP son…</div>
+          <label><input type="radio" name="q2" value="a"> Discovery, Offer, Request, Acknowledge</label>
+          <label><input type="radio" name="q2" value="b"> Discovery, Order, Relay, Accept</label>
+          <label><input type="radio" name="q2" value="c"> Detect, Offer, Receive, Assign</label>
+          <div class="explain">DORA: Discovery (cliente busca), Offer (servidor ofrece), Request (cliente acepta), Acknowledge (servidor confirma).</div>
+        </div>
+        <div class="q" data-answer="c">
+          <div class="qt">3. DNS opera principalmente en el puerto…</div>
+          <label><input type="radio" name="q3" value="a"> 80</label>
+          <label><input type="radio" name="q3" value="b"> 443</label>
+          <label><input type="radio" name="q3" value="c"> 53</label>
+          <div class="explain">DNS usa el puerto 53 UDP (consultas pequeñas) y 53 TCP (zonas completas o respuestas largas).</div>
+        </div>
+        <div class="q" data-answer="b">
+          <div class="qt">4. NTP usa el protocolo de transporte…</div>
+          <label><input type="radio" name="q4" value="a"> TCP 123</label>
+          <label><input type="radio" name="q4" value="b"> UDP 123</label>
+          <label><input type="radio" name="q4" value="c"> TCP 443</label>
+          <div class="explain">NTP usa UDP puerto 123. Al ser sincronización de tiempo, prioriza la baja latencia sobre la fiabilidad.</div>
+        </div>
+        <div class="q" data-answer="a">
+          <div class="qt">5. La IP 172.20.5.10 pertenece al rango privado…</div>
+          <label><input type="radio" name="q5" value="a"> Clase B (172.16.0.0 – 172.31.255.255)</label>
+          <label><input type="radio" name="q5" value="b"> Clase A (10.0.0.0/8)</label>
+          <label><input type="radio" name="q5" value="c"> Clase C (192.168.0.0/16)</label>
+          <div class="explain">172.16.0.0 – 172.31.255.255 es el bloque B privado. 172.20.5.10 cae en ese rango.</div>
+        </div>
+        <button class="btn" onclick="checkQuiz('quiz3')">Comprobar respuestas</button>
+        <button class="btn ghost" onclick="resetQuiz('quiz3')">Reiniciar</button>
+        <div class="quiz-result"></div>
+      </div>
+    </div>
+  </section>
+
+  <nav class="block-nav wrap">
+    <a class="prev" href="bloque2.html"><div class="dir">← Anterior</div><div class="ttl">Conceptos y Protocolos</div></a>
+    <a class="next" href="bloque4.html"><div class="dir">Siguiente →</div><div class="ttl">Redes Inalámbricas</div></a>
+  </nav>
+</main>
+<footer><div class="wrap">Módulo 3 de 5 · Curso de Redes Básicas · Ing. Stevenson Canó</div></footer>
+<script src="script.js"></script>
+</body>
+</html>

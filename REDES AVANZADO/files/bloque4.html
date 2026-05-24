@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Bloque 4 · RADIUS Server Windows — Curso de Redes Avanzado</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<header class="topnav">
+  <div class="wrap">
+    <span class="brand">Redes<span class="dot">.</span>Avanzado</span>
+    <nav>
+      <a href="index.html">Inicio</a>
+      <a href="bloque1.html">1 · Cisco</a>
+      <a href="bloque2.html">2 · VLANs/STP</a>
+      <a href="bloque3.html">3 · Ubiquiti</a>
+      <a href="bloque4.html">4 · RADIUS</a>
+      <a href="bloque5.html">5 · WiFi</a>
+      <a href="bloque6.html">6 · Multicast</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <section class="block-head wrap">
+    <div class="num">BLOQUE 04</div>
+    <h1>RADIUS Server Windows</h1>
+    <p>Una contraseña WiFi compartida no escala ni es segura en una empresa. RADIUS permite que cada usuario se autentique con sus propias credenciales — las mismas del dominio — usando el rol NPS de Windows Server integrado con Active Directory.</p>
+    <div class="progress-dots"><span></span><span></span><span></span><span class="on"></span><span></span><span></span></div>
+    <div class="toc">
+      <a href="#teoria">Teoría ampliada</a>
+      <a href="#conceptos">Conceptos clave</a>
+      <a href="#comandos">Configuración NPS</a>
+      <a href="#diagrama">Diagrama</a>
+      <a href="#lab">Laboratorio</a>
+      <a href="#flash">Flashcards</a>
+      <a href="#quiz">Cuestionario</a>
+    </div>
+  </section>
+
+  <section class="section" id="teoria">
+    <div class="wrap block-body">
+      <h2 class="h"><span class="lead">Teoría</span> ampliada</h2>
+
+      <h3>¿Qué es RADIUS y qué resuelve?</h3>
+      <p><strong>RADIUS</strong> (Remote Authentication Dial-In User Service) es un protocolo de <strong>AAA</strong>: <em>Authentication</em> (¿quién eres?), <em>Authorization</em> (¿qué puedes hacer?) y <em>Accounting</em> (¿qué hiciste?). Centraliza la autenticación: en lugar de configurar credenciales en cada switch o AP, todos consultan a un servidor único.</p>
+      <p>Opera sobre UDP: puerto <strong>1812</strong> para autenticación/autorización y <strong>1813</strong> para accounting.</p>
+
+      <h3>NPS: el RADIUS de Microsoft</h3>
+      <p><strong>NPS</strong> (Network Policy Server) es la implementación de RADIUS incluida como rol en Windows Server. Su gran ventaja es que se integra de forma nativa con <strong>Active Directory</strong>: las credenciales y los grupos ya existen en el dominio, así que NPS valida directamente contra el AD sin duplicar usuarios.</p>
+
+      <h3>Los actores del flujo</h3>
+      <ul class="bullets">
+        <li><strong>Cliente RADIUS / NAS</strong> (Network Access Server): el dispositivo que <em>consulta</em> a RADIUS — un switch, un AP, o el controller UniFi. <strong>No</strong> es el usuario final.</li>
+        <li><strong>Servidor RADIUS:</strong> el NPS que valida las credenciales.</li>
+        <li><strong>Almacén de cuentas:</strong> Active Directory, donde viven usuarios y grupos.</li>
+        <li><strong>Shared Secret:</strong> contraseña compartida entre el cliente RADIUS y el servidor; cifra y autentica los mensajes RADIUS entre ellos. Si no coincide, el servidor ignora al cliente.</li>
+      </ul>
+
+      <h3>Las dos políticas de NPS</h3>
+      <p>NPS distingue dos tipos de política y confundirlas es un error frecuente:</p>
+      <ul class="bullets">
+        <li><strong>Connection Request Policy:</strong> decide <em>dónde</em> se procesa la petición (en este NPS o reenviada a otro servidor) y filtra por tipo de conexión.</li>
+        <li><strong>Network Policy:</strong> decide <em>quién</em> entra y <em>cómo</em>: condiciona por grupo de AD, define el método de autenticación (MS-CHAPv2, PEAP, EAP) y concede o deniega el acceso. Puede además enviar atributos como el VLAN ID a asignar.</li>
+      </ul>
+
+      <h3>¿Por qué registrar el NPS en AD?</h3>
+      <p>Registrar el NPS en Active Directory le otorga permiso para <strong>leer las propiedades de dial-in de las cuentas de usuario</strong>. Sin ese registro, NPS no puede consultar correctamente al AD y las autenticaciones fallan aunque las credenciales sean válidas.</p>
+
+      <div class="callout fix">
+        <span class="label">Aclaración sobre las IPs del material original</span>
+        En el material original se ve la IP <code>192.168.1.5</code> como cliente RADIUS y <code>192.168.1.100</code> como servidor NPS. <strong>No es una contradicción:</strong> <code>192.168.1.5</code> es el <em>cliente</em> (el controller/AP UniFi que pregunta) y <code>192.168.1.100</code> es el <em>servidor</em> NPS (el que responde). El Shared Secret debe ser idéntico en ambos lados.
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="conceptos">
+    <div class="wrap block-body">
+      <h2 class="h"><span class="lead">Conceptos</span> clave</h2>
+      <table>
+        <tr><th>Concepto</th><th>Descripción</th></tr>
+        <tr><td>RADIUS</td><td>Protocolo AAA centralizado; UDP 1812 (auth) y 1813 (accounting)</td></tr>
+        <tr><td>AAA</td><td>Authentication, Authorization, Accounting</td></tr>
+        <tr><td>NPS</td><td>Network Policy Server: implementación RADIUS de Microsoft</td></tr>
+        <tr><td>Active Directory</td><td>Servicio de directorio de usuarios, grupos y equipos Windows</td></tr>
+        <tr><td>Shared Secret</td><td>Contraseña compartida entre cliente RADIUS y servidor</td></tr>
+        <tr><td>NAS / Cliente RADIUS</td><td>El dispositivo (switch/AP/controller) que consulta a RADIUS</td></tr>
+        <tr><td>Connection Request Policy</td><td>Define dónde se procesa la petición y la filtra por tipo</td></tr>
+        <tr><td>Network Policy</td><td>Define quién accede, con qué método y qué atributos recibe</td></tr>
+        <tr><td>MS-CHAPv2 / EAP</td><td>Métodos de autenticación soportados por NPS</td></tr>
+      </table>
+    </div>
+  </section>
+
+  <section class="section" id="comandos">
+    <div class="wrap block-body">
+      <h2 class="h"><span class="lead">Configuración</span> de NPS — paso a paso</h2>
+      <pre><code><span class="cmt"># 1. Instalar el rol NPS en Windows Server</span>
+Server Manager &rarr; Add Roles and Features
+  &rarr; Network Policy and Access Services &rarr; Network Policy Server
+
+<span class="cmt"># 2. Registrar NPS en Active Directory (¡imprescindible!)</span>
+Consola NPS &rarr; clic derecho en "NPS (Local)"
+  &rarr; Register server in Active Directory
+
+<span class="cmt"># 3. Agregar el cliente RADIUS (el controller/AP UniFi)</span>
+NPS &rarr; RADIUS Clients and Servers &rarr; RADIUS Clients &rarr; New
+  Friendly name : UniFi-Controller
+  IP address    : 192.168.1.5          <span class="cmt"># el dispositivo que pregunta</span>
+  Shared Secret : ClaveSegura123!       <span class="cmt"># idéntico en UniFi</span>
+
+<span class="cmt"># 4. Connection Request Policy</span>
+NPS &rarr; Policies &rarr; Connection Request Policies &rarr; New
+  Condition  : NAS Port Type = Wireless - IEEE 802.11 / Ethernet
+  Settings   : Authenticate requests on this server
+
+<span class="cmt"># 5. Network Policy</span>
+NPS &rarr; Policies &rarr; Network Policies &rarr; New
+  Condition      : Windows Groups = GRP_WiFi_Empresarial
+  Access Permission : Access granted
+  Auth methods   : MS-CHAPv2  (o PEAP para 802.1X — ver Bloque 5)</code></pre>
+
+      <h3>Integración con UniFi</h3>
+      <pre><code><span class="cmt"># En el UniFi Controller</span>
+Settings &rarr; Profiles &rarr; RADIUS &rarr; Create New RADIUS Profile
+  RADIUS Server IP : 192.168.1.100      <span class="cmt"># la IP del servidor NPS</span>
+  Port             : 1812
+  Shared Secret    : ClaveSegura123!     <span class="cmt"># idéntico al de NPS</span>
+
+<span class="cmt"># Luego se asigna este perfil RADIUS a la red WiFi (Bloque 5)</span></code></pre>
+    </div>
+  </section>
+
+  <section class="section" id="diagrama">
+    <div class="wrap block-body">
+      <h2 class="h"><span class="lead">Diagrama</span> de la topología</h2>
+      <div class="diagram">
+        <svg viewBox="0 0 780 280" xmlns="http://www.w3.org/2000/svg" font-family="Segoe UI, sans-serif">
+          <defs><marker id="a4" markerWidth="9" markerHeight="9" refX="7" refY="3" orient="auto"><path d="M0,0 L7,3 L0,6 Z" fill="#9aa7b8"/></marker></defs>
+          <g stroke="#9aa7b8" stroke-width="2" fill="none" marker-end="url(#a4)">
+            <line x1="150" y1="110" x2="270" y2="110"/>
+            <line x1="470" y1="110" x2="590" y2="110"/>
+          </g>
+          <g stroke="#9aa7b8" stroke-width="2" fill="none">
+            <line x1="660" y1="140" x2="660" y2="200" stroke-dasharray="5 4"/>
+          </g>
+          <g font-size="13" fill="#e6edf3" text-anchor="middle">
+            <rect x="30" y="84" width="120" height="52" rx="9" fill="#1c2230" stroke="#f472b6"/>
+            <text x="90" y="106" font-weight="700">Cliente WiFi</text>
+            <text x="90" y="124" font-size="11" fill="#9aa7b8">usuario AD</text>
+
+            <rect x="270" y="78" width="200" height="64" rx="9" fill="#1c2230" stroke="#34d399"/>
+            <text x="370" y="100" font-weight="700">AP / Controller UniFi</text>
+            <text x="370" y="118" font-size="11" fill="#9aa7b8">Cliente RADIUS · NAS</text>
+            <text x="370" y="132" font-size="11" fill="#9aa7b8">192.168.1.5</text>
+
+            <rect x="590" y="78" width="170" height="64" rx="9" fill="#1c2230" stroke="#f59e0b"/>
+            <text x="675" y="100" font-weight="700">Servidor NPS</text>
+            <text x="675" y="118" font-size="11" fill="#9aa7b8">RADIUS · 192.168.1.100</text>
+            <text x="675" y="132" font-size="11" fill="#9aa7b8">UDP 1812 / 1813</text>
+
+            <rect x="585" y="202" width="180" height="56" rx="9" fill="#1c2230" stroke="#4f9cf9"/>
+            <text x="675" y="224" font-weight="700">Active Directory</text>
+            <text x="675" y="242" font-size="11" fill="#9aa7b8">GRP_WiFi_Empresarial</text>
+          </g>
+          <text x="210" y="100" font-size="10" fill="#9aa7b8" text-anchor="middle">credenciales</text>
+          <text x="530" y="100" font-size="10" fill="#9aa7b8" text-anchor="middle">Access-Request</text>
+        </svg>
+        <div class="cap">Laboratorio 4: el AP/controller actúa como cliente RADIUS; NPS valida contra los grupos de Active Directory.</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="lab">
+    <div class="wrap block-body">
+      <h2 class="h"><span class="lead">Laboratorio 4</span> — RADIUS con AD</h2>
+      <p class="subtitle">Topología: AD + NPS → UniFi Controller → AP → Cliente WiFi.</p>
+      <ol class="steps">
+        <li>Instalar y configurar el rol NPS en Windows Server.</li>
+        <li>Registrar el NPS en Active Directory.</li>
+        <li>Crear el grupo en AD: <code>GRP_WiFi_Empresarial</code>.</li>
+        <li>Agregar usuarios de prueba al grupo.</li>
+        <li>Añadir el cliente RADIUS (UniFi) con su IP y Shared Secret.</li>
+        <li>Crear la Connection Request Policy y la Network Policy condicionada al grupo.</li>
+        <li>Configurar el perfil RADIUS en UniFi apuntando al NPS.</li>
+        <li>Probar la autenticación con un usuario del AD y revisar el Event Viewer del NPS.</li>
+      </ol>
+      <div class="callout tip">
+        <span class="label">Verificación</span>
+        En <em>Event Viewer → Custom Views → Server Roles → Network Policy and Access Services</em> debe aparecer un evento de <em>Access Granted</em> tras un login correcto, o <em>Access Rejected</em> con el motivo si falla.
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="wrap block-body">
+      <h2 class="h"><span class="lead">Resumen</span> del bloque</h2>
+      <ul class="bullets">
+        <li>RADIUS centraliza la autenticación (AAA); usa UDP 1812 (auth) y 1813 (accounting).</li>
+        <li>NPS es el RADIUS de Microsoft y se integra de forma nativa con Active Directory.</li>
+        <li>El cliente RADIUS (NAS) es el switch/AP/controller, no el usuario final.</li>
+        <li>El Shared Secret debe ser idéntico en el cliente y en el servidor.</li>
+        <li>Connection Request Policy decide <em>dónde</em> se procesa; Network Policy decide <em>quién</em> entra y <em>cómo</em>.</li>
+        <li>Registrar el NPS en AD es obligatorio para que pueda leer las cuentas de usuario.</li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="section" id="flash">
+    <div class="wrap block-body">
+      <h2 class="h"><span class="lead">Flashcards</span></h2>
+      <p class="subtitle">Haz clic en cada tarjeta para ver la respuesta.</p>
+      <div class="fc-grid">
+        <div class="flashcard"><div class="inner">
+          <div class="face front">¿Qué puertos usa RADIUS?</div>
+          <div class="face back">UDP 1812 para autenticación/autorización y UDP 1813 para accounting.</div>
+        </div></div>
+        <div class="flashcard"><div class="inner">
+          <div class="face front">¿Qué significan las tres "A" de AAA?</div>
+          <div class="face back">Authentication, Authorization y Accounting.</div>
+        </div></div>
+        <div class="flashcard"><div class="inner">
+          <div class="face front">¿Qué es el Shared Secret?</div>
+          <div class="face back">Contraseña compartida entre cliente RADIUS y servidor; protege los mensajes RADIUS. Debe coincidir.</div>
+        </div></div>
+        <div class="flashcard"><div class="inner">
+          <div class="face front">¿Quién es el cliente RADIUS / NAS?</div>
+          <div class="face back">El dispositivo que consulta a RADIUS (switch, AP, controller), no el usuario final.</div>
+        </div></div>
+        <div class="flashcard"><div class="inner">
+          <div class="face front">Connection Request Policy vs Network Policy</div>
+          <div class="face back">La primera decide dónde se procesa la petición; la segunda decide quién entra, cómo y con qué atributos.</div>
+        </div></div>
+        <div class="flashcard"><div class="inner">
+          <div class="face front">¿Por qué se registra el NPS en AD?</div>
+          <div class="face back">Para que tenga permiso de leer las propiedades de dial-in de las cuentas de usuario del dominio.</div>
+        </div></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="quiz">
+    <div class="wrap block-body">
+      <h2 class="h"><span class="lead">Cuestionario</span></h2>
+      <div class="quiz" id="quiz4">
+        <div class="q" data-answer="b">
+          <div class="qt">1. ¿En qué puerto opera RADIUS para autenticación?</div>
+          <label><input type="radio" name="q1d" value="a"> TCP 443</label>
+          <label><input type="radio" name="q1d" value="b"> UDP 1812</label>
+          <label><input type="radio" name="q1d" value="c"> UDP 1813</label>
+          <div class="explain">1812 es autenticación/autorización; 1813 es accounting.</div>
+        </div>
+        <div class="q" data-answer="c">
+          <div class="qt">2. El cliente RADIUS (NAS) es…</div>
+          <label><input type="radio" name="q2d" value="a"> El usuario que se conecta</label>
+          <label><input type="radio" name="q2d" value="b"> El servidor Active Directory</label>
+          <label><input type="radio" name="q2d" value="c"> El switch, AP o controller que consulta a RADIUS</label>
+          <div class="explain">El NAS es el dispositivo de red que pregunta; el usuario final es el supplicant.</div>
+        </div>
+        <div class="q" data-answer="a">
+          <div class="qt">3. Si el Shared Secret no coincide entre cliente y servidor…</div>
+          <label><input type="radio" name="q3d" value="a"> El servidor ignora o rechaza las peticiones del cliente</label>
+          <label><input type="radio" name="q3d" value="b"> Funciona igual, es opcional</label>
+          <label><input type="radio" name="q3d" value="c"> Se cifra el doble</label>
+          <div class="explain">El Shared Secret autentica al cliente; sin coincidencia, no hay diálogo válido.</div>
+        </div>
+        <div class="q" data-answer="b">
+          <div class="qt">4. ¿Qué política de NPS condiciona el acceso por grupo de AD?</div>
+          <label><input type="radio" name="q4d" value="a"> Connection Request Policy</label>
+          <label><input type="radio" name="q4d" value="b"> Network Policy</label>
+          <label><input type="radio" name="q4d" value="c"> Group Policy</label>
+          <div class="explain">La Network Policy define quién entra (grupo), cómo (método) y con qué atributos.</div>
+        </div>
+        <div class="q" data-answer="c">
+          <div class="qt">5. ¿Por qué hay que registrar el NPS en Active Directory?</div>
+          <label><input type="radio" name="q5d" value="a"> Para conectarlo a Internet</label>
+          <label><input type="radio" name="q5d" value="b"> Para instalar el rol</label>
+          <label><input type="radio" name="q5d" value="c"> Para que pueda leer las cuentas de usuario del dominio</label>
+          <div class="explain">Sin el registro, NPS no puede consultar las propiedades de las cuentas y la auth falla.</div>
+        </div>
+        <button class="btn" onclick="checkQuiz('quiz4')">Comprobar respuestas</button>
+        <button class="btn ghost" onclick="resetQuiz('quiz4')">Reiniciar</button>
+        <div class="quiz-result"></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="wrap block-body">
+      <h2 class="h"><span class="lead">Preguntas</span> de repaso</h2>
+      <ul class="review">
+        <li>¿En qué puerto opera RADIUS para autenticación y para accounting?</li>
+        <li>¿Qué es el Shared Secret y por qué es importante?</li>
+        <li>¿Cuál es la diferencia entre Connection Request Policy y Network Policy en NPS?</li>
+        <li>¿Por qué se registra el NPS en Active Directory?</li>
+        <li>¿Qué dispositivo cumple el rol de cliente RADIUS en una red WiFi?</li>
+      </ul>
+    </div>
+  </section>
+
+  <nav class="block-nav wrap">
+    <a class="prev" href="bloque3.html"><div class="dir">← Anterior</div><div class="ttl">Switches Ubiquiti</div></a>
+    <a class="next" href="bloque5.html"><div class="dir">Siguiente →</div><div class="ttl">WiFi Empresarial Ubiquiti</div></a>
+  </nav>
+</main>
+
+<footer><div class="wrap">Bloque 4 de 6 · Curso de Redes Avanzado</div></footer>
+<script src="script.js"></script>
+</body>
+</html>

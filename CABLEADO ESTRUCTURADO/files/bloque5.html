@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Módulo 5 · Fibra Óptica — Cableado Estructurado</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<header class="topnav">
+  <div class="wrap">
+    <span class="brand">Cableado<span class="dot">.</span>Estructurado</span>
+    <nav>
+      <a href="index.html">Inicio</a>
+      <a href="bloque1.html">1 · Intro</a>
+      <a href="bloque2.html">2 · Canalización</a>
+      <a href="bloque3.html">3 · Data Center</a>
+      <a href="bloque4.html">4 · Campo</a>
+      <a href="bloque5.html">5 · Fibra</a>
+      <a href="bloque6.html">6 · Profesional</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <section class="block-head wrap">
+    <div class="num">MÓDULO 05</div>
+    <h1>Introducción a la Fibra Óptica</h1>
+    <p>La fibra transmite luz, no electricidad: inmune a EMI, sin límite de distancia práctico. Singlemode o multimode, outdoor o indoor, empalme por fusión o conector: cada elección tiene su lógica y su herramienta.</p>
+    <div class="progress-dots">
+      <span class="on"></span><span class="on"></span><span class="on"></span><span class="on"></span><span class="on"></span><span></span>
+    </div>
+    <div class="toc">
+      <a href="#teoria">Teoría</a>
+      <a href="#conceptos">Conceptos</a>
+      <a href="#diagrama">Diagrama</a>
+      <a href="#lab">Laboratorio</a>
+      <a href="#flash">Flashcards</a>
+      <a href="#quiz">Cuestionario</a>
+    </div>
+  </section>
+
+  <!-- ===== TEORÍA ===== -->
+  <section class="section" id="teoria">
+    <div class="wrap block-body">
+      <h2 class="h"><span class="lead">Teoría</span> ampliada</h2>
+
+      <h3>¿Cómo Funciona la Fibra Óptica?</h3>
+      <p>La fibra óptica transmite información mediante <strong>pulsos de luz</strong>. El principio físico es la <strong>reflexión interna total</strong>: la luz que viaja por el núcleo (core) de vidrio es reflejada de vuelta al interior al llegar al revestimiento (cladding) de menor índice de refracción. Tres capas:</p>
+      <ul class="bullets">
+        <li><strong>Core (núcleo):</strong> filamento de vidrio por donde viaja la luz. Diámetro: 8–9 µm (SM) o 50–62.5 µm (MM).</li>
+        <li><strong>Cladding:</strong> capa de vidrio de menor índice de refracción que produce la reflexión interna total.</li>
+        <li><strong>Coating / Buffer / Jacket:</strong> capas de acrílico y plástico para protección mecánica y ambiental.</li>
+      </ul>
+
+      <h3>Tipos de Fibra — Singlemode vs. Multimode</h3>
+      <table>
+        <tr><th>Tipo</th><th>Core</th><th>Fuente</th><th>Distancia</th><th>Uso</th></tr>
+        <tr><td>SM OS1</td><td>8–9 µm</td><td>Láser 1310/1550 nm</td><td>Hasta 10 km</td><td>Campus, ISP</td></tr>
+        <tr><td>SM OS2</td><td>8–9 µm</td><td>Láser 1310/1550 nm</td><td>Hasta 80+ km</td><td>FTTH, WAN</td></tr>
+        <tr><td>MM OM1</td><td>62.5 µm</td><td>LED 850 nm</td><td>300 m @ 1G</td><td>Legacy</td></tr>
+        <tr><td>MM OM3</td><td>50 µm</td><td>VCSEL 850 nm</td><td>300 m @ 10G</td><td>Data centers</td></tr>
+        <tr><td>MM OM4</td><td>50 µm</td><td>VCSEL 850 nm</td><td>400 m @ 10G</td><td>Data centers HD</td></tr>
+        <tr><td>MM OM5</td><td>50 µm</td><td>SWDM 850–950 nm</td><td>150 m @ 100G</td><td>Hiperescala</td></tr>
+      </table>
+      <p>Regla de color: <strong>SM = amarillo</strong>, <strong>MM OM1/OM2 = naranja</strong>, <strong>MM OM3/OM4 = aguamarina</strong>.</p>
+
+      <h3>Conectores de Fibra</h3>
+      <table>
+        <tr><th>Conector</th><th>Descripción</th><th>Uso típico</th></tr>
+        <tr><td>LC</td><td>Small form; push-pull; ferule 1.25 mm</td><td>Data centers, SFP, equipos activos modernos</td></tr>
+        <tr><td>SC</td><td>Push-pull; ferule 2.5 mm; azul=SM, beige=MM</td><td>FTTH, equipos de telecom</td></tr>
+        <tr><td>ST</td><td>Bayoneta; ferule 2.5 mm; legacy</td><td>Campus legacy, CCTV analógico</td></tr>
+        <tr><td>MPO/MTP</td><td>12 o 24 fibras en un conector; alta densidad</td><td>Backbone data center, trunks pre-terminados</td></tr>
+      </table>
+
+      <h3>Fibra Outdoor e Indoor</h3>
+      <ul class="bullets">
+        <li><strong>ADSS</strong> (All-Dielectric Self-Supporting): no tiene conductor metálico; para tendido aéreo entre postes sin messenger wire.</li>
+        <li><strong>Direct Burial:</strong> chaqueta de polietileno negro UV-resistant con gel relleno antipenetración de agua.</li>
+        <li><strong>Armored (SWA):</strong> con armadura de alambre de acero; protección contra roedores y maquinaria.</li>
+        <li><strong>Indoor Tight-buffered:</strong> cada fibra protegida individualmente con capa de 900 µm; fácil terminación con conector.</li>
+        <li><strong>Breakout cable:</strong> varias fibras tight-buffered con subchaqueta individual; cada fibra va a un punto diferente.</li>
+        <li>Cables indoor deben ser <strong>LSZH</strong> o OFNR/OFNP (para plenum).</li>
+      </ul>
+
+      <h3>Herramientas de Fusión y Corte</h3>
+      <table>
+        <tr><th>Herramienta</th><th>Función</th></tr>
+        <tr><td>Fusionadora (fusion splicer)</td><td>Une dos fibras por arco eléctrico; pérdida típica &lt;0.1 dB por empalme</td></tr>
+        <tr><td>Clivador (cleaver)</td><td>Corta la fibra con ángulo de 90° ± 0.5°; paso crítico antes de la fusión</td></tr>
+        <tr><td>Stripper de fibra</td><td>Retira el coating de 250 µm sin rayar el cladding</td></tr>
+        <tr><td>IPA 99% + casetes</td><td>Limpia el extremo de la fibra antes de conectar o fusionar</td></tr>
+        <tr><td>OTDR</td><td>Mide pérdida por distancia, detecta empalmes, roturas y atenuación a lo largo del enlace</td></tr>
+        <tr><td>Power meter + fuente de luz (OLTS)</td><td>Mide pérdida de inserción total del enlace</td></tr>
+      </table>
+
+      <div class="callout note">
+        <span class="label">Fusión vs. Conector</span>
+        <strong>Empalme por fusión</strong> (&lt;0.1 dB): para backbone de larga distancia donde se requiere mínima pérdida y no hay necesidad de desconectar. <strong>Conector</strong> (0.3–0.5 dB): para puntos de distribución (ODF, patch panel de fibra) donde se reconecta con frecuencia.
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== CONCEPTOS ===== -->
+  <section class="section" id="conceptos">
+    <div class="wrap block-body">
+      <h2 class="h"><span class="lead">Conceptos</span> clave</h2>
+      <table>
+        <tr><th>Término</th><th>Definición</th></tr>
+        <tr><td>Reflexión interna total</td><td>Fenómeno que confina la luz dentro del core al llegar al cladding de menor índice de refracción</td></tr>
+        <tr><td>SM (Singlemode)</td><td>Core 8–9 µm; un modo de propagación; grandes distancias con láser; cable amarillo</td></tr>
+        <tr><td>MM (Multimode)</td><td>Core 50–62.5 µm; múltiples modos; distancias cortas con LED o VCSEL</td></tr>
+        <tr><td>OM3/OM4</td><td>Fibra MM 50 µm optimizada para VCSEL 850 nm; OM3 hasta 300 m@10G, OM4 hasta 400 m@10G</td></tr>
+        <tr><td>Conector LC</td><td>Small form factor, ferule 1.25 mm; estándar moderno en data centers y SFP</td></tr>
+        <tr><td>Fusionadora</td><td>Une dos fibras por arco eléctrico; pérdida &lt;0.1 dB; permanente</td></tr>
+        <tr><td>Clivador</td><td>Corta la fibra con ángulo preciso de 90°; paso previo obligatorio a la fusión</td></tr>
+        <tr><td>OTDR</td><td>Optical Time Domain Reflectometer — mide pérdidas y localiza defectos a lo largo del enlace</td></tr>
+        <tr><td>ADSS</td><td>All-Dielectric Self-Supporting — cable de fibra aéreo sin componentes metálicos</td></tr>
+        <tr><td>ODF</td><td>Optical Distribution Frame — patch panel de fibra en el rack</td></tr>
+        <tr><td>Dispersión modal</td><td>Fenómeno en MM donde diferentes modos llegan en tiempos distintos; limita la distancia</td></tr>
+      </table>
+    </div>
+  </section>
+
+  <!-- ===== DIAGRAMA ===== -->
+  <section class="section" id="diagrama">
+    <div class="wrap block-body">
+      <h2 class="h"><span class="lead">Diagrama</span> — Estructura de fibra y SM vs. MM</h2>
+      <div class="diagram">
+        <svg viewBox="0 0 760 300" xmlns="http://www.w3.org/2000/svg" font-family="Segoe UI, sans-serif" font-size="12">
+
+          <!-- Sección transversal -->
+          <text x="145" y="22" fill="#e6edf3" font-weight="bold" text-anchor="middle" font-size="13">Sección Transversal</text>
+          <!-- Jacket -->
+          <circle cx="145" cy="120" r="74" fill="#2b3242" stroke="#9aa7b8" stroke-width="1.5"/>
+          <text x="145" y="215" fill="#9aa7b8" text-anchor="middle" font-size="10">Jacket / Buffer</text>
+          <!-- Coating -->
+          <circle cx="145" cy="120" r="50" fill="#1c3318" stroke="#34d399" stroke-width="1.5"/>
+          <text x="200" y="168" fill="#34d399" font-size="9">Coating 250µm</text>
+          <!-- Cladding -->
+          <circle cx="145" cy="120" r="32" fill="#0e1a2e" stroke="#4f9cf9" stroke-width="1.5"/>
+          <text x="190" y="112" fill="#4f9cf9" font-size="9">Cladding</text>
+          <text x="190" y="122" fill="#4f9cf9" font-size="9">125 µm</text>
+          <line x1="178" y1="115" x2="160" y2="118" stroke="#4f9cf9" stroke-width="1"/>
+          <!-- Core SM -->
+          <circle cx="145" cy="120" r="5" fill="#f59e0b"/>
+          <text x="145" y="100" fill="#f59e0b" text-anchor="middle" font-size="9">Core SM</text>
+          <text x="145" y="110" fill="#f59e0b" text-anchor="middle" font-size="9">8–9 µm</text>
+          <line x1="145" y1="111" x2="145" y2="116" stroke="#f59e0b" stroke-width="1"/>
+          <!-- Laser arrow -->
+          <line x1="22" y1="120" x2="75" y2="120" stroke="#f59e0b" stroke-width="2" marker-end="url(#arrL)"/>
+          <text x="48" y="113" fill="#f59e0b" text-anchor="middle" font-size="9">Láser</text>
+          <text x="48" y="134" fill="#f59e0b" text-anchor="middle" font-size="9">1310 nm</text>
+
+          <!-- Separador -->
+          <line x1="300" y1="15" x2="300" y2="290" stroke="#2b3242" stroke-width="1.5" stroke-dasharray="4,3"/>
+
+          <!-- Propagación SM (línea recta) -->
+          <text x="540" y="22" fill="#e6edf3" font-weight="bold" text-anchor="middle" font-size="13">Propagación de Modos</text>
+          <rect x="318" y="55" width="420" height="45" rx="5" fill="#1c1a00" stroke="#f59e0b" stroke-width="1.5"/>
+          <text x="318" y="48" fill="#f59e0b" font-size="10">SM — un modo (rayo recto)</text>
+          <line x1="330" y1="77" x2="730" y2="77" stroke="#f59e0b" stroke-width="2.5" marker-end="url(#arrL)"/>
+
+          <!-- Propagación MM (zigzag) -->
+          <rect x="318" y="140" width="420" height="70" rx="5" fill="#0d1e0d" stroke="#34d399" stroke-width="1.5"/>
+          <text x="318" y="133" fill="#34d399" font-size="10">MM — múltiples modos (dispersión modal)</text>
+          <polyline points="330,162 375,196 420,162 465,196 510,162 555,196 600,162 645,196 690,162 730,170" fill="none" stroke="#34d399" stroke-width="2" marker-end="url(#arrG)"/>
+          <polyline points="330,178 380,158 430,178 480,158 530,178 580,158 630,178 680,158 730,170" fill="none" stroke="#22d3ee" stroke-width="1.5"/>
+          <polyline points="330,188 390,170 450,188 510,170 570,188 630,170 700,182" fill="none" stroke="#a78bfa" stroke-width="1.2"/>
+
+          <!-- Labels -->
+          <text x="540" y="240" fill="#34d399" font-weight="bold" text-anchor="middle" font-size="11">MULTIMODE (MM)</text>
+          <text x="540" y="255" fill="#9aa7b8" text-anchor="middle" font-size="10">múltiples modos · hasta 400 m @ 10G (OM4) · naranja/aqua</text>
+          <text x="540" y="275" fill="#f87171" text-anchor="middle" font-size="10">⚠ La dispersión modal limita la distancia en MM</text>
+
+          <text x="145" y="240" fill="#f59e0b" font-weight="bold" text-anchor="middle" font-size="11">SINGLEMODE (SM)</text>
+          <text x="145" y="255" fill="#9aa7b8" text-anchor="middle" font-size="10">1 modo · hasta 80 km · amarillo</text>
+
+          <defs>
+            <marker id="arrL" markerWidth="8" markerHeight="8" refX="5" refY="3" orient="auto">
+              <path d="M0,0 L8,3 L0,6 Z" fill="#f59e0b"/>
+            </marker>
+            <marker id="arrG" markerWidth="8" markerHeight="8" refX="5" refY="3" orient="auto">
+              <path d="M0,0 L8,3 L0,6 Z" fill="#34d399"/>
+            </marker>
+          </defs>
+        </svg>
+        <div class="cap">Izquierda: sección transversal de la fibra (core → cladding → coating → jacket). Derecha: en SM un solo modo viaja recto; en MM múltiples modos zigzaguean produciendo dispersión modal.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== LABORATORIO ===== -->
+  <section class="section" id="lab">
+    <div class="wrap block-body">
+      <h2 class="h"><span class="lead">Laboratorio 5</span> — Fusión de fibra y medición con OTDR</h2>
+      <p class="subtitle">Proceso completo de empalme por fusión y verificación del enlace.</p>
+      <ol class="steps">
+        <li><strong>Preparar la fibra:</strong> cortar con tijeras de fibra. Retirar chaqueta y buffer con stripper. Limpiar el coating con IPA &gt;99% y paño lint-free.</li>
+        <li><strong>Clivar:</strong> insertar la fibra desnuda en el clivador. Presionar la palanca. El corte debe ser liso y perpendicular (ángulo &lt;0.5°). Verificar en la pantalla de la fusionadora.</li>
+        <li><strong>Cargar en la fusionadora:</strong> posicionar los dos extremos en las pinzas (V-groove). El equipo centra el core automáticamente por visión.</li>
+        <li><strong>Fusionar:</strong> iniciar el arco eléctrico. La fusionadora reporta pérdida estimada. Valores aceptables: &lt;0.1 dB para SM, &lt;0.2 dB para MM.</li>
+        <li><strong>Proteger el empalme:</strong> deslizar el sleeve de heat-shrink sobre el empalme. Colocar en el horno de la fusionadora para contraer.</li>
+        <li><strong>Medir con OTDR:</strong> conectar al ODF. Configurar tipo de fibra, longitud de onda y rango. Verificar en el trace: pérdida total, pérdida por empalme y reflexiones anómalas.</li>
+        <li><strong>Documentar:</strong> guardar el trace del OTDR con el ID del enlace. Archivar junto al plano as-built de la instalación.</li>
+      </ol>
+      <div class="callout tip">
+        <span class="label">Consejo</span>
+        Si la fusionadora reporta &gt;0.2 dB, no aceptes el empalme: descartar y repetir desde el paso de clivado. El 90% de las fusiones fallidas se deben a un clivado defectuoso.
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== RESUMEN ===== -->
+  <section class="section">
+    <div class="wrap block-body">
+      <h2 class="h"><span class="lead">Resumen</span> del módulo</h2>
+      <ul class="bullets">
+        <li>La fibra transmite luz por reflexión interna total; inmune a EMI, ligera y de larga distancia.</li>
+        <li>SM (amarilla) para grandes distancias con láser; MM OM3/OM4 (aguamarina) para campus y data centers.</li>
+        <li>Conector LC es el estándar moderno en data centers. MPO/MTP para alta densidad.</li>
+        <li>El empalme por fusión (&lt;0.1 dB) supera en calidad al conector (0.3–0.5 dB) pero no es desconectable.</li>
+        <li>El clivado preciso (ángulo &lt;0.5°) es el paso más crítico antes de una buena fusión.</li>
+        <li>El OTDR mide el perfil de pérdidas a lo largo de todo el enlace y localiza fallas con precisión.</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- ===== FLASHCARDS ===== -->
+  <section class="section" id="flash">
+    <div class="wrap block-body">
+      <h2 class="h"><span class="lead">Flashcards</span></h2>
+      <p class="subtitle">Haz clic en cada tarjeta para ver la respuesta.</p>
+      <div class="fc-grid">
+        <div class="flashcard"><div class="inner">
+          <div class="face front">Principio físico que permite que la luz viaje por la fibra</div>
+          <div class="face back"><strong>Reflexión interna total</strong>: la luz en el core es reflejada al interior al llegar al cladding de menor índice de refracción.</div>
+        </div></div>
+        <div class="flashcard"><div class="inner">
+          <div class="face front">Diámetro del core de una fibra singlemode</div>
+          <div class="face back"><strong>8–9 µm</strong>. El cladding mide 125 µm en todas las fibras (SM y MM). Core de MM OM3/OM4 = 50 µm.</div>
+        </div></div>
+        <div class="flashcard"><div class="inner">
+          <div class="face front">¿Qué herramienta mide pérdidas a lo largo de un enlace de fibra?</div>
+          <div class="face back">El <strong>OTDR</strong> (Optical Time Domain Reflectometer). Envía pulsos y analiza reflejos para medir pérdida por distancia, localizar empalmes y detectar roturas.</div>
+        </div></div>
+        <div class="flashcard"><div class="inner">
+          <div class="face front">¿Por qué el clivado es el paso más crítico antes de una fusión?</div>
+          <div class="face back">Un corte inclinado crea un gap de aire entre los cores que aumenta la pérdida y puede dañar las pinzas. El ángulo debe ser &lt;0.5° respecto a la perpendicular.</div>
+        </div></div>
+        <div class="flashcard"><div class="inner">
+          <div class="face front">Color de los cables de fibra SM vs MM OM4</div>
+          <div class="face back">SM = <strong>amarillo</strong>. MM OM1/OM2 = naranja. MM OM3/OM4 = <strong>aguamarina (aqua)</strong>. MM OM5 = verde lima.</div>
+        </div></div>
+        <div class="flashcard"><div class="inner">
+          <div class="face front">¿Cuándo usar empalme por fusión en lugar de conector?</div>
+          <div class="face back">En <strong>tramos de backbone largos</strong> donde se necesita mínima pérdida (&lt;0.1 dB) y el punto no requiere desconexión frecuente: cable directo enterrado o vertical de fibra entre pisos.</div>
+        </div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== QUIZ ===== -->
+  <section class="section" id="quiz">
+    <div class="wrap block-body">
+      <h2 class="h"><span class="lead">Cuestionario</span></h2>
+      <div class="quiz" id="quiz5">
+
+        <div class="q" data-answer="c">
+          <div class="qt">1. ¿Cuál es el diámetro del cladding en todas las fibras ópticas?</div>
+          <label><input type="radio" name="q1e" value="a"> 50 µm</label>
+          <label><input type="radio" name="q1e" value="b"> 62.5 µm</label>
+          <label><input type="radio" name="q1e" value="c"> 125 µm</label>
+          <div class="explain">125 µm es el diámetro estándar del cladding en todas las fibras, tanto SM como MM. El coating externo mide 250 µm.</div>
+        </div>
+
+        <div class="q" data-answer="b">
+          <div class="qt">2. ¿Qué fuente de luz usan las fibras singlemode?</div>
+          <label><input type="radio" name="q2e" value="a"> LED 850 nm</label>
+          <label><input type="radio" name="q2e" value="b"> Láser 1310/1550 nm</label>
+          <label><input type="radio" name="q2e" value="c"> VCSEL 850 nm</label>
+          <div class="explain">SM usa láser de alta coherencia a 1310 o 1550 nm. MM usa LED o VCSEL a 850 nm.</div>
+        </div>
+
+        <div class="q" data-answer="c">
+          <div class="qt">3. ¿Qué mide el OTDR?</div>
+          <label><input type="radio" name="q3e" value="a"> El voltaje en el cable de fibra</label>
+          <label><input type="radio" name="q3e" value="b"> La temperatura de la fibra</label>
+          <label><input type="radio" name="q3e" value="c"> Pérdidas y reflexiones a lo largo del enlace por distancia</label>
+          <div class="explain">El OTDR envía pulsos de luz y analiza los reflejos en función del tiempo, calculando la distancia y pérdida en cada punto del enlace.</div>
+        </div>
+
+        <div class="q" data-answer="b">
+          <div class="qt">4. ¿De qué color es un cable de fibra multimode OM4?</div>
+          <label><input type="radio" name="q4e" value="a"> Amarillo</label>
+          <label><input type="radio" name="q4e" value="b"> Aguamarina (aqua)</label>
+          <label><input type="radio" name="q4e" value="c"> Naranja</label>
+          <div class="explain">SM = amarillo. MM OM3/OM4 = aguamarina (aqua). MM OM1/OM2 = naranja.</div>
+        </div>
+
+        <div class="q" data-answer="a">
+          <div class="qt">5. Pérdida típica de un empalme por fusión bien realizado:</div>
+          <label><input type="radio" name="q5e" value="a"> &lt;0.1 dB</label>
+          <label><input type="radio" name="q5e" value="b"> 0.3 dB</label>
+          <label><input type="radio" name="q5e" value="c"> 0.5 dB</label>
+          <div class="explain">Un empalme por fusión de calidad produce &lt;0.1 dB. Los conectores producen típicamente 0.3–0.5 dB.</div>
+        </div>
+
+        <button class="btn" onclick="checkQuiz('quiz5')">Comprobar respuestas</button>
+        <button class="btn ghost" onclick="resetQuiz('quiz5')">Reiniciar</button>
+        <div class="quiz-result"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== REPASO ===== -->
+  <section class="section">
+    <div class="wrap block-body">
+      <h2 class="h"><span class="lead">Preguntas</span> de repaso</h2>
+      <ul class="review">
+        <li>¿Por qué la fibra singlemode puede transmitir a mayores distancias que la multimode?</li>
+        <li>¿En qué situaciones elegirías fibra MM OM4 sobre SM OS2 para un backbone de campus?</li>
+        <li>¿Por qué se usa IPA al 99% y no al 70% para limpiar conectores de fibra?</li>
+        <li>Un técnico obtiene 0.4 dB de pérdida en un empalme. ¿Qué pasos seguirías para mejorarla?</li>
+        <li>¿En qué se diferencia un cable ADSS de un cable con armadura (SWA)? ¿Cuándo usarías cada uno?</li>
+      </ul>
+    </div>
+  </section>
+
+  <nav class="block-nav wrap">
+    <a class="prev" href="bloque4.html"><div class="dir">← Anterior</div><div class="ttl">En el Campo de Trabajo</div></a>
+    <a class="next" href="bloque6.html"><div class="dir">Siguiente →</div><div class="ttl">Consideraciones Profesionales</div></a>
+  </nav>
+</main>
+
+<footer><div class="wrap">Módulo 5 de 6 · Curso de Cableado Estructurado</div></footer>
+<script src="script.js"></script>
+</body>
+</html>

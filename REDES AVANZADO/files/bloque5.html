@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Bloque 5 · WiFi Empresarial Ubiquiti — Curso de Redes Avanzado</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<header class="topnav">
+  <div class="wrap">
+    <span class="brand">Redes<span class="dot">.</span>Avanzado</span>
+    <nav>
+      <a href="index.html">Inicio</a>
+      <a href="bloque1.html">1 · Cisco</a>
+      <a href="bloque2.html">2 · VLANs/STP</a>
+      <a href="bloque3.html">3 · Ubiquiti</a>
+      <a href="bloque4.html">4 · RADIUS</a>
+      <a href="bloque5.html">5 · WiFi</a>
+      <a href="bloque6.html">6 · Multicast</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <section class="block-head wrap">
+    <div class="num">BLOQUE 05</div>
+    <h1>WiFi Empresarial Ubiquiti</h1>
+    <p>Aquí convergen los bloques anteriores: VLANs para segmentar, UniFi para gestionar y RADIUS para autenticar. El resultado es WiFi empresarial real, donde cada empleado entra con sus credenciales del dominio mediante 802.1X.</p>
+    <div class="progress-dots"><span></span><span></span><span></span><span></span><span class="on"></span><span></span></div>
+    <div class="toc">
+      <a href="#teoria">Teoría ampliada</a>
+      <a href="#conceptos">Conceptos clave</a>
+      <a href="#comandos">Configuración</a>
+      <a href="#diagrama">Diagrama</a>
+      <a href="#lab">Laboratorio</a>
+      <a href="#flash">Flashcards</a>
+      <a href="#quiz">Cuestionario</a>
+    </div>
+  </section>
+
+  <section class="section" id="teoria">
+    <div class="wrap block-body">
+      <h2 class="h"><span class="lead">Teoría</span> ampliada</h2>
+
+      <h3>WPA2-Personal vs WPA2-Enterprise</h3>
+      <p>Ambos cifran el WiFi, pero se diferencian en <strong>cómo autentican</strong>:</p>
+      <ul class="bullets">
+        <li><strong>WPA2-Personal (PSK):</strong> una sola contraseña compartida por todos. Si se filtra, hay que cambiarla en todos los dispositivos. No identifica a usuarios individuales. Sirve para hogares o redes de invitados.</li>
+        <li><strong>WPA2-Enterprise:</strong> cada usuario se autentica con credenciales propias (usuario/contraseña o certificado) validadas por un servidor RADIUS. Permite revocar a un usuario sin afectar a los demás, registrar quién se conecta y aplicar políticas por persona.</li>
+      </ul>
+      <div class="callout note">
+        <span class="label">Actualización</span>
+        El estándar actual es <strong>WPA3</strong>: WPA3-Personal sustituye PSK por SAE (resistente a ataques de diccionario) y WPA3-Enterprise refuerza el cifrado. El concepto 802.1X de este bloque es idéntico en WPA2-Enterprise y WPA3-Enterprise.
+      </div>
+
+      <h3>802.1X: control de acceso basado en puerto</h3>
+      <p><strong>802.1X</strong> es el estándar IEEE que controla el acceso a la red <em>antes</em> de permitir tráfico. Define tres roles:</p>
+      <ul class="bullets">
+        <li><strong>Supplicant:</strong> el cliente que quiere entrar (laptop, teléfono).</li>
+        <li><strong>Authenticator:</strong> el AP (o switch) que actúa de intermediario; mantiene el "puerto" cerrado hasta que la autenticación tenga éxito.</li>
+        <li><strong>Authentication Server:</strong> el servidor RADIUS (NPS) que valida las credenciales.</li>
+      </ul>
+
+      <h3>EAP y sus variantes</h3>
+      <p><strong>EAP</strong> (Extensible Authentication Protocol) no es un método único, sino un <em>marco</em> que transporta distintos métodos de autenticación:</p>
+      <ul class="bullets">
+        <li><strong>EAP-MD5:</strong> obsoleto e inseguro — no cifra el canal.</li>
+        <li><strong>PEAP:</strong> el más usado en entornos Windows. Crea un túnel TLS usando un <em>certificado solo en el servidor</em>, y dentro envía usuario/contraseña (MS-CHAPv2). El cliente no necesita certificado.</li>
+        <li><strong>EAP-TLS:</strong> el más seguro — usa certificados en cliente <em>y</em> servidor, pero exige una PKI.</li>
+      </ul>
+      <p>PEAP es más seguro que EAP-MD5 porque las credenciales viajan dentro de un túnel TLS cifrado, no expuestas.</p>
+
+      <h3>Multi-VLAN wireless</h3>
+      <p>Un mismo AP puede emitir varios SSID, y cada SSID puede mapearse a una VLAN distinta. El enlace del AP al switch es un <strong>trunk</strong> que transporta todas esas VLANs etiquetadas. Así un solo punto de acceso físico sirve a empleados, invitados y VoIP de forma segregada.</p>
+
+      <h3>El flujo 802.1X/EAP completo</h3>
+      <pre><code>Cliente (Supplicant)
+   |-- EAPOL-Start ----------------&gt; AP (Authenticator)
+   |&lt;- EAP Request/Identity --------|
+   |-- EAP Response (identidad) ---&gt;|-- Access-Request ----&gt; RADIUS (NPS)
+   |                                |&lt;- Access-Challenge ---|
+   |&lt;==== túnel TLS PEAP ==========&gt;|                       |
+   |-- credenciales (MS-CHAPv2) ---&gt;|-- Access-Request ----&gt; RADIUS
+   |                                |&lt;- Access-Accept ------|  (+ VLAN ID)
+   |&lt;- EAP-Success -----------------|
+   |========= Conectado a la VLAN asignada =================|</code></pre>
+    </div>
+  </section>
+
+  <section class="section" id="conceptos">
+    <div class="wrap block-body">
+      <h2 class="h"><span class="lead">Conceptos</span> clave</h2>
+      <table>
+        <tr><th>Concepto</th><th>Descripción</th></tr>
+        <tr><td>802.1X</td><td>Estándar de control de acceso a red basado en puerto</td></tr>
+        <tr><td>EAP</td><td>Marco extensible que transporta distintos métodos de autenticación</td></tr>
+        <tr><td>PEAP</td><td>EAP protegido por túnel TLS; certificado solo en el servidor</td></tr>
+        <tr><td>EAP-TLS</td><td>EAP con certificados en cliente y servidor; el más seguro</td></tr>
+        <tr><td>WPA2/WPA3-Enterprise</td><td>WiFi con autenticación 802.1X por usuario contra RADIUS</td></tr>
+        <tr><td>WPA2-Personal (PSK)</td><td>WiFi con una contraseña compartida por todos</td></tr>
+        <tr><td>Supplicant</td><td>El cliente que solicita autenticarse</td></tr>
+        <tr><td>Authenticator</td><td>El AP/switch que intermedia y mantiene el puerto cerrado</td></tr>
+        <tr><td>Authentication Server</td><td>El servidor RADIUS que valida las credenciales</td></tr>
+        <tr><td>SSID</td><td>Nombre de la red wireless; puede mapearse a una VLAN</td></tr>
+      </table>
+    </div>
+  </section>
+
+  <section class="section" id="comandos">
+    <div class="wrap block-body">
+      <h2 class="h"><span class="lead">Configuración</span> de WiFi empresarial en UniFi</h2>
+      <pre><code><span class="cmt"># SSID corporativo con 802.1X</span>
+Settings &rarr; WiFi &rarr; Add WiFi Network
+  Name (SSID)   : Empresa_Secure
+  Security      : WPA2/WPA3 Enterprise
+  RADIUS Profile: (el perfil NPS creado en el Bloque 4)
+  Network/VLAN  : VLAN 10  (Empleados)
+
+<span class="cmt"># SSID de invitados con PSK simple</span>
+Settings &rarr; WiFi &rarr; Add WiFi Network
+  Name (SSID)   : Invitados
+  Security      : WPA2/WPA3 Personal
+  Password      : ClaveInvitados
+  Network/VLAN  : VLAN 20
+  Guest Policy  : habilitada (aísla a los clientes entre sí)
+
+<span class="cmt"># Esquema multi-SSID / multi-VLAN sobre los mismos APs</span>
+SSID Empresa_Secure  &rarr; VLAN 10  &rarr; 802.1X / PEAP   (RADIUS)
+SSID Invitados       &rarr; VLAN 20  &rarr; PSK
+SSID VoIP            &rarr; VLAN 30  &rarr; PSK + QoS</code></pre>
+      <div class="callout tip">
+        <span class="label">Tip</span>
+        El enlace del AP al switch debe ser un <strong>trunk</strong> que permita las VLANs 10, 20 y 30; si solo lleva una VLAN, los SSID de las demás no tendrán salida.
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="diagrama">
+    <div class="wrap block-body">
+      <h2 class="h"><span class="lead">Diagrama</span> del flujo 802.1X</h2>
+      <div class="diagram">
+        <svg viewBox="0 0 780 250" xmlns="http://www.w3.org/2000/svg" font-family="Segoe UI, sans-serif">
+          <defs><marker id="a5" markerWidth="9" markerHeight="9" refX="7" refY="3" orient="auto"><path d="M0,0 L7,3 L0,6 Z" fill="#9aa7b8"/></marker></defs>
+          <g stroke="#9aa7b8" stroke-width="2" fill="none" marker-end="url(#a5)">
+            <line x1="170" y1="90" x2="290" y2="90"/>
+            <line x1="490" y1="90" x2="610" y2="90"/>
+          </g>
+          <g stroke="#34d399" stroke-width="2" fill="none" marker-end="url(#a5)">
+            <line x1="610" y1="120" x2="490" y2="120"/>
+            <line x1="290" y1="120" x2="170" y2="120"/>
+          </g>
+          <g font-size="13" fill="#e6edf3" text-anchor="middle">
+            <rect x="40" y="64" width="130" height="62" rx="9" fill="#1c2230" stroke="#f472b6"/>
+            <text x="105" y="88" font-weight="700">Supplicant</text>
+            <text x="105" y="106" font-size="11" fill="#9aa7b8">laptop / móvil</text>
+
+            <rect x="290" y="64" width="200" height="62" rx="9" fill="#1c2230" stroke="#34d399"/>
+            <text x="390" y="88" font-weight="700">Authenticator</text>
+            <text x="390" y="106" font-size="11" fill="#9aa7b8">AP UniFi</text>
+
+            <rect x="610" y="64" width="140" height="62" rx="9" fill="#1c2230" stroke="#f59e0b"/>
+            <text x="680" y="88" font-weight="700">Auth. Server</text>
+            <text x="680" y="106" font-size="11" fill="#9aa7b8">RADIUS / NPS</text>
+          </g>
+          <text x="230" y="82" font-size="10" fill="#9aa7b8" text-anchor="middle">EAP</text>
+          <text x="550" y="82" font-size="10" fill="#9aa7b8" text-anchor="middle">Access-Request</text>
+          <text x="550" y="138" font-size="10" fill="#34d399" text-anchor="middle">Access-Accept</text>
+          <text x="230" y="138" font-size="10" fill="#34d399" text-anchor="middle">EAP-Success</text>
+          <text x="390" y="180" font-size="11" fill="#9aa7b8" text-anchor="middle">El AP mantiene el "puerto" cerrado hasta recibir Access-Accept; entonces asigna la VLAN.</text>
+        </svg>
+        <div class="cap">Los tres roles 802.1X: el AP solo abre el acceso cuando RADIUS confirma al usuario.</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="lab">
+    <div class="wrap block-body">
+      <h2 class="h"><span class="lead">Laboratorio 5</span> — WPA2-Enterprise completo</h2>
+      <ol class="steps">
+        <li>Verificar que NPS y AD funcionan correctamente (Bloque 4).</li>
+        <li>Crear el SSID <code>Empresa_Secure</code> con seguridad WPA2/WPA3-Enterprise en UniFi.</li>
+        <li>Asignar el perfil RADIUS y la VLAN 10 al SSID.</li>
+        <li>Asegurar que el enlace AP↔switch es un trunk con las VLANs necesarias.</li>
+        <li>Desde un cliente Windows, conectar al SSID e ingresar credenciales del AD.</li>
+        <li>Verificar en el Event Viewer del NPS que la autenticación fue exitosa.</li>
+        <li>Crear un segundo SSID <code>Invitados</code> en VLAN 20 con PSK y Guest Policy.</li>
+        <li>Comprobar que los clientes de VLAN 10 y VLAN 20 están aislados entre sí.</li>
+      </ol>
+      <div class="callout tip">
+        <span class="label">Verificación</span>
+        Éxito si: el cliente corporativo entra con credenciales del dominio (sin PSK), aparece en la VLAN 10, y un cliente de invitados no puede alcanzar recursos de la VLAN 10.
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="wrap block-body">
+      <h2 class="h"><span class="lead">Resumen</span> del bloque</h2>
+      <ul class="bullets">
+        <li>WPA2-Personal usa una clave compartida; WPA2-Enterprise autentica a cada usuario contra RADIUS.</li>
+        <li>802.1X define tres roles: supplicant, authenticator (AP) y authentication server (RADIUS).</li>
+        <li>EAP es un marco; PEAP protege las credenciales en un túnel TLS con certificado solo en el servidor.</li>
+        <li>Un AP puede emitir varios SSID, cada uno mapeado a una VLAN distinta, sobre un enlace trunk.</li>
+        <li>RADIUS puede devolver el VLAN ID en el Access-Accept para ubicar al usuario en su red.</li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="section" id="flash">
+    <div class="wrap block-body">
+      <h2 class="h"><span class="lead">Flashcards</span></h2>
+      <p class="subtitle">Haz clic en cada tarjeta para ver la respuesta.</p>
+      <div class="fc-grid">
+        <div class="flashcard"><div class="inner">
+          <div class="face front">WPA2-Personal vs WPA2-Enterprise</div>
+          <div class="face back">Personal usa una clave compartida; Enterprise autentica a cada usuario contra un servidor RADIUS.</div>
+        </div></div>
+        <div class="flashcard"><div class="inner">
+          <div class="face front">¿Qué rol cumple el AP en 802.1X?</div>
+          <div class="face back">Es el Authenticator: intermedia y mantiene el acceso cerrado hasta que RADIUS confirme al usuario.</div>
+        </div></div>
+        <div class="flashcard"><div class="inner">
+          <div class="face front">¿Qué es EAP?</div>
+          <div class="face back">Un marco extensible de autenticación que transporta distintos métodos (PEAP, EAP-TLS, etc.).</div>
+        </div></div>
+        <div class="flashcard"><div class="inner">
+          <div class="face front">¿Por qué PEAP es más seguro que EAP-MD5?</div>
+          <div class="face back">PEAP envía las credenciales dentro de un túnel TLS cifrado; EAP-MD5 no protege el canal.</div>
+        </div></div>
+        <div class="flashcard"><div class="inner">
+          <div class="face front">¿Cómo logra un AP varios SSID en VLANs distintas?</div>
+          <div class="face back">Mapeando cada SSID a una VLAN y conectando el AP al switch por un enlace trunk.</div>
+        </div></div>
+        <div class="flashcard"><div class="inner">
+          <div class="face front">¿Quién es el Supplicant?</div>
+          <div class="face back">El dispositivo cliente (laptop, móvil) que solicita autenticarse en la red.</div>
+        </div></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="quiz">
+    <div class="wrap block-body">
+      <h2 class="h"><span class="lead">Cuestionario</span></h2>
+      <div class="quiz" id="quiz5">
+        <div class="q" data-answer="c">
+          <div class="qt">1. La diferencia clave de WPA2-Enterprise es que…</div>
+          <label><input type="radio" name="q1e" value="a"> No cifra el tráfico</label>
+          <label><input type="radio" name="q1e" value="b"> Usa una sola contraseña para todos</label>
+          <label><input type="radio" name="q1e" value="c"> Autentica a cada usuario contra un servidor RADIUS</label>
+          <div class="explain">Enterprise da credenciales individuales; Personal usa una PSK compartida.</div>
+        </div>
+        <div class="q" data-answer="b">
+          <div class="qt">2. En 802.1X, el AP cumple el rol de…</div>
+          <label><input type="radio" name="q2e" value="a"> Supplicant</label>
+          <label><input type="radio" name="q2e" value="b"> Authenticator</label>
+          <label><input type="radio" name="q2e" value="c"> Authentication Server</label>
+          <div class="explain">El AP intermedia: mantiene cerrado el acceso hasta el Access-Accept de RADIUS.</div>
+        </div>
+        <div class="q" data-answer="a">
+          <div class="qt">3. ¿Qué hace PEAP con las credenciales del usuario?</div>
+          <label><input type="radio" name="q3e" value="a"> Las envía dentro de un túnel TLS cifrado</label>
+          <label><input type="radio" name="q3e" value="b"> Las envía en texto plano</label>
+          <label><input type="radio" name="q3e" value="c"> No usa credenciales</label>
+          <div class="explain">PEAP crea un túnel TLS (certificado en el servidor) y dentro va MS-CHAPv2.</div>
+        </div>
+        <div class="q" data-answer="c">
+          <div class="qt">4. Para que un AP ofrezca SSIDs en distintas VLANs, su enlace al switch debe ser…</div>
+          <label><input type="radio" name="q4e" value="a"> Un puerto access</label>
+          <label><input type="radio" name="q4e" value="b"> Un puerto apagado</label>
+          <label><input type="radio" name="q4e" value="c"> Un puerto trunk con esas VLANs permitidas</label>
+          <div class="explain">El trunk transporta todas las VLANs etiquetadas hacia el AP.</div>
+        </div>
+        <div class="q" data-answer="b">
+          <div class="qt">5. ¿Qué método EAP es considerado obsoleto e inseguro?</div>
+          <label><input type="radio" name="q5e" value="a"> EAP-TLS</label>
+          <label><input type="radio" name="q5e" value="b"> EAP-MD5</label>
+          <label><input type="radio" name="q5e" value="c"> PEAP</label>
+          <div class="explain">EAP-MD5 no cifra el canal; EAP-TLS y PEAP sí protegen las credenciales.</div>
+        </div>
+        <button class="btn" onclick="checkQuiz('quiz5')">Comprobar respuestas</button>
+        <button class="btn ghost" onclick="resetQuiz('quiz5')">Reiniciar</button>
+        <div class="quiz-result"></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="wrap block-body">
+      <h2 class="h"><span class="lead">Preguntas</span> de repaso</h2>
+      <ul class="review">
+        <li>¿Cuál es la diferencia entre WPA2-Personal y WPA2-Enterprise?</li>
+        <li>¿Qué rol cumple el AP en el proceso 802.1X?</li>
+        <li>¿Por qué PEAP es más seguro que EAP-MD5?</li>
+        <li>¿Cómo se logra que múltiples SSIDs estén en diferentes VLANs?</li>
+        <li>¿Qué información útil puede devolver RADIUS en el Access-Accept?</li>
+      </ul>
+    </div>
+  </section>
+
+  <nav class="block-nav wrap">
+    <a class="prev" href="bloque4.html"><div class="dir">← Anterior</div><div class="ttl">RADIUS Server Windows</div></a>
+    <a class="next" href="bloque6.html"><div class="dir">Siguiente →</div><div class="ttl">Multicast con Cisco</div></a>
+  </nav>
+</main>
+
+<footer><div class="wrap">Bloque 5 de 6 · Curso de Redes Avanzado</div></footer>
+<script src="script.js"></script>
+</body>
+</html>

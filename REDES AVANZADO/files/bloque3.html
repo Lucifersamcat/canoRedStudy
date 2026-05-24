@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Bloque 3 · Switches Ubiquiti — Curso de Redes Avanzado</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<header class="topnav">
+  <div class="wrap">
+    <span class="brand">Redes<span class="dot">.</span>Avanzado</span>
+    <nav>
+      <a href="index.html">Inicio</a>
+      <a href="bloque1.html">1 · Cisco</a>
+      <a href="bloque2.html">2 · VLANs/STP</a>
+      <a href="bloque3.html">3 · Ubiquiti</a>
+      <a href="bloque4.html">4 · RADIUS</a>
+      <a href="bloque5.html">5 · WiFi</a>
+      <a href="bloque6.html">6 · Multicast</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <section class="block-head wrap">
+    <div class="num">BLOQUE 03</div>
+    <h1>Switches Ubiquiti</h1>
+    <p>Frente a la CLI de Cisco, Ubiquiti propone una gestión centralizada y gráfica: el UniFi Controller administra switches y APs desde una sola interfaz. El reto es traducir lo que ya sabes de VLANs a la lógica de UniFi.</p>
+    <div class="progress-dots"><span></span><span></span><span class="on"></span><span></span><span></span><span></span></div>
+    <div class="toc">
+      <a href="#teoria">Teoría ampliada</a>
+      <a href="#conceptos">Conceptos clave</a>
+      <a href="#comandos">Instalación</a>
+      <a href="#diagrama">Diagrama</a>
+      <a href="#lab">Laboratorio</a>
+      <a href="#flash">Flashcards</a>
+      <a href="#quiz">Cuestionario</a>
+    </div>
+  </section>
+
+  <section class="section" id="teoria">
+    <div class="wrap block-body">
+      <h2 class="h"><span class="lead">Teoría</span> ampliada</h2>
+
+      <h3>El modelo de gestión UniFi</h3>
+      <p>En Cisco cada switch se configura individualmente por CLI. En Ubiquiti, un software llamado <strong>UniFi Network Controller</strong> (o Network Application) actúa como cerebro central: descubre los dispositivos, les empuja la configuración y muestra estadísticas en tiempo real. El controller puede correr en un PC/servidor, en una VM, o en un appliance dedicado de Ubiquiti (<strong>Cloud Key</strong> / consola Dream Machine).</p>
+      <p>Punto clave: una vez configurado, el controller <strong>no necesita estar encendido permanentemente</strong> para que la red funcione — los dispositivos conservan su configuración. Pero sí se necesita para hacer cambios, ver estadísticas y aplicar actualizaciones.</p>
+
+      <h3>Adopción de dispositivos</h3>
+      <p><strong>Adoptar</strong> es el proceso de poner un dispositivo Ubiquiti bajo el control de un controller concreto. Un equipo recién sacado de la caja está en estado <em>Pending Adoption</em>; al adoptarlo, el controller le entrega su configuración y lo "reclama". El dispositivo y el controller deben poder verse en la red (capa 2 por descubrimiento, o capa 3 mediante <em>inform URL</em> / DNS).</p>
+
+      <h3>VLANs en lenguaje UniFi</h3>
+      <p>UniFi no habla de "VLAN" en su menú principal: habla de <strong>Networks</strong>. Crear una Network con un VLAN ID equivale exactamente a declarar una VLAN. Los puertos del switch se configuran con <strong>Port Profiles</strong>, que son el equivalente gráfico a un puerto access o trunk:</p>
+      <ul class="bullets">
+        <li>Un perfil tipo <em>Native VLAN + Tagged</em> permitiendo varias redes = un <strong>trunk</strong>.</li>
+        <li>Un perfil con una sola Network nativa = un <strong>access port</strong>.</li>
+      </ul>
+
+      <h3>PoE: alimentar por el cable de red</h3>
+      <p>Los switches UniFi suelen ser <strong>PoE</strong> (Power over Ethernet): entregan electricidad y datos por el mismo cable Ethernet. Esto es esencial para los APs WiFi, que normalmente se montan en el techo donde no hay tomacorriente. El controller permite incluso encender/apagar el PoE de un puerto de forma remota.</p>
+
+      <div class="callout fix">
+        <span class="label">Corrección al material original</span>
+        Los comandos de instalación del material original están desactualizados: <code>apt-key</code> está obsoleto y la línea <code>wget ... debian stable InRelease</code> es incorrecta. Lo más fiable hoy es usar el <strong>script de instalación oficial de la comunidad</strong> (UniFi Easy Installer) o seguir la guía vigente de Ubiquiti, que añade el repositorio con una clave GPG en <code>/usr/share/keyrings/</code>. Para un laboratorio, la opción más simple es instalar el controller directamente en Windows con el ejecutable oficial.
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="conceptos">
+    <div class="wrap block-body">
+      <h2 class="h"><span class="lead">Conceptos</span> clave</h2>
+      <table>
+        <tr><th>Concepto</th><th>Descripción</th></tr>
+        <tr><td>UniFi Controller</td><td>Software de gestión centralizada de los dispositivos Ubiquiti</td></tr>
+        <tr><td>UniFi Switch</td><td>Switch gestionable administrado desde el controller</td></tr>
+        <tr><td>Network (UniFi)</td><td>Equivalente gráfico a una VLAN; se le asigna un VLAN ID</td></tr>
+        <tr><td>Adoption</td><td>Proceso de poner un dispositivo bajo el control de un controller</td></tr>
+        <tr><td>Site</td><td>Agrupación lógica de dispositivos (una sede, un cliente)</td></tr>
+        <tr><td>PoE</td><td>Power over Ethernet: alimenta dispositivos por el cable de red</td></tr>
+        <tr><td>Port Profile</td><td>Perfil de configuración de puerto (equivale a access o trunk)</td></tr>
+        <tr><td>Inform URL</td><td>Dirección que un dispositivo usa para encontrar a su controller en capa 3</td></tr>
+        <tr><td>Cloud Key / UDM</td><td>Appliances de Ubiquiti que ejecutan el controller de forma dedicada</td></tr>
+      </table>
+    </div>
+  </section>
+
+  <section class="section" id="comandos">
+    <div class="wrap block-body">
+      <h2 class="h"><span class="lead">Instalación</span> del UniFi Controller</h2>
+      <pre><code><span class="cmt"># --- Opción A: Windows (recomendada para laboratorio) ---</span>
+<span class="cmt"># 1. Descargar el instalador desde ui.com/download/unifi</span>
+<span class="cmt"># 2. Ejecutar UniFi-installer.exe (instala Java + MongoDB embebido)</span>
+<span class="cmt"># 3. Acceder vía navegador a:  https://localhost:8443</span>
+
+<span class="cmt"># --- Opción B: Linux (Ubuntu/Debian) — método vigente ---</span>
+<span class="cmt"># Repositorio con clave GPG en keyrings (sustituye al obsoleto apt-key)</span>
+<span class="kw">curl</span> -fsSL https://dl.ui.com/unifi/unifi-repo.gpg | \
+  <span class="kw">sudo tee</span> /usr/share/keyrings/unifi-repo.gpg &gt; /dev/null
+
+<span class="kw">echo</span> <span class="val">'deb [signed-by=/usr/share/keyrings/unifi-repo.gpg] https://www.ui.com/downloads/unifi/debian stable ubiquiti'</span> | \
+  <span class="kw">sudo tee</span> /etc/apt/sources.list.d/unifi.list
+
+<span class="kw">sudo apt update</span>
+<span class="kw">sudo apt install</span> unifi      <span class="cmt"># instala UniFi + MongoDB + Java como dependencias</span>
+
+<span class="cmt"># Gestionar el servicio</span>
+<span class="kw">sudo systemctl enable unifi</span>
+<span class="kw">sudo systemctl start unifi</span>
+<span class="kw">sudo systemctl status unifi</span>
+
+<span class="cmt"># Acceso web</span>
+<span class="cmt"># https://IP_DEL_SERVIDOR:8443</span></code></pre>
+      <div class="callout note">
+        <span class="label">Nota de versiones</span>
+        Cada versión de UniFi exige una versión concreta de MongoDB y Java. Si instalas en Linux, consulta la matriz de compatibilidad oficial antes de elegir versiones; en Windows el instalador resuelve todo automáticamente.
+      </div>
+
+      <h3>Flujo de configuración en la GUI</h3>
+      <ol class="steps">
+        <li><strong>Setup inicial:</strong> crear el Site y la cuenta de administrador.</li>
+        <li><strong>Adopt devices:</strong> descubrir y adoptar switches y APs de la red.</li>
+        <li><strong>Crear Networks:</strong> Settings → Networks → Add Network, asignando el VLAN ID.</li>
+        <li><strong>Configurar Port Profiles:</strong> definir qué redes permite cada perfil de puerto.</li>
+        <li><strong>Asignar perfiles a puertos:</strong> Devices → Switch → Ports.</li>
+        <li><strong>Verificar:</strong> vista de topología y estadísticas por puerto.</li>
+      </ol>
+    </div>
+  </section>
+
+  <section class="section" id="diagrama">
+    <div class="wrap block-body">
+      <h2 class="h"><span class="lead">Diagrama</span> de la topología</h2>
+      <div class="diagram">
+        <svg viewBox="0 0 760 320" xmlns="http://www.w3.org/2000/svg" font-family="Segoe UI, sans-serif">
+          <g stroke="#9aa7b8" stroke-width="2" fill="none">
+            <line x1="380" y1="92" x2="380" y2="130"/>
+            <line x1="380" y1="186" x2="380" y2="218"/>
+            <line x1="250" y1="244" x2="180" y2="244"/>
+            <line x1="510" y1="244" x2="580" y2="244"/>
+          </g>
+          <g font-size="13" fill="#e6edf3" text-anchor="middle">
+            <rect x="270" y="40" width="220" height="52" rx="9" fill="#1c2230" stroke="#34d399"/>
+            <text x="380" y="62" font-weight="700">UniFi Controller</text>
+            <text x="380" y="80" font-size="11" fill="#9aa7b8">https://servidor:8443</text>
+
+            <rect x="250" y="132" width="260" height="54" rx="9" fill="#1c2230" stroke="#34d399"/>
+            <text x="380" y="154" font-weight="700">UniFi Switch (PoE)</text>
+            <text x="380" y="172" font-size="11" fill="#9aa7b8">Port Profiles · VLAN 10/20/30</text>
+
+            <rect x="40" y="220" width="140" height="48" rx="9" fill="#1c2230" stroke="#f472b6"/>
+            <text x="110" y="240" font-weight="700">AP UniFi</text>
+            <text x="110" y="258" font-size="11" fill="#9aa7b8">alimentado por PoE</text>
+
+            <rect x="290" y="218" width="180" height="52" rx="9" fill="#1c2230" stroke="#2b3242"/>
+            <text x="380" y="240" font-weight="700">PC VLAN 10</text>
+            <text x="380" y="258" font-size="11" fill="#9aa7b8">Empleados</text>
+
+            <rect x="580" y="220" width="140" height="48" rx="9" fill="#1c2230" stroke="#2b3242"/>
+            <text x="650" y="240" font-weight="700">PC VLAN 20</text>
+            <text x="650" y="258" font-size="11" fill="#9aa7b8">Invitados</text>
+          </g>
+          <text x="380" y="300" font-size="11" fill="#9aa7b8" text-anchor="middle">El controller gestiona el switch; el switch alimenta el AP por PoE y segmenta con Port Profiles.</text>
+        </svg>
+        <div class="cap">Laboratorio 3: el controller administra un switch UniFi que segmenta tres redes y alimenta un AP por PoE.</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="lab">
+    <div class="wrap block-body">
+      <h2 class="h"><span class="lead">Laboratorio 3</span> — UniFi Switch con VLANs</h2>
+      <p class="subtitle">Objetivo: crear 3 redes — VLAN 10 Empleados, VLAN 20 Invitados, VLAN 30 Gestión.</p>
+      <ol class="steps">
+        <li>Instalar el UniFi Controller en un servidor o VM (o en Windows para el laboratorio).</li>
+        <li>Completar el setup inicial: crear el Site y la cuenta admin.</li>
+        <li>Adoptar el switch Ubiquiti desde la sección Devices.</li>
+        <li>Crear las 3 Networks con sus VLAN IDs (10, 20, 30).</li>
+        <li>Crear un Port Profile por cada red, y un perfil trunk para el enlace ascendente.</li>
+        <li>Asignar cada puerto del switch a su perfil correspondiente.</li>
+        <li>Conectar PCs de prueba y verificar la segmentación con pings entre VLANs.</li>
+      </ol>
+      <div class="callout tip">
+        <span class="label">Verificación</span>
+        Bien hecho si: el switch aparece como <em>Connected</em> en el controller, los puertos muestran su perfil asignado, y los PCs solo se comunican dentro de su propia VLAN.
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="wrap block-body">
+      <h2 class="h"><span class="lead">Resumen</span> del bloque</h2>
+      <ul class="bullets">
+        <li>El UniFi Controller gestiona de forma centralizada y gráfica todos los dispositivos Ubiquiti.</li>
+        <li>Adoptar = poner un dispositivo bajo el control de un controller concreto.</li>
+        <li>En UniFi, una <strong>Network</strong> con VLAN ID equivale a una VLAN; los puertos se configuran con <strong>Port Profiles</strong>.</li>
+        <li>El PoE alimenta APs y otros dispositivos por el cable de red, sin tomacorriente cercano.</li>
+        <li>Tras configurar, los dispositivos funcionan aunque el controller esté apagado; este solo se necesita para cambios y estadísticas.</li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="section" id="flash">
+    <div class="wrap block-body">
+      <h2 class="h"><span class="lead">Flashcards</span></h2>
+      <p class="subtitle">Haz clic en cada tarjeta para ver la respuesta.</p>
+      <div class="fc-grid">
+        <div class="flashcard"><div class="inner">
+          <div class="face front">¿Qué es el UniFi Controller?</div>
+          <div class="face back">Software de gestión centralizada que descubre, configura y monitoriza los dispositivos Ubiquiti.</div>
+        </div></div>
+        <div class="flashcard"><div class="inner">
+          <div class="face front">¿Qué significa "adoptar" un dispositivo?</div>
+          <div class="face back">Ponerlo bajo el control de un controller concreto, que le entrega su configuración.</div>
+        </div></div>
+        <div class="flashcard"><div class="inner">
+          <div class="face front">¿Cómo se define una VLAN en UniFi?</div>
+          <div class="face back">Creando una Network y asignándole un VLAN ID en Settings → Networks.</div>
+        </div></div>
+        <div class="flashcard"><div class="inner">
+          <div class="face front">¿Qué es un Port Profile?</div>
+          <div class="face back">Un perfil reutilizable que define qué redes/VLANs permite un puerto; equivale a access o trunk.</div>
+        </div></div>
+        <div class="flashcard"><div class="inner">
+          <div class="face front">¿Para qué sirve el PoE?</div>
+          <div class="face back">Entrega energía y datos por el mismo cable Ethernet; clave para alimentar APs en el techo.</div>
+        </div></div>
+        <div class="flashcard"><div class="inner">
+          <div class="face front">¿La red deja de funcionar si se apaga el controller?</div>
+          <div class="face back">No: los dispositivos conservan su configuración. El controller solo hace falta para cambios y estadísticas.</div>
+        </div></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="quiz">
+    <div class="wrap block-body">
+      <h2 class="h"><span class="lead">Cuestionario</span></h2>
+      <div class="quiz" id="quiz3">
+        <div class="q" data-answer="b">
+          <div class="qt">1. En UniFi, ¿qué elemento equivale a una VLAN?</div>
+          <label><input type="radio" name="q1c" value="a"> Un Site</label>
+          <label><input type="radio" name="q1c" value="b"> Una Network</label>
+          <label><input type="radio" name="q1c" value="c"> Un Port Profile</label>
+          <div class="explain">Una Network con VLAN ID es la VLAN; el Port Profile decide qué puertos la usan.</div>
+        </div>
+        <div class="q" data-answer="c">
+          <div class="qt">2. Adoptar un dispositivo significa…</div>
+          <label><input type="radio" name="q2c" value="a"> Actualizar su firmware</label>
+          <label><input type="radio" name="q2c" value="b"> Conectarlo a Internet</label>
+          <label><input type="radio" name="q2c" value="c"> Ponerlo bajo el control de un controller</label>
+          <div class="explain">La adopción reclama el equipo y le envía su configuración.</div>
+        </div>
+        <div class="q" data-answer="a">
+          <div class="qt">3. ¿Para qué se usa principalmente el PoE en una red UniFi?</div>
+          <label><input type="radio" name="q3c" value="a"> Alimentar APs por el cable de red</label>
+          <label><input type="radio" name="q3c" value="b"> Aumentar la velocidad del enlace</label>
+          <label><input type="radio" name="q3c" value="c"> Cifrar el tráfico</label>
+          <div class="explain">PoE lleva energía + datos; ideal para APs montados donde no hay tomacorriente.</div>
+        </div>
+        <div class="q" data-answer="b">
+          <div class="qt">4. Si se apaga el UniFi Controller tras configurar la red…</div>
+          <label><input type="radio" name="q4c" value="a"> La red deja de funcionar</label>
+          <label><input type="radio" name="q4c" value="b"> La red sigue funcionando, pero no se pueden hacer cambios</label>
+          <label><input type="radio" name="q4c" value="c"> Los dispositivos pierden su configuración</label>
+          <div class="explain">Los dispositivos conservan su config; el controller solo es necesario para gestionar.</div>
+        </div>
+        <div class="q" data-answer="c">
+          <div class="qt">5. ¿Qué ventaja principal ofrece la gestión con UniFi frente a la CLI?</div>
+          <label><input type="radio" name="q5c" value="a"> Es más segura por definición</label>
+          <label><input type="radio" name="q5c" value="b"> No necesita VLANs</label>
+          <label><input type="radio" name="q5c" value="c"> Administración centralizada y gráfica de todos los equipos</label>
+          <div class="explain">Un solo panel configura y monitoriza switches y APs, sin tocar cada equipo por CLI.</div>
+        </div>
+        <button class="btn" onclick="checkQuiz('quiz3')">Comprobar respuestas</button>
+        <button class="btn ghost" onclick="resetQuiz('quiz3')">Reiniciar</button>
+        <div class="quiz-result"></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="wrap block-body">
+      <h2 class="h"><span class="lead">Preguntas</span> de repaso</h2>
+      <ul class="review">
+        <li>¿Cuál es la ventaja de gestionar switches con UniFi Controller vs CLI?</li>
+        <li>¿Qué es "adoptar" un dispositivo en UniFi?</li>
+        <li>¿Cómo se define una VLAN en la interfaz de UniFi?</li>
+        <li>¿Qué es un Port Profile y para qué sirve?</li>
+        <li>¿Sigue funcionando la red si el controller se apaga?</li>
+      </ul>
+    </div>
+  </section>
+
+  <nav class="block-nav wrap">
+    <a class="prev" href="bloque2.html"><div class="dir">← Anterior</div><div class="ttl">VLANs y Spanning Tree</div></a>
+    <a class="next" href="bloque4.html"><div class="dir">Siguiente →</div><div class="ttl">RADIUS Server Windows</div></a>
+  </nav>
+</main>
+
+<footer><div class="wrap">Bloque 3 de 6 · Curso de Redes Avanzado</div></footer>
+<script src="script.js"></script>
+</body>
+</html>

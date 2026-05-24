@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Módulo 3 · Elementos del Data Center — Cableado Estructurado</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<header class="topnav">
+  <div class="wrap">
+    <span class="brand">Cableado<span class="dot">.</span>Estructurado</span>
+    <nav>
+      <a href="index.html">Inicio</a>
+      <a href="bloque1.html">1 · Intro</a>
+      <a href="bloque2.html">2 · Canalización</a>
+      <a href="bloque3.html">3 · Data Center</a>
+      <a href="bloque4.html">4 · Campo</a>
+      <a href="bloque5.html">5 · Fibra</a>
+      <a href="bloque6.html">6 · Profesional</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <section class="block-head wrap">
+    <div class="num">MÓDULO 03</div>
+    <h1>Elementos del Data Center</h1>
+    <p>Gabinetes de 42U, puesta a tierra TIA-607, pasillos fríos y calientes, UPS de doble conversión, detección VESDA, supresión limpia con FM-200 y piso falso: los componentes que hacen un cuarto técnico profesional.</p>
+    <div class="progress-dots">
+      <span class="on"></span><span class="on"></span><span class="on"></span><span></span><span></span><span></span>
+    </div>
+    <div class="toc">
+      <a href="#teoria">Teoría</a>
+      <a href="#conceptos">Conceptos</a>
+      <a href="#diagrama">Diagrama</a>
+      <a href="#lab">Laboratorio</a>
+      <a href="#flash">Flashcards</a>
+      <a href="#quiz">Cuestionario</a>
+    </div>
+  </section>
+
+  <!-- ===== TEORÍA ===== -->
+  <section class="section" id="teoria">
+    <div class="wrap block-body">
+      <h2 class="h"><span class="lead">Teoría</span> ampliada</h2>
+
+      <h3>Tipos de Gabinetes (Racks)</h3>
+      <p>La altura se mide en <strong>Rack Units (U)</strong>: 1U = 1.75" (44.45 mm). Un rack estándar tiene <strong>42U</strong>. El ancho universal es 19" (EIA-310).</p>
+      <table>
+        <tr><th>Tipo</th><th>Descripción</th><th>Uso típico</th></tr>
+        <tr><td>Open Frame Rack</td><td>Estructura de rieles sin laterales ni puerta</td><td>Laboratorios, cuartos técnicos pequeños</td></tr>
+        <tr><td>Closed Rack (gabinete)</td><td>Carcasa metálica con puertas frontal y trasera</td><td>Oficinas, data centers empresariales</td></tr>
+        <tr><td>Rack 19" profundo</td><td>900–1200 mm de fondo para servidores y UPS</td><td>Data centers</td></tr>
+        <tr><td>MicroRack / Wallmount</td><td>Gabinete pequeño montado en pared, 6–12U</td><td>Pisos remotos, oficinas pequeñas (IDF)</td></tr>
+      </table>
+      <p>Regla de montaje: equipos más pesados (UPS, storage) en la parte <strong>inferior</strong> del rack para bajar el centro de gravedad. Patch panels en la parte superior.</p>
+
+      <h3>Puesta a Tierra — TIA-607</h3>
+      <ul class="bullets">
+        <li><strong>TMGB</strong> (Telecommunications Main Grounding Busbar): barra de cobre central en el MDF, conectada al sistema de tierra del edificio.</li>
+        <li><strong>TGB</strong> (Telecommunications Grounding Busbar): barra en cada IDF, conectada a la TMGB por el conductor TBB.</li>
+        <li>Cada rack se conecta a la TGB con conductor <strong>#6 AWG</strong> verde/amarillo. Resistencia &lt;1 Ω.</li>
+      </ul>
+
+      <h3>Climatización — Pasillos Frío/Caliente</h3>
+      <p>El calor es el principal enemigo de los equipos. ASHRAE A1 recomienda <strong>18–27 °C</strong> con humedad 20–80% sin condensación.</p>
+      <ul class="bullets">
+        <li><strong>Pasillo frío:</strong> los frentes de los racks se orientan frente a frente; el aire frío del CRAC entra por las rejillas del piso.</li>
+        <li><strong>Pasillo caliente:</strong> las espaldas de los racks dan al mismo pasillo; el aire caliente sube al techo hacia el retorno del CRAC.</li>
+        <li><strong>Blanking panels:</strong> paneles de 1U en los huecos vacíos del rack para evitar que el aire caliente recircule hacia el frente.</li>
+      </ul>
+
+      <h3>UPS — Tipos y Selección</h3>
+      <table>
+        <tr><th>Tipo</th><th>Tecnología</th><th>Conmutación</th></tr>
+        <tr><td>Off-line (Standby)</td><td>Batería entra al detectar fallo; normal = red directa</td><td>~8 ms</td></tr>
+        <tr><td>Line-interactive</td><td>Regula voltaje (AVR) sin batería; batería para fallo total</td><td>~4 ms</td></tr>
+        <tr><td>On-line (doble conversión)</td><td>Siempre desde batería → inversor; red solo recarga</td><td>0 ms</td></tr>
+      </table>
+      <p>Los data centers usan <strong>doble conversión</strong> para garantizar 0 ms de interrupción. Autonomía estándar: 10–15 min para arrancar el generador diesel de respaldo.</p>
+
+      <h3>Seguridad contra Incendio</h3>
+      <ul class="bullets">
+        <li><strong>VESDA</strong> (Very Early Smoke Detection): aspira continuamente muestras de aire y detecta partículas antes de que haya llama. Permite actuar preventivamente.</li>
+        <li><strong>FM-200 / Novec 1230:</strong> agentes de supresión limpios, no dañan equipos, no dejan residuos. Se activan con alarma visual y sonora previa.</li>
+        <li><strong>No usar CO₂:</strong> desplaza el oxígeno y puede asfixiar al personal. No usar agua: daña los equipos electrónicos.</li>
+      </ul>
+
+      <h3>Piso Falso</h3>
+      <p>El piso técnico elevado (paneles de 600×600 mm, altura 300–600 mm) crea un <strong>plenum</strong> inferior para distribución de aire frío y paso de cables. Tipos de panel: sólido (estructural), perforado (descarga de aire), con rejilla (máximo flujo). Los cables de datos y eléctricos se separan en zonas distintas bajo el piso.</p>
+    </div>
+  </section>
+
+  <!-- ===== CONCEPTOS ===== -->
+  <section class="section" id="conceptos">
+    <div class="wrap block-body">
+      <h2 class="h"><span class="lead">Conceptos</span> clave</h2>
+      <table>
+        <tr><th>Término</th><th>Definición</th></tr>
+        <tr><td>1U (Rack Unit)</td><td>Unidad de altura del rack = 1.75" (44.45 mm); rack estándar = 42U</td></tr>
+        <tr><td>TIA-942</td><td>Estándar de diseño de data centers; define espacios, cableado y redundancia</td></tr>
+        <tr><td>Tier I–IV</td><td>Clasificación Uptime Institute: Tier I (99.671% uptime) → Tier IV (99.995%, tolerante a fallas)</td></tr>
+        <tr><td>TMGB</td><td>Telecommunications Main Grounding Busbar — barra de tierra central del MDF</td></tr>
+        <tr><td>TGB</td><td>Telecommunications Grounding Busbar — barra de tierra en cada IDF</td></tr>
+        <tr><td>CRAC</td><td>Computer Room Air Conditioner — unidad de precisión para enfriar la sala de servidores</td></tr>
+        <tr><td>Blanking panel</td><td>Panel 1U en huecos vacíos del rack para evitar recirculación de aire caliente</td></tr>
+        <tr><td>UPS doble conversión</td><td>UPS on-line: siempre alimenta desde inversores, conmutación 0 ms</td></tr>
+        <tr><td>VESDA</td><td>Very Early Smoke Detection — detector por aspiración que alerta antes de que haya llama</td></tr>
+        <tr><td>FM-200 / Novec 1230</td><td>Agentes de supresión de incendio limpios, no dañan equipos electrónicos</td></tr>
+        <tr><td>Piso falso</td><td>Suelo técnico elevado que crea plenum para aire frío y paso de cables</td></tr>
+      </table>
+    </div>
+  </section>
+
+  <!-- ===== DIAGRAMA ===== -->
+  <section class="section" id="diagrama">
+    <div class="wrap block-body">
+      <h2 class="h"><span class="lead">Diagrama</span> — Sección transversal del data center</h2>
+      <div class="diagram">
+        <svg viewBox="0 0 760 300" xmlns="http://www.w3.org/2000/svg" font-family="Segoe UI, sans-serif" font-size="12">
+          <defs>
+            <marker id="af" markerWidth="8" markerHeight="8" refX="5" refY="3" orient="auto">
+              <path d="M0,0 L8,3 L0,6 Z" fill="#4f9cf9"/>
+            </marker>
+            <marker id="ah" markerWidth="8" markerHeight="8" refX="5" refY="3" orient="auto">
+              <path d="M0,0 L8,3 L0,6 Z" fill="#f59e0b"/>
+            </marker>
+          </defs>
+
+          <!-- Techo -->
+          <rect x="20" y="15" width="720" height="16" rx="3" fill="#1c2230" stroke="#2b3242"/>
+          <text x="380" y="27" fill="#9aa7b8" text-anchor="middle" font-size="10">Techo — retorno de aire caliente</text>
+
+          <!-- Pasillo frío izq -->
+          <rect x="20" y="31" width="155" height="160" fill="#0a1628" stroke="#4f9cf9" stroke-dasharray="4,2" stroke-width="1.5"/>
+          <text x="97" y="115" fill="#4f9cf9" font-weight="bold" text-anchor="middle" font-size="12">PASILLO</text>
+          <text x="97" y="130" fill="#4f9cf9" font-weight="bold" text-anchor="middle" font-size="12">FRÍO</text>
+          <line x1="65" y1="191" x2="65" y2="50" stroke="#4f9cf9" stroke-width="2" marker-end="url(#af)"/>
+          <line x1="130" y1="191" x2="130" y2="50" stroke="#4f9cf9" stroke-width="2" marker-end="url(#af)"/>
+
+          <!-- Rack izquierdo -->
+          <rect x="175" y="48" width="60" height="145" rx="4" fill="#1c2230" stroke="#a78bfa" stroke-width="2"/>
+          <text x="205" y="70" fill="#a78bfa" text-anchor="middle" font-size="10">Rack A</text>
+          <rect x="183" y="78" width="44" height="10" rx="2" fill="#2d2050"/>
+          <rect x="183" y="94" width="44" height="10" rx="2" fill="#2d2050"/>
+          <rect x="183" y="110" width="44" height="10" rx="2" fill="#2d2050"/>
+          <rect x="183" y="126" width="44" height="10" rx="2" fill="#2d2050"/>
+          <text x="205" y="172" fill="#9aa7b8" text-anchor="middle" font-size="9">↑ frente</text>
+
+          <!-- Pasillo caliente centro -->
+          <rect x="235" y="31" width="290" height="160" fill="#1a0d00" stroke="#f59e0b" stroke-dasharray="4,2" stroke-width="1.5"/>
+          <text x="380" y="110" fill="#f59e0b" font-weight="bold" text-anchor="middle" font-size="12">PASILLO</text>
+          <text x="380" y="125" fill="#f59e0b" font-weight="bold" text-anchor="middle" font-size="12">CALIENTE</text>
+          <line x1="320" y1="191" x2="320" y2="35" stroke="#f59e0b" stroke-width="2" marker-end="url(#ah)"/>
+          <line x1="440" y1="191" x2="440" y2="35" stroke="#f59e0b" stroke-width="2" marker-end="url(#ah)"/>
+
+          <!-- Rack derecho -->
+          <rect x="525" y="48" width="60" height="145" rx="4" fill="#1c2230" stroke="#a78bfa" stroke-width="2"/>
+          <text x="555" y="70" fill="#a78bfa" text-anchor="middle" font-size="10">Rack B</text>
+          <rect x="533" y="78" width="44" height="10" rx="2" fill="#2d2050"/>
+          <rect x="533" y="94" width="44" height="10" rx="2" fill="#2d2050"/>
+          <rect x="533" y="110" width="44" height="10" rx="2" fill="#2d2050"/>
+          <rect x="533" y="126" width="44" height="10" rx="2" fill="#2d2050"/>
+          <text x="555" y="172" fill="#9aa7b8" text-anchor="middle" font-size="9">frente ↑</text>
+
+          <!-- Pasillo frío der -->
+          <rect x="585" y="31" width="155" height="160" fill="#0a1628" stroke="#4f9cf9" stroke-dasharray="4,2" stroke-width="1.5"/>
+          <text x="662" y="115" fill="#4f9cf9" font-weight="bold" text-anchor="middle" font-size="12">PASILLO</text>
+          <text x="662" y="130" fill="#4f9cf9" font-weight="bold" text-anchor="middle" font-size="12">FRÍO</text>
+          <line x1="628" y1="191" x2="628" y2="50" stroke="#4f9cf9" stroke-width="2" marker-end="url(#af)"/>
+          <line x1="700" y1="191" x2="700" y2="50" stroke="#4f9cf9" stroke-width="2" marker-end="url(#af)"/>
+
+          <!-- Piso falso -->
+          <rect x="20" y="191" width="720" height="26" rx="0" fill="#1c2230" stroke="#34d399" stroke-width="2"/>
+          <text x="380" y="208" fill="#34d399" font-weight="bold" text-anchor="middle" font-size="11">PISO FALSO — Plenum de aire frío</text>
+
+          <!-- Subsuelo: CRAC + cables -->
+          <rect x="20" y="217" width="720" height="45" fill="#0d1018" stroke="#2b3242"/>
+          <rect x="45" y="224" width="75" height="30" rx="4" fill="#1c2230" stroke="#22d3ee" stroke-width="1.5"/>
+          <text x="82" y="240" fill="#22d3ee" text-anchor="middle" font-size="10">CRAC ↑</text>
+          <rect x="340" y="224" width="80" height="30" rx="4" fill="#1c2230" stroke="#f59e0b" stroke-width="1.5"/>
+          <text x="380" y="240" fill="#f59e0b" text-anchor="middle" font-size="9">Cables datos/poder</text>
+          <rect x="340" y="237" width="80" height="10" rx="2" fill="none"/>
+          <text x="380" y="253" fill="#9aa7b8" text-anchor="middle" font-size="9">separados</text>
+          <rect x="640" y="224" width="75" height="30" rx="4" fill="#1c2230" stroke="#22d3ee" stroke-width="1.5"/>
+          <text x="677" y="240" fill="#22d3ee" text-anchor="middle" font-size="10">CRAC ↑</text>
+
+          <!-- Legend -->
+          <text x="380" y="285" fill="#9aa7b8" text-anchor="middle" font-size="10">ASHRAE A1: 18–27 °C · Humedad 20–80% sin condensación · Blanking panels en huecos vacíos</text>
+        </svg>
+        <div class="cap">Los racks se orientan frente a frente (pasillo frío) y espalda a espalda (pasillo caliente). El CRAC inyecta aire frío por el piso falso; el caliente sube al techo.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== LABORATORIO ===== -->
+  <section class="section" id="lab">
+    <div class="wrap block-body">
+      <h2 class="h"><span class="lead">Laboratorio 3</span> — Rack audit y documentación</h2>
+      <p class="subtitle">Auditoría completa de un gabinete existente para verificar buenas prácticas.</p>
+      <ol class="steps">
+        <li><strong>Inventario:</strong> documentar cada equipo en el rack: nombre, tipo, posición en U, puertos usados e IP de gestión.</li>
+        <li><strong>Blanking panels:</strong> identificar todos los huecos sin cubrir. Instalar blanking panels en cada espacio vacío para cortar la recirculación de aire caliente.</li>
+        <li><strong>Verificar tierra:</strong> con multímetro en modo continuidad, comprobar que cada rack metálico conecta al TGB. Resistencia objetivo &lt;1 Ω.</li>
+        <li><strong>Medir temperatura:</strong> termómetro de contacto en la entrada de aire (frente del rack, parte superior). Si supera 27 °C, revisar CRAC y blanking panels.</li>
+        <li><strong>Prueba de UPS:</strong> desconectar la entrada del UPS. Verificar que los equipos siguen operando. Medir tiempo de autonomía hasta alarma de batería baja.</li>
+        <li><strong>Diagrama as-built:</strong> crear el diagrama de rack con posiciones reales de equipos. Herramientas: RackTables (open source), Visio o papel cuadriculado.</li>
+      </ol>
+    </div>
+  </section>
+
+  <!-- ===== RESUMEN ===== -->
+  <section class="section">
+    <div class="wrap block-body">
+      <h2 class="h"><span class="lead">Resumen</span> del módulo</h2>
+      <ul class="bullets">
+        <li>Rack estándar: 42U de 19". Equipos pesados abajo, patch panels arriba.</li>
+        <li>Puesta a tierra TIA-607: TMGB en el MDF → TGB en cada IDF → rack con #6 AWG.</li>
+        <li>Pasillo frío/caliente + blanking panels optimizan el flujo de aire y reducen el consumo del CRAC.</li>
+        <li>UPS de doble conversión: 0 ms de conmutación; autonomía mínima 10–15 min para arrancar el generador.</li>
+        <li>VESDA detecta humo antes de la llama; FM-200/Novec 1230 suprimen sin dañar equipos.</li>
+        <li>El piso falso crea el plenum de aire frío y organiza el cableado bajo el suelo del data center.</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- ===== FLASHCARDS ===== -->
+  <section class="section" id="flash">
+    <div class="wrap block-body">
+      <h2 class="h"><span class="lead">Flashcards</span></h2>
+      <p class="subtitle">Haz clic en cada tarjeta para ver la respuesta.</p>
+      <div class="fc-grid">
+        <div class="flashcard"><div class="inner">
+          <div class="face front">¿Cuántas U tiene un rack estándar de 19"?</div>
+          <div class="face back"><strong>42U</strong>. Cada unidad U = 1.75" (44.45 mm). Un rack de 42U mide unos 186 cm de altura útil.</div>
+        </div></div>
+        <div class="flashcard"><div class="inner">
+          <div class="face front">¿Por qué los racks se orientan frente a frente?</div>
+          <div class="face back">Para crear <strong>pasillos fríos</strong> donde el aire acondicionado entra por el frente de los equipos, y <strong>pasillos calientes</strong> donde el aire caliente sale por la espalda. Evita la mezcla de aire.</div>
+        </div></div>
+        <div class="flashcard"><div class="inner">
+          <div class="face front">¿Qué UPS usa 0 ms de conmutación?</div>
+          <div class="face back">El UPS <strong>on-line (doble conversión)</strong>. Siempre alimenta los equipos desde los inversores; la red solo recarga baterías. No hay switching al detectar fallo.</div>
+        </div></div>
+        <div class="flashcard"><div class="inner">
+          <div class="face front">¿Por qué no se usa CO₂ en sala de servidores?</div>
+          <div class="face back">El CO₂ desplaza el oxígeno y puede asfixiar al personal. Además el choque térmico puede dañar equipos. Se prefiere <strong>FM-200 o Novec 1230</strong> (gas limpio).</div>
+        </div></div>
+        <div class="flashcard"><div class="inner">
+          <div class="face front">¿Qué es VESDA y su ventaja?</div>
+          <div class="face back"><strong>Very Early Smoke Detection Apparatus</strong>: aspira continuamente muestras de aire y detecta partículas de combustión antes de que haya llama visible.</div>
+        </div></div>
+        <div class="flashcard"><div class="inner">
+          <div class="face front">¿Qué norma regula la puesta a tierra en telecomunicaciones?</div>
+          <div class="face back"><strong>TIA-607</strong> — define TMGB, TGB y el conductor TBB entre ellos. Cada rack debe conectarse a la TGB con #6 AWG.</div>
+        </div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== QUIZ ===== -->
+  <section class="section" id="quiz">
+    <div class="wrap block-body">
+      <h2 class="h"><span class="lead">Cuestionario</span></h2>
+      <div class="quiz" id="quiz3">
+
+        <div class="q" data-answer="c">
+          <div class="qt">1. ¿Cuántas U tiene un rack estándar de 19"?</div>
+          <label><input type="radio" name="q1c" value="a"> 24U</label>
+          <label><input type="radio" name="q1c" value="b"> 36U</label>
+          <label><input type="radio" name="q1c" value="c"> 42U</label>
+          <div class="explain">El rack estándar EIA-310 tiene 42U de espacio útil (cada U = 1.75").</div>
+        </div>
+
+        <div class="q" data-answer="b">
+          <div class="qt">2. ¿Qué temperatura recomienda ASHRAE A1 para un data center?</div>
+          <label><input type="radio" name="q2c" value="a"> 10–15 °C</label>
+          <label><input type="radio" name="q2c" value="b"> 18–27 °C</label>
+          <label><input type="radio" name="q2c" value="c"> 28–35 °C</label>
+          <div class="explain">ASHRAE A1: 18–27 °C con humedad relativa 20–80% sin condensación.</div>
+        </div>
+
+        <div class="q" data-answer="a">
+          <div class="qt">3. ¿Cuál es la barra de tierra principal en el MDF según TIA-607?</div>
+          <label><input type="radio" name="q3c" value="a"> TMGB</label>
+          <label><input type="radio" name="q3c" value="b"> TGB</label>
+          <label><input type="radio" name="q3c" value="c"> TBB</label>
+          <div class="explain">TMGB es la barra principal en el MDF. TGB es la barra local en cada IDF. TBB es el conductor que las une.</div>
+        </div>
+
+        <div class="q" data-answer="b">
+          <div class="qt">4. ¿Para qué sirven los blanking panels?</div>
+          <label><input type="radio" name="q4c" value="a"> Aumentar la capacidad del UPS</label>
+          <label><input type="radio" name="q4c" value="b"> Evitar recirculación de aire caliente por los huecos del rack</label>
+          <label><input type="radio" name="q4c" value="c"> Detectar humo anticipadamente</label>
+          <div class="explain">Los blanking panels tapan los huecos vacíos del rack para que el aire caliente no recircule hacia el frente.</div>
+        </div>
+
+        <div class="q" data-answer="c">
+          <div class="qt">5. Un UPS on-line (doble conversión) tiene un tiempo de conmutación de:</div>
+          <label><input type="radio" name="q5c" value="a"> 8 ms</label>
+          <label><input type="radio" name="q5c" value="b"> 4 ms</label>
+          <label><input type="radio" name="q5c" value="c"> 0 ms</label>
+          <div class="explain">El UPS on-line siempre alimenta desde inversores. No hay switching al detectar un fallo: 0 ms de interrupción.</div>
+        </div>
+
+        <button class="btn" onclick="checkQuiz('quiz3')">Comprobar respuestas</button>
+        <button class="btn ghost" onclick="resetQuiz('quiz3')">Reiniciar</button>
+        <div class="quiz-result"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== REPASO ===== -->
+  <section class="section">
+    <div class="wrap block-body">
+      <h2 class="h"><span class="lead">Preguntas</span> de repaso</h2>
+      <ul class="review">
+        <li>¿Por qué los equipos pesados deben ubicarse en la parte inferior del rack?</li>
+        <li>Explica el concepto de pasillo frío/caliente y cómo mejora la eficiencia energética del data center.</li>
+        <li>¿Qué diferencia existe entre un UPS line-interactive y uno de doble conversión?</li>
+        <li>Un cliente pregunta por qué tiene detectores VESDA en lugar de detectores de humo convencionales. ¿Qué le explicas?</li>
+        <li>¿Cuál es el rol del piso falso en la gestión del cableado y la climatización?</li>
+      </ul>
+    </div>
+  </section>
+
+  <nav class="block-nav wrap">
+    <a class="prev" href="bloque2.html"><div class="dir">← Anterior</div><div class="ttl">Canalización</div></a>
+    <a class="next" href="bloque4.html"><div class="dir">Siguiente →</div><div class="ttl">En el Campo de Trabajo</div></a>
+  </nav>
+</main>
+
+<footer><div class="wrap">Módulo 3 de 6 · Curso de Cableado Estructurado</div></footer>
+<script src="script.js"></script>
+</body>
+</html>
