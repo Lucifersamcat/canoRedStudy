@@ -16,9 +16,9 @@ Cada curso tiene su propio `index.html` con navegación a los bloques, `script.j
 
 ```
 MENU_PRINCIPAL.html              ← entrada del portal
-CABLEADO ESTRUCTURADO/files/     ← curso 1 (index + 6 bloques)
-REDES BASICO/files/              ← curso 2 (index + 5 bloques)
-REDES AVANZADO/files/            ← curso 3 (index + 6 bloques)
+cableado-estructurado/files/     ← curso 1 (index + 6 bloques)
+redes-basico/files/              ← curso 2 (index + 5 bloques)
+redes-avanzado/files/            ← curso 3 (index + 6 bloques)
 graphify-out/                    ← grafo de conocimiento
   ├── graph.html                 ← visualización interactiva
   ├── graph.json                 ← datos del grafo
