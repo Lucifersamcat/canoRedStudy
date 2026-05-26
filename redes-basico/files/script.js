@@ -1,5 +1,25 @@
 /* ===== Curso de Redes Básicas — interacción compartida ===== */
 
+// Genera el header/nav desde config.js
+(function () {
+  var header = document.querySelector('.topnav');
+  if (!header || typeof COURSE === 'undefined') return;
+
+  var page = location.pathname.split('/').pop() || 'index.html';
+  var isIndex = (page === 'index.html' || page === '');
+
+  var brand = isIndex
+    ? '<span class="brand">' + COURSE.brand.pre + '<span class="dot">.</span>' + COURSE.brand.suf + '</span>'
+    : '<a class="brand" href="../../index.html">' + COURSE.brand.pre + '<span class="dot">.</span>' + COURSE.brand.suf + '</a>';
+
+  var links = ['<a href="index.html"' + (isIndex ? ' class="active"' : '') + '>Inicio</a>']
+    .concat(COURSE.modules.map(function (m) {
+      return '<a href="' + m.href + '"' + (m.href === page ? ' class="active"' : '') + '>' + m.label + '</a>';
+    })).join('');
+
+  header.innerHTML = '<div class="wrap">' + brand + '<nav>' + links + '</nav></div>';
+})();
+
 // Flashcards: clic para girar
 document.addEventListener('click', function (e) {
   var fc = e.target.closest('.flashcard');
@@ -50,10 +70,3 @@ function resetQuiz(quizId) {
   res.classList.remove('show');
 }
 
-// Marca el enlace activo en la barra de navegación
-document.addEventListener('DOMContentLoaded', function () {
-  var page = location.pathname.split('/').pop() || 'index.html';
-  document.querySelectorAll('.topnav nav a').forEach(function (a) {
-    if (a.getAttribute('href') === page) a.classList.add('active');
-  });
-});
