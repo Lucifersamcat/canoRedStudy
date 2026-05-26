@@ -141,7 +141,7 @@ dhcp                               <span class="cmt"># proceso DORA completo</sp
     <div class="wrap block-body">
       <h2 class="h"><span class="lead">Diagrama</span> — Flujo PAT</h2>
       <div class="diagram">
-        <svg viewBox="0 0 760 310" xmlns="http://www.w3.org/2000/svg" font-family="Segoe UI, sans-serif">
+        <svg viewBox="0 0 760 325" xmlns="http://www.w3.org/2000/svg" font-family="Segoe UI, sans-serif">
           <defs>
             <marker id="arr" markerWidth="9" markerHeight="9" refX="7" refY="3" orient="auto">
               <path d="M0,0 L7,3 L0,6 Z" fill="#9aa7b8"/>
@@ -208,6 +208,10 @@ dhcp                               <span class="cmt"># proceso DORA completo</sp
           <text x="170" y="301" font-size="11" fill="#e6edf3" text-anchor="middle">192.168.1.11 : 52840</text>
           <text x="375" y="301" font-size="10" fill="#9aa7b8" text-anchor="middle">→</text>
           <text x="580" y="301" font-size="11" fill="#34d399" text-anchor="middle">200.1.1.1 : 10002</text>
+
+          <text x="170" y="317" font-size="11" fill="#e6edf3" text-anchor="middle">192.168.1.12 : 55731</text>
+          <text x="375" y="317" font-size="10" fill="#9aa7b8" text-anchor="middle">→</text>
+          <text x="580" y="317" font-size="11" fill="#34d399" text-anchor="middle">200.1.1.1 : 10003</text>
         </svg>
         <div class="cap">PAT: los tres PCs comparten la IP pública 200.1.1.1 usando distintos puertos. El router mantiene la tabla de traducción para saber a qué PC entregar cada respuesta.</div>
       </div>
