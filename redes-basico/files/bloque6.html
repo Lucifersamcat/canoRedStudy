@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Bloque 6 · NAT/PAT, IPv6 y Diagnóstico — Curso de Redes Básicas</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<header class="topnav">
+  <div class="wrap">
+    <span class="brand">Redes<span class="dot">.</span>Básicas</span>
+    <nav>
+      <a href="index.html">Inicio</a>
+      <a href="bloque1.html">1 · Intro</a>
+      <a href="bloque2.html">2 · Protocolos</a>
+      <a href="bloque3.html">3 · Servicios IP</a>
+      <a href="bloque4.html">4 · Wireless</a>
+      <a href="bloque5.html">5 · Virtualización</a>
+      <a href="bloque6.html">6 · NAT/IPv6</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <section class="block-head wrap">
+    <div class="num">MÓDULO 06</div>
+    <h1>NAT/PAT, IPv6 y Diagnóstico de Red</h1>
+    <p>Cómo las IPs privadas llegan a Internet gracias a NAT, los fundamentos del protocolo IPv6 que reemplaza a IPv4, y las herramientas de diagnóstico que un técnico usa a diario para verificar y solucionar problemas de red.</p>
+    <div class="progress-dots"><span></span><span></span><span></span><span></span><span></span><span class="on"></span></div>
+    <div class="toc">
+      <a href="#teoria">Teoría ampliada</a>
+      <a href="#conceptos">Conceptos clave</a>
+      <a href="#comandos">Comandos</a>
+      <a href="#diagrama">Diagrama</a>
+      <a href="#lab">Laboratorio</a>
+      <a href="#flash">Flashcards</a>
+      <a href="#quiz">Cuestionario</a>
+    </div>
+  </section>
+
+  <section class="section" id="teoria">
+    <div class="wrap block-body">
+      <h2 class="h"><span class="lead">Teoría</span> ampliada</h2>
+
+      <h3>El problema del agotamiento de IPv4 y NAT</h3>
+      <p>IPv4 usa direcciones de 32 bits, lo que entrega solo 4 300 millones de combinaciones. En 2011, IANA asignó el último bloque disponible. La solución práctica fue combinar dos mecanismos: las <strong>direcciones privadas RFC 1918</strong> (que no se enrutan en Internet) con <strong>NAT</strong> (Network Address Translation), que traduce esas IPs privadas a una o pocas IPs públicas cuando el tráfico sale hacia Internet.</p>
+
+      <h3>Tipos de NAT</h3>
+      <ul class="bullets">
+        <li><strong>NAT estático:</strong> un mapeo fijo entre una IP privada y una IP pública (1-a-1). Se usa cuando un servidor interno debe ser accesible desde Internet con una IP pública fija (ej. servidor de correo, cámara IP accesible remotamente).</li>
+        <li><strong>NAT dinámico:</strong> el router tiene un pool de IPs públicas y las asigna temporalmente a los hosts internos según el orden de solicitud. Menos común hoy.</li>
+        <li><strong>PAT / NAT overload:</strong> todos los hosts internos comparten <em>una sola IP pública</em>. El router distingue las sesiones usando el número de puerto TCP/UDP. Si PC-A usa el puerto 49152 y PC-B usa 52840, ambas peticiones salen por la misma IP pública pero con puertos diferentes, y el router sabe a cuál PC entregar la respuesta. Este es el modelo que usa prácticamente toda pyme y hogar.</li>
+      </ul>
+
+      <h3>IPv6 — La solución permanente</h3>
+      <p>IPv6 usa direcciones de <strong>128 bits</strong> escritas en hexadecimal separado por colones:</p>
+      <p style="font-family:monospace;color:#34d399;padding:0.5rem 0">2001:0db8:85a3:0000:0000:8a2e:0370:7334</p>
+      <p>Dos reglas de compresión: los ceros iniciales de cada grupo se omiten, y un bloque continuo de grupos todo-cero se reemplaza por <code>::</code> (solo una vez por dirección).</p>
+      <ul class="bullets">
+        <li><strong>Global unicast (2000::/3):</strong> equivalente a la IP pública de IPv4, enrutable en Internet.</li>
+        <li><strong>Link-local (fe80::/10):</strong> se auto-asigna en cada interfaz al arrancar; solo válida en el segmento local, no se enruta.</li>
+        <li><strong>Loopback (::1):</strong> equivalente a 127.0.0.1 en IPv4.</li>
+        <li><strong>SLAAC:</strong> el host construye su propia IPv6 global combinando el prefijo anunciado por el router con su identificador de interfaz (derivado de la MAC). No necesita DHCP.</li>
+        <li><strong>Dual-stack:</strong> un dispositivo opera IPv4 e IPv6 simultáneamente; usa IPv6 si está disponible, cae a IPv4 si no.</li>
+      </ul>
+
+      <h3>Herramientas de diagnóstico de red</h3>
+      <p>Un técnico de redes usa estas utilidades a diario para verificar conectividad y localizar fallas:</p>
+      <ul class="bullets">
+        <li><strong>ping:</strong> envía paquetes ICMP Echo Request y espera el Echo Reply. Mide el RTT (round-trip time) en milisegundos y el TTL restante. Si no hay respuesta, hay un problema de conectividad o el host bloquea ICMP.</li>
+        <li><strong>traceroute / tracert:</strong> envía paquetes con TTL incrementando (1, 2, 3…). Cada router que descarta el paquete por TTL=0 responde con un mensaje ICMP "Time Exceeded", revelando su IP. El resultado es la ruta completa salto a salto hasta el destino.</li>
+        <li><strong>nslookup:</strong> consulta el servidor DNS para resolver nombres. Permite verificar registros A (IPv4), AAAA (IPv6), MX (correo) y NS (servidor DNS autoritativo).</li>
+        <li><strong>netstat -an:</strong> muestra las conexiones TCP/UDP activas del sistema y los puertos en escucha (LISTENING). Útil para verificar qué servicios están corriendo.</li>
+        <li><strong>Wireshark:</strong> captura paquetes a nivel de interfaz de red. Permite ver exactamente qué tráfico circula, analizar handshakes, detectar retransmisiones, errores de DHCP, etc. Se filtra con expresiones como <code>ip.addr == 192.168.1.10</code>, <code>tcp.port == 80</code> o <code>dhcp</code>.</li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="section" id="conceptos">
+    <div class="wrap block-body">
+      <h2 class="h"><span class="lead">Conceptos</span> clave</h2>
+      <table>
+        <tr><th>Concepto</th><th>Descripción</th></tr>
+        <tr><td>NAT</td><td>Traduce direcciones IP privadas a públicas (y viceversa) en el router de borde</td></tr>
+        <tr><td>PAT / NAT overload</td><td>Múltiples hosts comparten una sola IP pública usando puertos TCP/UDP como diferenciador</td></tr>
+        <tr><td>NAT estático</td><td>Mapeo fijo 1-a-1 entre una IP privada y una IP pública; para servidores accesibles desde Internet</td></tr>
+        <tr><td>IPv6</td><td>Protocolo de 128 bits en notación hexadecimal; 3.4 × 10³⁸ combinaciones posibles</td></tr>
+        <tr><td>Global unicast</td><td>Prefijo 2000::/3; dirección IPv6 enrutable en Internet (equivalente a IP pública)</td></tr>
+        <tr><td>Link-local</td><td>Prefijo fe80::/10; auto-asignada en cada interfaz, no enrutable más allá del segmento</td></tr>
+        <tr><td>Loopback IPv6</td><td>::1; equivalente a 127.0.0.1 en IPv4, apunta al propio dispositivo</td></tr>
+        <tr><td>SLAAC</td><td>Autoconfiguración de IPv6 sin DHCP; usa el prefijo del router + ID de interfaz derivado de la MAC</td></tr>
+        <tr><td>Dual-stack</td><td>Dispositivo que opera IPv4 e IPv6 simultáneamente; preferencia por IPv6 si está disponible</td></tr>
+        <tr><td>ping (ICMP)</td><td>Verifica conectividad básica y mide el RTT (round-trip time)</td></tr>
+        <tr><td>traceroute / tracert</td><td>Muestra cada salto (router) en la ruta hacia el destino usando TTL decremental</td></tr>
+        <tr><td>Wireshark</td><td>Analizador de protocolos (sniffer) que captura paquetes para análisis detallado</td></tr>
+      </table>
+    </div>
+  </section>
+
+  <section class="section" id="comandos">
+    <div class="wrap block-body">
+      <h2 class="h"><span class="lead">Comandos</span> esenciales</h2>
+      <pre><code><span class="cmt"># NAT overload (PAT) — router Cisco</span>
+<span class="kw">ip access-list standard</span> ACL_LAN
+ <span class="kw">permit</span> <span class="val">192.168.1.0 0.0.0.255</span>
+
+<span class="kw">interface</span> gi0/0           <span class="cmt"># LAN (inside)</span>
+ <span class="kw">ip nat inside</span>
+
+<span class="kw">interface</span> gi0/1           <span class="cmt"># WAN (outside, IP pública)</span>
+ <span class="kw">ip nat outside</span>
+
+<span class="kw">ip nat inside source list</span> ACL_LAN <span class="kw">interface</span> gi0/1 <span class="kw">overload</span>
+
+<span class="cmt"># NAT estático para un servidor interno</span>
+<span class="kw">ip nat inside source static</span> <span class="val">192.168.1.100 200.1.1.2</span>
+
+<span class="cmt"># Verificación NAT</span>
+<span class="kw">show ip nat translations</span>
+<span class="kw">show ip nat statistics</span></code></pre>
+
+      <pre><code><span class="cmt"># Diagnóstico — Windows / Linux</span>
+ping 8.8.8.8                       <span class="cmt"># conectividad + RTT</span>
+tracert 8.8.8.8                    <span class="cmt"># ruta salto a salto (Windows)</span>
+traceroute 8.8.8.8                 <span class="cmt"># ruta salto a salto (Linux/Mac)</span>
+nslookup google.com                <span class="cmt"># resolución DNS tipo A</span>
+nslookup -type=MX dominio.com      <span class="cmt"># registros de correo</span>
+netstat -an                        <span class="cmt"># conexiones y puertos activos</span>
+
+<span class="cmt"># Filtros básicos en Wireshark</span>
+ip.addr == 192.168.1.10            <span class="cmt"># todo el tráfico de esa IP</span>
+tcp.port == 80                     <span class="cmt"># solo HTTP</span>
+icmp                               <span class="cmt"># solo pings</span>
+dhcp                               <span class="cmt"># proceso DORA completo</span></code></pre>
+    </div>
+  </section>
+
+  <section class="section" id="diagrama">
+    <div class="wrap block-body">
+      <h2 class="h"><span class="lead">Diagrama</span> — Flujo PAT</h2>
+      <div class="diagram">
+        <svg viewBox="0 0 760 310" xmlns="http://www.w3.org/2000/svg" font-family="Segoe UI, sans-serif">
+          <defs>
+            <marker id="arr" markerWidth="9" markerHeight="9" refX="7" refY="3" orient="auto">
+              <path d="M0,0 L7,3 L0,6 Z" fill="#9aa7b8"/>
+            </marker>
+          </defs>
+
+          <!-- PCs privados -->
+          <g font-size="13" fill="#e6edf3" text-anchor="middle">
+            <rect x="10" y="18" width="160" height="48" rx="8" fill="#1c2230" stroke="#4f9cf9"/>
+            <text x="90" y="39">PC-A</text>
+            <text x="90" y="57" font-size="10" fill="#9aa7b8">192.168.1.10 : 49152</text>
+
+            <rect x="10" y="102" width="160" height="48" rx="8" fill="#1c2230" stroke="#4f9cf9"/>
+            <text x="90" y="123">PC-B</text>
+            <text x="90" y="141" font-size="10" fill="#9aa7b8">192.168.1.11 : 52840</text>
+
+            <rect x="10" y="186" width="160" height="48" rx="8" fill="#1c2230" stroke="#4f9cf9"/>
+            <text x="90" y="207">PC-C</text>
+            <text x="90" y="225" font-size="10" fill="#9aa7b8">192.168.1.12 : 55731</text>
+          </g>
+
+          <!-- Líneas PCs → Router -->
+          <g stroke="#4f9cf9" stroke-width="1.5" fill="none" marker-end="url(#arr)">
+            <line x1="170" y1="42" x2="238" y2="100"/>
+            <line x1="170" y1="126" x2="238" y2="126"/>
+            <line x1="170" y1="210" x2="238" y2="152"/>
+          </g>
+
+          <!-- Router NAT -->
+          <rect x="238" y="64" width="158" height="120" rx="8" fill="#1c2230" stroke="#f59e0b"/>
+          <text x="317" y="86" font-size="13" fill="#e6edf3" text-anchor="middle" font-weight="700">Router</text>
+          <text x="317" y="103" font-size="11" fill="#f59e0b" text-anchor="middle">NAT / PAT overload</text>
+          <text x="317" y="120" font-size="10" fill="#9aa7b8" text-anchor="middle">Inside: 192.168.1.0/24</text>
+          <text x="317" y="136" font-size="10" fill="#9aa7b8" text-anchor="middle">Outside: 200.1.1.1</text>
+          <text x="317" y="154" font-size="10" fill="#34d399" text-anchor="middle">ip nat ... overload</text>
+          <text x="317" y="170" font-size="10" fill="#34d399" text-anchor="middle">1 IP pública, N hosts</text>
+
+          <!-- Router → Internet -->
+          <line x1="396" y1="124" x2="446" y2="124" stroke="#9aa7b8" stroke-width="2" fill="none" marker-end="url(#arr)"/>
+
+          <!-- Internet -->
+          <rect x="446" y="96" width="120" height="56" rx="28" fill="#1c2230" stroke="#2b3242"/>
+          <text x="506" y="122" font-size="13" fill="#9aa7b8" text-anchor="middle">Internet</text>
+          <text x="506" y="138" font-size="10" fill="#9aa7b8" text-anchor="middle">200.1.1.1</text>
+
+          <!-- Internet → Servidor -->
+          <line x1="566" y1="124" x2="614" y2="124" stroke="#9aa7b8" stroke-width="2" fill="none" marker-end="url(#arr)"/>
+
+          <!-- Servidor -->
+          <rect x="614" y="92" width="136" height="64" rx="8" fill="#1c2230" stroke="#34d399"/>
+          <text x="682" y="118" font-size="13" fill="#e6edf3" text-anchor="middle">Servidor Web</text>
+          <text x="682" y="136" font-size="10" fill="#9aa7b8" text-anchor="middle">203.0.113.50 : 80</text>
+
+          <!-- Tabla NAT -->
+          <rect x="10" y="252" width="740" height="20" rx="4" fill="#1c2230" stroke="#f59e0b"/>
+          <text x="170" y="267" font-size="11" fill="#f59e0b" text-anchor="middle">IP Privada : Puerto</text>
+          <text x="375" y="267" font-size="11" fill="#9aa7b8" text-anchor="middle">→ Tabla NAT →</text>
+          <text x="580" y="267" font-size="11" fill="#34d399" text-anchor="middle">IP Pública : Puerto</text>
+
+          <text x="170" y="285" font-size="11" fill="#e6edf3" text-anchor="middle">192.168.1.10 : 49152</text>
+          <text x="375" y="285" font-size="10" fill="#9aa7b8" text-anchor="middle">→</text>
+          <text x="580" y="285" font-size="11" fill="#34d399" text-anchor="middle">200.1.1.1 : 10001</text>
+
+          <text x="170" y="301" font-size="11" fill="#e6edf3" text-anchor="middle">192.168.1.11 : 52840</text>
+          <text x="375" y="301" font-size="10" fill="#9aa7b8" text-anchor="middle">→</text>
+          <text x="580" y="301" font-size="11" fill="#34d399" text-anchor="middle">200.1.1.1 : 10002</text>
+        </svg>
+        <div class="cap">PAT: los tres PCs comparten la IP pública 200.1.1.1 usando distintos puertos. El router mantiene la tabla de traducción para saber a qué PC entregar cada respuesta.</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="lab">
+    <div class="wrap block-body">
+      <h2 class="h"><span class="lead">Laboratorio 6</span> — NAT overload en Packet Tracer</h2>
+      <p class="subtitle">Topología: 3 PCs en LAN (192.168.1.x/24), un router Cisco, y un servidor HTTP simulando Internet.</p>
+      <ol class="steps">
+        <li>Crear la topología en Packet Tracer: 3 PCs conectados a un switch, switch a Gi0/0 del router; servidor HTTP en Gi0/1 (la "WAN").</li>
+        <li>Asignar IPs a los PCs (192.168.1.10–12/24, gateway 192.168.1.1) y al router Gi0/0 (192.168.1.1/24).</li>
+        <li>Asignar la IP "pública" a Gi0/1 del router (ej. 200.1.1.1/30) y al servidor (200.1.1.2/30).</li>
+        <li>Crear la ACL: <code>ip access-list standard ACL_LAN permit 192.168.1.0 0.0.0.255</code></li>
+        <li>Aplicar NAT: <code>ip nat inside source list ACL_LAN interface gi0/1 overload</code></li>
+        <li>Marcar las interfaces: <code>ip nat inside</code> en Gi0/0 y <code>ip nat outside</code> en Gi0/1.</li>
+        <li>Desde los tres PCs, hacer ping al servidor (200.1.1.2) y navegar al servidor HTTP.</li>
+        <li>Verificar la tabla NAT con <code>show ip nat translations</code> y observar los tres mapeos de puerto.</li>
+      </ol>
+      <div class="callout tip">
+        <span class="label">Diagnóstico adicional</span>
+        En tu PC real, abre una terminal y ejecuta <code>tracert 8.8.8.8</code> (Windows) o <code>traceroute 8.8.8.8</code> (Linux/Mac). Identifica el primer salto (tu router doméstico), el segundo (el router del ISP), y los siguientes saltos hacia los servidores de Google. Eso es tu NAT en acción.
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="wrap block-body">
+      <h2 class="h"><span class="lead">Comparativa</span> — IPv4 vs IPv6</h2>
+      <table>
+        <tr><th>Característica</th><th>IPv4</th><th>IPv6</th></tr>
+        <tr><td>Longitud</td><td>32 bits</td><td>128 bits</td></tr>
+        <tr><td>Notación</td><td>Decimal con puntos (192.168.1.1)</td><td>Hexadecimal con colones (2001:db8::1)</td></tr>
+        <tr><td>Total de direcciones</td><td>~4 300 millones</td><td>3.4 × 10³⁸</td></tr>
+        <tr><td>Configuración</td><td>Manual, DHCP</td><td>Manual, DHCPv6, SLAAC</td></tr>
+        <tr><td>NAT requerido</td><td>Sí (escasez)</td><td>No (abundancia)</td></tr>
+        <tr><td>Loopback</td><td>127.0.0.1</td><td>::1</td></tr>
+      </table>
+    </div>
+  </section>
+
+  <section class="section" id="flash">
+    <div class="wrap block-body">
+      <h2 class="h"><span class="lead">Flashcards</span></h2>
+      <p class="subtitle">Haz clic en cada tarjeta para ver la respuesta.</p>
+      <div class="fc-grid">
+        <div class="flashcard"><div class="inner">
+          <div class="face front">¿Qué problema motivó la creación de NAT?</div>
+          <div class="face back">El agotamiento de direcciones IPv4. NAT permite que miles de hosts compartan una sola IP pública usando el número de puerto como diferenciador (PAT/overload).</div>
+        </div></div>
+        <div class="flashcard"><div class="inner">
+          <div class="face front">Diferencia entre NAT estático y PAT</div>
+          <div class="face back">NAT estático es un mapeo fijo 1-a-1 (para servidores con IP pública fija). PAT multiplexa muchos hosts en una sola IP pública usando distintos puertos TCP/UDP.</div>
+        </div></div>
+        <div class="flashcard"><div class="inner">
+          <div class="face front">¿Cuántos bits tiene IPv6 y en qué formato?</div>
+          <div class="face back">128 bits, escritos en hexadecimal separado por colones (::). Los grupos de ceros consecutivos se comprimen con "::".</div>
+        </div></div>
+        <div class="flashcard"><div class="inner">
+          <div class="face front">¿Qué es una dirección link-local IPv6?</div>
+          <div class="face back">Prefijo fe80::/10. Se autoconfigura en cada interfaz al arrancar. Solo es válida dentro del segmento local; no se enruta hacia otros segmentos.</div>
+        </div></div>
+        <div class="flashcard"><div class="inner">
+          <div class="face front">¿Qué protocolo usa ping y qué mide?</div>
+          <div class="face back">ICMP (Echo Request / Echo Reply). Mide conectividad básica y el RTT (round-trip time) en milisegundos. El TTL indica cuántos saltos quedan disponibles.</div>
+        </div></div>
+        <div class="flashcard"><div class="inner">
+          <div class="face front">¿Qué ventaja tiene traceroute sobre ping?</div>
+          <div class="face back">Muestra cada router (salto) en la ruta hacia el destino. Si hay pérdida de paquetes o alta latencia, traceroute indica exactamente en qué salto ocurre el problema.</div>
+        </div></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="quiz">
+    <div class="wrap block-body">
+      <h2 class="h"><span class="lead">Cuestionario</span></h2>
+      <div class="quiz" id="quiz6">
+        <div class="q" data-answer="a">
+          <div class="qt">1. ¿Qué tipo de NAT usan casi todas las pymes y hogares para que varios hosts compartan una sola IP pública?</div>
+          <label><input type="radio" name="q1f" value="a"> PAT / NAT overload</label>
+          <label><input type="radio" name="q1f" value="b"> NAT estático</label>
+          <label><input type="radio" name="q1f" value="c"> NAT dinámico con pool</label>
+          <div class="explain">PAT (Port Address Translation / NAT overload) multiplexa muchos hosts privados en una sola IP pública usando el número de puerto como diferenciador.</div>
+        </div>
+        <div class="q" data-answer="c">
+          <div class="qt">2. ¿Cuántos bits tiene una dirección IPv6?</div>
+          <label><input type="radio" name="q2f" value="a"> 32 bits</label>
+          <label><input type="radio" name="q2f" value="b"> 64 bits</label>
+          <label><input type="radio" name="q2f" value="c"> 128 bits</label>
+          <div class="explain">IPv6 usa 128 bits escritos en 8 grupos de 4 dígitos hexadecimales separados por colones, entregando 3.4 × 10³⁸ combinaciones.</div>
+        </div>
+        <div class="q" data-answer="b">
+          <div class="qt">3. ¿Cuál es la dirección de loopback en IPv6?</div>
+          <label><input type="radio" name="q3f" value="a"> fe80::1</label>
+          <label><input type="radio" name="q3f" value="b"> ::1</label>
+          <label><input type="radio" name="q3f" value="c"> ::0</label>
+          <div class="explain">::1 es el loopback IPv6 (equivalente a 127.0.0.1 en IPv4). fe80::1 es una dirección link-local, no el loopback.</div>
+        </div>
+        <div class="q" data-answer="a">
+          <div class="qt">4. ¿Qué herramienta muestra los routers intermedios en la ruta hacia un destino?</div>
+          <label><input type="radio" name="q4f" value="a"> traceroute / tracert</label>
+          <label><input type="radio" name="q4f" value="b"> ping</label>
+          <label><input type="radio" name="q4f" value="c"> nslookup</label>
+          <div class="explain">traceroute/tracert usa TTL incrementales: cada router que descarta un paquete por TTL=0 responde revelando su IP, exponiendo la ruta completa salto a salto.</div>
+        </div>
+        <div class="q" data-answer="c">
+          <div class="qt">5. ¿Qué protocolo utiliza el comando ping para verificar conectividad?</div>
+          <label><input type="radio" name="q5f" value="a"> TCP</label>
+          <label><input type="radio" name="q5f" value="b"> UDP</label>
+          <label><input type="radio" name="q5f" value="c"> ICMP</label>
+          <div class="explain">ping usa ICMP Echo Request y espera un ICMP Echo Reply. No usa TCP ni UDP; es un protocolo de capa 3 para diagnóstico de red.</div>
+        </div>
+        <button class="btn" onclick="checkQuiz('quiz6')">Comprobar respuestas</button>
+        <button class="btn ghost" onclick="resetQuiz('quiz6')">Reiniciar</button>
+        <div class="quiz-result"></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="wrap block-body">
+      <h2 class="h"><span class="lead">Preguntas</span> de repaso</h2>
+      <ul class="review">
+        <li>¿Por qué NAT fue necesario y cuál es la diferencia entre NAT estático y PAT?</li>
+        <li>¿Qué ventajas ofrece IPv6 sobre IPv4 y por qué el dual-stack es importante en la transición?</li>
+        <li>¿Cómo usarías ping y traceroute juntos para diagnosticar que un usuario no puede acceder a un sitio web?</li>
+        <li>¿Qué tipo de problema detectas con nslookup que no detectas con ping?</li>
+        <li>¿Para qué sirve el filtro <code>dhcp</code> en Wireshark y cuándo lo aplicarías?</li>
+      </ul>
+    </div>
+  </section>
+
+  <nav class="block-nav wrap">
+    <a class="prev" href="bloque5.html"><div class="dir">← Anterior</div><div class="ttl">Virtualización</div></a>
+  </nav>
+</main>
+
+<footer><div class="wrap">Módulo 6 de 6 · Curso de Redes Básicas</div></footer>
+<script src="script.js"></script>
+</body>
+</html>

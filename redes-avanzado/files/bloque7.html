@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Bloque 7 · Seguridad Capa 2 y EtherChannel — Curso de Redes Avanzado</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<header class="topnav">
+  <div class="wrap">
+    <span class="brand">Redes<span class="dot">.</span>Avanzado</span>
+    <nav>
+      <a href="index.html">Inicio</a>
+      <a href="bloque1.html">1 · Cisco</a>
+      <a href="bloque2.html">2 · VLANs/STP</a>
+      <a href="bloque3.html">3 · Ubiquiti</a>
+      <a href="bloque4.html">4 · RADIUS</a>
+      <a href="bloque5.html">5 · WiFi</a>
+      <a href="bloque6.html">6 · Multicast</a>
+      <a href="bloque7.html">7 · Seg. L2</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <section class="block-head wrap">
+    <div class="num">BLOQUE 07</div>
+    <h1>Seguridad Capa 2 y EtherChannel</h1>
+    <p>Los switches gestionados ofrecen mecanismos para bloquear los ataques más comunes en capa 2: MAC flooding, DHCP starvation y ARP spoofing. EtherChannel agrega múltiples enlaces físicos en un canal lógico para obtener más ancho de banda y redundancia sin loops STP.</p>
+    <div class="progress-dots"><span></span><span></span><span></span><span></span><span></span><span></span><span class="on"></span></div>
+    <div class="toc">
+      <a href="#teoria">Teoría ampliada</a>
+      <a href="#conceptos">Conceptos clave</a>
+      <a href="#comandos">Comandos</a>
+      <a href="#diagrama">Diagrama</a>
+      <a href="#lab">Laboratorio</a>
+      <a href="#flash">Flashcards</a>
+      <a href="#quiz">Cuestionario</a>
+    </div>
+  </section>
+
+  <section class="section" id="teoria">
+    <div class="wrap block-body">
+      <h2 class="h"><span class="lead">Teoría</span> ampliada</h2>
+
+      <h3>Vectores de ataque en Capa 2</h3>
+      <p>La capa 2 no tiene mecanismos de autenticación nativos: cualquier dispositivo conectado a un switch puede enviar tramas arbitrarias. Esto abre tres ataques clásicos:</p>
+      <ul class="bullets">
+        <li><strong>MAC flooding:</strong> un atacante inunda el switch con miles de tramas que tienen MACs de origen falsas y distintas. La tabla CAM tiene capacidad limitada: cuando se llena, el switch no puede asociar MACs a puertos y empieza a inundar (flood) todas las tramas a todos los puertos, como un hub. El atacante recibe el tráfico de todos los hosts.</li>
+        <li><strong>DHCP starvation:</strong> el atacante envía miles de DHCP Discovers con MACs falsas, agotando el pool de IPs disponibles. Los clientes legítimos no pueden obtener dirección IP. Combinado con un servidor DHCP falso (DHCP spoofing), el atacante puede asignarse a sí mismo como gateway y capturar todo el tráfico.</li>
+        <li><strong>ARP spoofing / ARP poisoning:</strong> el atacante envía ARP Replies no solicitados con información falsa: "la IP 192.168.1.1 (el gateway) tiene la MAC XX:XX:XX:XX". Los hosts actualizan su tabla ARP y empiezan a enviar el tráfico al atacante en lugar del gateway real — un ataque MITM (Man-in-the-Middle).</li>
+      </ul>
+
+      <h3>Port Security</h3>
+      <p>Permite limitar qué direcciones MAC pueden usar un puerto:</p>
+      <ul class="bullets">
+        <li><strong>Sticky MAC:</strong> el switch aprende automáticamente la primera MAC que aparece y la fija en la configuración. Si se conecta otro dispositivo, activa la violación.</li>
+        <li><strong>maximum N:</strong> número máximo de MACs distintas permitidas en el puerto (por defecto 1).</li>
+        <li><strong>Violation shutdown:</strong> al detectar una MAC no autorizada, el puerto pasa a estado <em>err-disabled</em> y se apaga. Requiere rehabilitación manual (<code>shutdown / no shutdown</code>).</li>
+        <li><strong>Violation restrict:</strong> descarta el tráfico excedente y genera un log/SNMP trap, pero el puerto permanece activo.</li>
+        <li><strong>Violation protect:</strong> descarta el tráfico excedente silenciosamente, sin log ni SNMP. El puerto permanece activo.</li>
+      </ul>
+
+      <h3>DHCP Snooping</h3>
+      <p>El switch inspecciona los mensajes DHCP y distingue puertos según su rol:</p>
+      <ul class="bullets">
+        <li><strong>Trusted (confiable):</strong> los puertos por donde se conectan el servidor DHCP legítimo o el uplink hacia el switch core. Solo desde estos puertos se permiten DHCP Offer y Acknowledge.</li>
+        <li><strong>Untrusted (no confiable):</strong> todos los puertos de acceso de los clientes. Si desde un puerto untrusted llega un DHCP Offer, el switch lo descarta, bloqueando servidores DHCP falsos.</li>
+        <li><strong>Binding table:</strong> DHCP Snooping construye una tabla {IP → MAC → puerto → VLAN} con cada asignación vista. Esta tabla la usará DAI para validar el ARP.</li>
+      </ul>
+
+      <h3>Dynamic ARP Inspection (DAI)</h3>
+      <p>DAI valida cada paquete ARP (Request y Reply) contra la DHCP Snooping Binding Table. Si el ARP afirma que la IP 192.168.1.10 pertenece a la MAC 00:AA:BB:CC, pero la binding table dice que 192.168.1.10 fue asignada a la MAC 00:11:22:33, el paquete ARP se descarta. Esto hace imposible el ARP spoofing desde puertos untrusted.</p>
+
+      <h3>EtherChannel y LACP</h3>
+      <p>Un EtherChannel agrupa entre 2 y 8 puertos físicos en un único canal lógico (interfaz port-channel). Ventajas clave:</p>
+      <ul class="bullets">
+        <li><strong>Ancho de banda agregado:</strong> 2 puertos Gigabit = canal de hasta 2 Gbps con distribución de carga.</li>
+        <li><strong>Redundancia interna:</strong> si cae un enlace físico, el canal sigue activo con el resto.</li>
+        <li><strong>STP lo ve como un solo enlace:</strong> sin EtherChannel, dos cables entre switches crearían un loop; STP bloquearía uno. Con EtherChannel, STP ve un único puerto-canal y no bloquea nada.</li>
+      </ul>
+      <p><strong>LACP (802.3ad, IEEE):</strong> protocolo estándar de negociación. Modo <em>active</em>: el switch inicia la negociación. Modo <em>passive</em>: espera que el otro extremo inicie. Para formar el canal, al menos un lado debe estar en <em>active</em>.</p>
+      <p><strong>PAgP (Cisco propietario):</strong> modos <em>desirable</em> (activo) y <em>auto</em> (pasivo). No interopera con switches de otros fabricantes.</p>
+    </div>
+  </section>
+
+  <section class="section" id="conceptos">
+    <div class="wrap block-body">
+      <h2 class="h"><span class="lead">Conceptos</span> clave</h2>
+      <table>
+        <tr><th>Concepto</th><th>Descripción</th></tr>
+        <tr><td>MAC flooding</td><td>Desborda la tabla CAM con MACs falsas; el switch inunda el tráfico a todos los puertos</td></tr>
+        <tr><td>DHCP starvation</td><td>Agota el pool de DHCP con solicitudes de MACs falsas; clientes legítimos no obtienen IP</td></tr>
+        <tr><td>ARP spoofing</td><td>ARP Replies falsos envenenan las tablas ARP para ejecutar un ataque MITM</td></tr>
+        <tr><td>Port Security</td><td>Limita las MACs autorizadas en un puerto; activa una violación si aparece una MAC no permitida</td></tr>
+        <tr><td>Sticky MAC</td><td>Aprendizaje automático y persistente de MACs en port security; se guarda en startup-config</td></tr>
+        <tr><td>Violation shutdown</td><td>El puerto pasa a err-disabled al detectar una violación; requiere rehabilitación manual</td></tr>
+        <tr><td>Violation restrict</td><td>Descarta tráfico no autorizado + genera log/SNMP; el puerto sigue activo</td></tr>
+        <tr><td>DHCP Snooping</td><td>Inspecciona DHCP; permite Offers/ACKs solo desde puertos trusted</td></tr>
+        <tr><td>Binding Table</td><td>Tabla {IP → MAC → puerto → VLAN} construida por DHCP Snooping; base para DAI</td></tr>
+        <tr><td>DAI</td><td>Valida paquetes ARP contra la binding table; descarta ARPs con IP-MAC no coincidente</td></tr>
+        <tr><td>EtherChannel</td><td>Agrupación lógica de 2–8 puertos físicos en un único canal; mayor banda y redundancia</td></tr>
+        <tr><td>LACP (802.3ad)</td><td>Protocolo IEEE de negociación de EtherChannel; modos active (inicia) / passive (espera)</td></tr>
+      </table>
+    </div>
+  </section>
+
+  <section class="section" id="comandos">
+    <div class="wrap block-body">
+      <h2 class="h"><span class="lead">Comandos</span> esenciales</h2>
+      <pre><code><span class="cmt"># PORT SECURITY — puerto de acceso</span>
+<span class="kw">interface</span> fa0/1
+ <span class="kw">switchport mode access</span>
+ <span class="kw">switchport access vlan</span> 10
+ <span class="kw">switchport port-security</span>
+ <span class="kw">switchport port-security maximum</span> 1
+ <span class="kw">switchport port-security mac-address sticky</span>
+ <span class="kw">switchport port-security violation shutdown</span>
+
+<span class="cmt"># Verificación port security</span>
+<span class="kw">show port-security interface</span> fa0/1
+<span class="kw">show port-security address</span>
+
+<span class="cmt"># Rehabilitar puerto err-disabled</span>
+<span class="kw">interface</span> fa0/1
+ <span class="kw">shutdown</span>
+ <span class="kw">no shutdown</span></code></pre>
+
+      <pre><code><span class="cmt"># DHCP SNOOPING</span>
+<span class="kw">ip dhcp snooping</span>
+<span class="kw">ip dhcp snooping vlan</span> 10,20
+
+<span class="kw">interface</span> gi0/1          <span class="cmt"># uplink → trusted</span>
+ <span class="kw">ip dhcp snooping trust</span>
+
+<span class="cmt"># Verificación</span>
+<span class="kw">show ip dhcp snooping binding</span>
+<span class="kw">show ip dhcp snooping statistics</span>
+
+<span class="cmt"># DYNAMIC ARP INSPECTION (DAI)</span>
+<span class="kw">ip arp inspection vlan</span> 10,20
+
+<span class="kw">interface</span> gi0/1          <span class="cmt"># uplink → trusted</span>
+ <span class="kw">ip arp inspection trust</span>
+
+<span class="cmt"># Verificación DAI</span>
+<span class="kw">show ip arp inspection vlan</span> 10
+<span class="kw">show ip arp inspection statistics</span></code></pre>
+
+      <pre><code><span class="cmt"># ETHERCHANNEL — LACP</span>
+<span class="kw">interface range</span> gi0/1 - 2
+ <span class="kw">channel-group</span> 1 <span class="kw">mode active</span>       <span class="cmt"># LACP activo</span>
+ <span class="kw">switchport trunk encapsulation dot1q</span>
+ <span class="kw">switchport mode trunk</span>
+
+<span class="kw">interface port-channel</span> 1            <span class="cmt"># canal lógico resultante</span>
+ <span class="kw">switchport trunk encapsulation dot1q</span>
+ <span class="kw">switchport mode trunk</span>
+ <span class="kw">switchport trunk allowed vlan</span> 10,20,30
+
+<span class="cmt"># Verificación EtherChannel</span>
+<span class="kw">show etherchannel summary</span>
+<span class="kw">show etherchannel port-channel</span>
+<span class="kw">show interfaces port-channel</span> 1</code></pre>
+    </div>
+  </section>
+
+  <section class="section" id="diagrama">
+    <div class="wrap block-body">
+      <h2 class="h"><span class="lead">Diagrama</span> de la topología</h2>
+      <div class="diagram">
+        <svg viewBox="0 0 760 320" xmlns="http://www.w3.org/2000/svg" font-family="Segoe UI, sans-serif">
+
+          <!-- EtherChannel entre switches -->
+          <line x1="250" y1="90" x2="510" y2="90" stroke="#34d399" stroke-width="3"/>
+          <line x1="250" y1="100" x2="510" y2="100" stroke="#34d399" stroke-width="3"/>
+          <text x="380" y="78" font-size="11" fill="#34d399" text-anchor="middle">Port-Channel 1 (LACP) — 2 Gbps agregado</text>
+
+          <!-- SW-Core -->
+          <rect x="510" y="54" width="220" height="70" rx="9" fill="#1c2230" stroke="#4f9cf9"/>
+          <text x="620" y="78" font-size="13" fill="#e6edf3" text-anchor="middle" font-weight="700">SW-Core</text>
+          <text x="620" y="96" font-size="11" fill="#9aa7b8" text-anchor="middle">Gi0/1–2: EtherChannel</text>
+          <text x="620" y="112" font-size="10" fill="#4f9cf9" text-anchor="middle">DHCP Snooping trusted</text>
+
+          <!-- SW-Acceso -->
+          <rect x="30" y="54" width="220" height="70" rx="9" fill="#1c2230" stroke="#a78bfa"/>
+          <text x="140" y="78" font-size="13" fill="#e6edf3" text-anchor="middle" font-weight="700">SW-Acceso</text>
+          <text x="140" y="96" font-size="11" fill="#9aa7b8" text-anchor="middle">Gi0/1–2: EtherChannel</text>
+          <text x="140" y="112" font-size="10" fill="#a78bfa" text-anchor="middle">Port Security · DAI</text>
+
+          <!-- Servidor DHCP desde SW-Core -->
+          <line x1="620" y1="124" x2="620" y2="174" stroke="#9aa7b8" stroke-width="1.5"/>
+          <rect x="540" y="174" width="160" height="50" rx="8" fill="#1c2230" stroke="#34d399"/>
+          <text x="620" y="196" font-size="12" fill="#e6edf3" text-anchor="middle">Servidor DHCP</text>
+          <text x="620" y="212" font-size="10" fill="#34d399" text-anchor="middle">Puerto TRUSTED</text>
+
+          <!-- PC legítimo desde SW-Acceso -->
+          <line x1="90" y1="124" x2="90" y2="174" stroke="#9aa7b8" stroke-width="1.5"/>
+          <rect x="20" y="174" width="140" height="50" rx="8" fill="#1c2230" stroke="#4f9cf9"/>
+          <text x="90" y="196" font-size="12" fill="#e6edf3" text-anchor="middle">PC legítimo</text>
+          <text x="90" y="212" font-size="10" fill="#4f9cf9" text-anchor="middle">MAC sticky aprendida</text>
+
+          <!-- Atacante bloqueado -->
+          <line x1="200" y1="124" x2="200" y2="174" stroke="#f87171" stroke-width="1.5" stroke-dasharray="5 3"/>
+          <rect x="130" y="174" width="140" height="50" rx="8" fill="#1c2230" stroke="#f87171"/>
+          <text x="200" y="196" font-size="12" fill="#f87171" text-anchor="middle">Atacante</text>
+          <text x="200" y="212" font-size="10" fill="#f87171" text-anchor="middle">BLOQUEADO (violation)</text>
+
+          <!-- Binding Table -->
+          <rect x="30" y="244" width="700" height="22" rx="4" fill="#1c2230" stroke="#f59e0b"/>
+          <text x="380" y="260" font-size="11" fill="#f59e0b" text-anchor="middle">DHCP Snooping Binding Table</text>
+
+          <rect x="30" y="266" width="700" height="20" rx="4" fill="#111720"/>
+          <text x="150" y="281" font-size="11" fill="#9aa7b8" text-anchor="middle">IP</text>
+          <text x="320" y="281" font-size="11" fill="#9aa7b8" text-anchor="middle">MAC</text>
+          <text x="490" y="281" font-size="11" fill="#9aa7b8" text-anchor="middle">Puerto</text>
+          <text x="660" y="281" font-size="11" fill="#9aa7b8" text-anchor="middle">VLAN</text>
+
+          <text x="150" y="301" font-size="11" fill="#e6edf3" text-anchor="middle">192.168.10.20</text>
+          <text x="320" y="301" font-size="11" fill="#e6edf3" text-anchor="middle">00:11:22:33:44:55</text>
+          <text x="490" y="301" font-size="11" fill="#e6edf3" text-anchor="middle">Fa0/3</text>
+          <text x="660" y="301" font-size="11" fill="#e6edf3" text-anchor="middle">10</text>
+        </svg>
+        <div class="cap">SW-Acceso aplica Port Security y DAI en los puertos de usuario; el EtherChannel LACP duplica el ancho de banda del uplink y elimina la necesidad de que STP bloquee un enlace.</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="lab">
+    <div class="wrap block-body">
+      <h2 class="h"><span class="lead">Laboratorio 7</span> — Seguridad L2 + EtherChannel</h2>
+      <p class="subtitle">Topología: SW-Core y SW-Acceso unidos por dos cables Gigabit; un PC legítimo, un atacante simulado y un servidor DHCP.</p>
+      <ol class="steps">
+        <li>En Packet Tracer: crear SW-Core y SW-Acceso; conectarlos con <strong>dos cables</strong> entre Gi0/1 y Gi0/2 de cada switch.</li>
+        <li>Configurar EtherChannel LACP en ambos switches: <code>channel-group 1 mode active</code> en Gi0/1–2. El extremo opuesto puede ser <em>active</em> o <em>passive</em>.</li>
+        <li>Verificar con <code>show etherchannel summary</code>: buscar el estado <strong>SU</strong> (layer2 Up, channel Up).</li>
+        <li>Conectar el servidor DHCP al SW-Core y marcar ese puerto como <code>ip dhcp snooping trust</code>.</li>
+        <li>Habilitar DHCP Snooping en la VLAN 10 globalmente; marcar el port-channel como trusted.</li>
+        <li>Habilitar DAI: <code>ip arp inspection vlan 10</code> en SW-Acceso; marcar el port-channel como trusted.</li>
+        <li>En el puerto del PC legítimo del SW-Acceso, configurar port security: sticky, maximum 1, violation shutdown.</li>
+        <li>Conectar el PC legítimo y verificar que obtiene IP por DHCP. Revisar <code>show ip dhcp snooping binding</code>.</li>
+        <li>Conectar un segundo PC al mismo puerto del SW-Acceso: el puerto debe entrar en err-disabled (violation shutdown).</li>
+        <li>Rehabilitar el puerto (<code>shutdown / no shutdown</code>) y verificar el estado final con <code>show ip arp inspection statistics</code>.</li>
+      </ol>
+      <div class="callout tip">
+        <span class="label">Verificación clave</span>
+        <code>show etherchannel summary</code> debe mostrar <strong>Po1(SU)</strong>. <code>show ip dhcp snooping binding</code> debe listar la entrada del PC legítimo. <code>show port-security interface fa0/X</code> debe mostrar <em>Security Violation Count: 1</em> tras el intento de conexión no autorizada.
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="wrap block-body">
+      <h2 class="h"><span class="lead">Comparativa</span> violation modes de Port Security</h2>
+      <table>
+        <tr><th>Modo</th><th>Descarta tráfico</th><th>Log / SNMP</th><th>Puerto activo</th></tr>
+        <tr><td>shutdown (defecto)</td><td>Sí</td><td>Sí (err-disabled)</td><td>No (err-disabled)</td></tr>
+        <tr><td>restrict</td><td>Sí</td><td>Sí</td><td>Sí</td></tr>
+        <tr><td>protect</td><td>Sí</td><td>No</td><td>Sí</td></tr>
+      </table>
+    </div>
+  </section>
+
+  <section class="section" id="flash">
+    <div class="wrap block-body">
+      <h2 class="h"><span class="lead">Flashcards</span></h2>
+      <p class="subtitle">Haz clic en cada tarjeta para ver la respuesta.</p>
+      <div class="fc-grid">
+        <div class="flashcard"><div class="inner">
+          <div class="face front">¿Qué hace un ataque de MAC flooding?</div>
+          <div class="face back">Llena la tabla CAM del switch con MACs falsas. Cuando la tabla se satura, el switch inunda el tráfico a todos los puertos como un hub, permitiendo al atacante capturarlo.</div>
+        </div></div>
+        <div class="flashcard"><div class="inner">
+          <div class="face front">¿Qué hace violation mode "shutdown"?</div>
+          <div class="face back">Al detectar una MAC no autorizada, el puerto entra en estado err-disabled y se apaga completamente. Requiere rehabilitación manual con shutdown/no shutdown.</div>
+        </div></div>
+        <div class="flashcard"><div class="inner">
+          <div class="face front">¿Por qué el uplink debe ser "trusted" en DHCP Snooping?</div>
+          <div class="face back">El servidor DHCP legítimo envía Offers/ACKs por el uplink. Si el uplink fuera untrusted, esos mensajes serían bloqueados y ningún cliente obtendría IP.</div>
+        </div></div>
+        <div class="flashcard"><div class="inner">
+          <div class="face front">¿De qué tabla depende Dynamic ARP Inspection?</div>
+          <div class="face back">De la DHCP Snooping Binding Table (IP-MAC-puerto-VLAN). DAI descarta cualquier ARP cuya IP-MAC no coincida con una entrada en esa tabla.</div>
+        </div></div>
+        <div class="flashcard"><div class="inner">
+          <div class="face front">¿Cuál es el estándar IEEE de LACP?</div>
+          <div class="face back">802.3ad (también referenciado como IEEE 802.1AX en revisiones posteriores). Es interoperable entre equipos de distintos fabricantes, a diferencia de PAgP que es propietario de Cisco.</div>
+        </div></div>
+        <div class="flashcard"><div class="inner">
+          <div class="face front">¿Qué ventajas da EtherChannel frente a un solo enlace?</div>
+          <div class="face back">Mayor ancho de banda (suma de puertos), redundancia interna (si cae un enlace físico, el canal sigue) y STP lo ve como un único enlace, evitando bloqueos innecesarios de puertos.</div>
+        </div></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="quiz">
+    <div class="wrap block-body">
+      <h2 class="h"><span class="lead">Cuestionario</span></h2>
+      <div class="quiz" id="quiz7">
+        <div class="q" data-answer="a">
+          <div class="qt">1. ¿Qué ataque agota el pool de DHCP enviando miles de solicitudes con MACs falsas?</div>
+          <label><input type="radio" name="q1g" value="a"> DHCP starvation</label>
+          <label><input type="radio" name="q1g" value="b"> MAC flooding</label>
+          <label><input type="radio" name="q1g" value="c"> ARP spoofing</label>
+          <div class="explain">DHCP starvation envía miles de Discovers con MACs diferentes para agotar el pool; los clientes legítimos quedan sin IP. MAC flooding desborda la CAM table; ARP spoofing envenena las tablas ARP.</div>
+        </div>
+        <div class="q" data-answer="b">
+          <div class="qt">2. ¿Cuántos puertos físicos puede agrupar como máximo un EtherChannel en Cisco?</div>
+          <label><input type="radio" name="q2g" value="a"> 4 puertos</label>
+          <label><input type="radio" name="q2g" value="b"> 8 puertos</label>
+          <label><input type="radio" name="q2g" value="c"> 16 puertos</label>
+          <div class="explain">Un EtherChannel en Cisco agrupa entre 2 y 8 puertos físicos en un único canal lógico (port-channel).</div>
+        </div>
+        <div class="q" data-answer="c">
+          <div class="qt">3. ¿Contra qué tabla valida Dynamic ARP Inspection (DAI) los paquetes ARP?</div>
+          <label><input type="radio" name="q3g" value="a"> Tabla MAC (CAM)</label>
+          <label><input type="radio" name="q3g" value="b"> Tabla de enrutamiento</label>
+          <label><input type="radio" name="q3g" value="c"> DHCP Snooping Binding Table</label>
+          <div class="explain">DAI usa la DHCP Snooping Binding Table que contiene el par {IP → MAC} legítimo aprendido del proceso DHCP. Si el ARP presenta una combinación diferente, el paquete se descarta.</div>
+        </div>
+        <div class="q" data-answer="c">
+          <div class="qt">4. ¿Qué violation mode de Port Security descarta el tráfico excedente pero NO cierra el puerto ni genera log?</div>
+          <label><input type="radio" name="q4g" value="a"> shutdown</label>
+          <label><input type="radio" name="q4g" value="b"> restrict</label>
+          <label><input type="radio" name="q4g" value="c"> protect</label>
+          <div class="explain">protect descarta silenciosamente el tráfico no autorizado sin cerrar el puerto ni generar log. restrict también descarta pero sí genera log. shutdown cierra el puerto en err-disabled.</div>
+        </div>
+        <div class="q" data-answer="a">
+          <div class="qt">5. En LACP, ¿cuál es el modo que inicia la negociación activamente?</div>
+          <label><input type="radio" name="q5g" value="a"> active</label>
+          <label><input type="radio" name="q5g" value="b"> passive</label>
+          <label><input type="radio" name="q5g" value="c"> desirable</label>
+          <div class="explain">En LACP, "active" inicia la negociación enviando paquetes LACP. "passive" solo responde. Para formar el canal, al menos un extremo debe ser active. "desirable" es el modo activo de PAgP, no de LACP.</div>
+        </div>
+        <button class="btn" onclick="checkQuiz('quiz7')">Comprobar respuestas</button>
+        <button class="btn ghost" onclick="resetQuiz('quiz7')">Reiniciar</button>
+        <div class="quiz-result"></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="wrap block-body">
+      <h2 class="h"><span class="lead">Preguntas</span> de repaso</h2>
+      <ul class="review">
+        <li>¿Por qué Port Security no es suficiente por sí solo para prevenir DHCP starvation?</li>
+        <li>¿Qué ocurre si configuras DHCP Snooping pero olvidas marcar el uplink como trusted?</li>
+        <li>¿Por qué DAI requiere que DHCP Snooping esté activo para funcionar correctamente?</li>
+        <li>¿En qué escenarios usarías violation mode restrict en lugar de shutdown?</li>
+        <li>¿Cómo verifica STP que el EtherChannel es un único enlace lógico?</li>
+      </ul>
+    </div>
+  </section>
+
+  <nav class="block-nav wrap">
+    <a class="prev" href="bloque6.html"><div class="dir">← Anterior</div><div class="ttl">Multicast con Cisco</div></a>
+  </nav>
+</main>
+
+<footer><div class="wrap">Bloque 7 de 7 · Curso de Redes Avanzado</div></footer>
+<script src="script.js"></script>
+</body>
+</html>

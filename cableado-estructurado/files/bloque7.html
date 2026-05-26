@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Bloque 7 · Presupuesto Óptico y Planificación de Proyectos — Cableado Estructurado</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<header class="topnav">
+  <div class="wrap">
+    <span class="brand">Cableado<span class="dot">.</span>Estructurado</span>
+    <nav>
+      <a href="index.html">Inicio</a>
+      <a href="bloque1.html">1 · Intro</a>
+      <a href="bloque2.html">2 · Canalización</a>
+      <a href="bloque3.html">3 · Data Center</a>
+      <a href="bloque4.html">4 · Campo</a>
+      <a href="bloque5.html">5 · Fibra</a>
+      <a href="bloque6.html">6 · Profesional</a>
+      <a href="bloque7.html">7 · Presupuesto</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <section class="block-head wrap">
+    <div class="num">MÓDULO 07</div>
+    <h1>Presupuesto Óptico y Planificación de Proyectos</h1>
+    <p>Antes de instalar un enlace de fibra óptica se calcula si la señal llegará con margen suficiente al receptor. Después de instalar se documenta todo en un dossier profesional y se cotiza el proyecto con materiales, mano de obra y margen comercial.</p>
+    <div class="progress-dots"><span></span><span></span><span></span><span></span><span></span><span></span><span class="on"></span></div>
+    <div class="toc">
+      <a href="#teoria">Teoría ampliada</a>
+      <a href="#conceptos">Conceptos clave</a>
+      <a href="#diagrama">Diagrama</a>
+      <a href="#lab">Laboratorio</a>
+      <a href="#flash">Flashcards</a>
+      <a href="#quiz">Cuestionario</a>
+    </div>
+  </section>
+
+  <section class="section" id="teoria">
+    <div class="wrap block-body">
+      <h2 class="h"><span class="lead">Teoría</span> ampliada</h2>
+
+      <h3>Presupuesto óptico (Optical Link Budget)</h3>
+      <p>Un enlace de fibra funciona si el transmisor entrega suficiente potencia para que el receptor la detecte correctamente, incluso después de sufrir todas las pérdidas del trayecto. El presupuesto óptico es exactamente eso: cuántos decibelios "tenemos disponibles" y cuántos "gastamos" en el camino.</p>
+
+      <p><strong>Parámetros fundamentales:</strong></p>
+      <ul class="bullets">
+        <li><strong>Potencia Tx (dBm):</strong> potencia de salida del transceiver óptico (ej. −3 dBm para un módulo 10GBASE-SR).</li>
+        <li><strong>Sensibilidad Rx mínima (dBm):</strong> nivel mínimo de potencia que el receptor puede detectar correctamente (ej. −14 dBm). Por debajo de este valor el enlace falla.</li>
+        <li><strong>Budget disponible:</strong> <code>|Tx − Rx_min|</code> en dB. Ejemplo: |−3 − (−14)| = 11 dB.</li>
+        <li><strong>Atenuación del cable:</strong> pérdida por kilómetro. SM OS2 ≈ 0.35 dB/km @ 1310 nm. MM OM4 ≈ 3.5 dB/km @ 850 nm.</li>
+        <li><strong>Pérdida por conector:</strong> 0.3–0.5 dB por conector LC/SC en buenas condiciones. Un conector sucio puede superar 1 dB.</li>
+        <li><strong>Pérdida por empalme de fusión:</strong> &lt; 0.1 dB por empalme bien ejecutado.</li>
+        <li><strong>Margen de seguridad:</strong> lo que sobra tras restar las pérdidas. Se recomienda ≥ 3 dB para absorber degradación futura (suciedad, temperatura, envejecimiento).</li>
+      </ul>
+
+      <p><strong>Fórmula:</strong></p>
+      <p style="font-family:monospace;background:#111720;padding:0.8rem 1rem;border-radius:6px;color:#34d399;margin:0.5rem 0">
+        Margen = Budget − (atenuación_cable + Σ_pérdidas_conectores + Σ_pérdidas_empalmes) ≥ 3 dB
+      </p>
+
+      <h3>Ejemplo resuelto</h3>
+      <p>Enlace: fibra OM4, distancia 300 m, transceiver 10GBASE-SR.</p>
+      <ul class="bullets">
+        <li>Tx = −3 dBm, Rx_min = −14 dBm → Budget = <strong>11 dB</strong></li>
+        <li>Atenuación cable: 3.5 dB/km × 0.3 km = <strong>1.05 dB</strong></li>
+        <li>4 conectores LC × 0.4 dB = <strong>1.60 dB</strong></li>
+        <li>1 empalme de fusión × 0.08 dB = <strong>0.08 dB</strong></li>
+        <li>Pérdida total: 1.05 + 1.60 + 0.08 = <strong>2.73 dB</strong></li>
+        <li>Margen = 11 − 2.73 = <strong>8.27 dB ≥ 3 dB</strong> → enlace viable ✓</li>
+      </ul>
+
+      <h3>Lectura de traza OTDR</h3>
+      <p>El OTDR (Optical Time Domain Reflectometer) envía pulsos de luz y mide el retorno en función del tiempo, produciendo una traza que muestra la condición de la fibra a lo largo de toda su longitud:</p>
+      <ul class="bullets">
+        <li><strong>Pendiente de la traza:</strong> la inclinación constante es la atenuación distribuida del cable (dB/km). Una pendiente más pronunciada indica mayor pérdida.</li>
+        <li><strong>Eventos reflectivos (pico + caída):</strong> generados por reflexiones de Fresnel: conectores, empalmes mecánicos y el extremo de la fibra. El pico es visible y la pérdida se mide como la caída tras el pico.</li>
+        <li><strong>Eventos no reflectivos (solo caída):</strong> empalmes de fusión correctos y macro-dobleces. Solo hay una caída de nivel sin pico previo.</li>
+        <li><strong>Zona muerta (dead zone):</strong> distancia tras el punto de inyección del pulso donde el OTDR queda cegado por la reflexión propia; no puede detectar eventos en esa zona.</li>
+        <li><strong>Rotura total:</strong> la traza cae abruptamente a nivel de ruido antes del final esperado; indica una rotura o doblez severo.</li>
+      </ul>
+
+      <h3>BOM y cotización profesional</h3>
+      <p>El <strong>BOM (Bill of Materials)</strong> es la lista completa de materiales con cantidades y precios unitarios. Es la base de cualquier cotización. Los componentes de una cotización son:</p>
+      <ul class="bullets">
+        <li><strong>Materiales:</strong> cables, conectores, patch panels, bandejas, canaletas, herrajes.</li>
+        <li><strong>Mano de obra:</strong> puntos × tiempo estimado × tarifa del técnico. Ritmo realista: 20–25 puntos Cat6A certificados por día.</li>
+        <li><strong>Certificación y pruebas:</strong> tiempo de Fluke DSX y documentación de informes.</li>
+        <li><strong>Documentación:</strong> planos as-built, etiquetado TIA-606, informe de entrega.</li>
+        <li><strong>Margen comercial:</strong> típicamente 15–25% sobre el costo total del proyecto.</li>
+      </ul>
+      <p>El <strong>dossier de entrega</strong> incluye: informes de certificación Fluke DSX, planos as-built con etiquetas TIA-606, fichas técnicas de los materiales instalados, certificados de garantía del fabricante, y el acta de recepción firmada por el cliente.</p>
+    </div>
+  </section>
+
+  <section class="section" id="conceptos">
+    <div class="wrap block-body">
+      <h2 class="h"><span class="lead">Conceptos</span> clave</h2>
+      <table>
+        <tr><th>Concepto</th><th>Descripción</th></tr>
+        <tr><td>Presupuesto óptico</td><td>Cálculo que verifica si la potencia del Tx llega al Rx con margen suficiente tras todas las pérdidas</td></tr>
+        <tr><td>Budget (dB)</td><td>|Tx − Rx_min|: diferencia entre potencia de salida y sensibilidad mínima del receptor</td></tr>
+        <tr><td>Margen de seguridad</td><td>Budget − pérdidas reales; debe ser ≥ 3 dB para absorber degradación futura</td></tr>
+        <tr><td>Atenuación (dB/km)</td><td>Pérdida por km de fibra. OS2 ≈ 0.35 dB/km; OM4 @ 850 nm ≈ 3.5 dB/km</td></tr>
+        <tr><td>Pérdida por conector</td><td>0.3–0.5 dB por conector LC/SC en buenas condiciones; hasta >1 dB si está sucio</td></tr>
+        <tr><td>Empalme por fusión</td><td>&lt;0.1 dB de pérdida; une fibras permanentemente con la fusionadora</td></tr>
+        <tr><td>OTDR</td><td>Instrumento que mide pérdidas y reflecciones en fibra a lo largo de la distancia</td></tr>
+        <tr><td>Evento reflectivo</td><td>Pico seguido de caída en la traza OTDR: indica un conector, empalme mecánico o extremo de fibra</td></tr>
+        <tr><td>Evento no reflectivo</td><td>Solo caída sin pico en la traza: empalme de fusión correcto o doblez de fibra</td></tr>
+        <tr><td>Zona muerta</td><td>Distancia tras el pulso inicial donde el OTDR no puede detectar eventos (cegado por reflexión propia)</td></tr>
+        <tr><td>BOM (Bill of Materials)</td><td>Lista de todos los materiales con cantidades y precios unitarios; base de la cotización</td></tr>
+        <tr><td>Dossier de entrega</td><td>Paquete de documentación final: certificación Fluke, planos as-built, garantías y acta de recepción</td></tr>
+      </table>
+    </div>
+  </section>
+
+  <section class="section" id="diagrama">
+    <div class="wrap block-body">
+      <h2 class="h"><span class="lead">Diagrama</span> — Campus con cálculo de presupuesto</h2>
+      <div class="diagram">
+        <svg viewBox="0 0 760 310" xmlns="http://www.w3.org/2000/svg" font-family="Segoe UI, sans-serif">
+          <defs>
+            <marker id="arr" markerWidth="9" markerHeight="9" refX="7" refY="3" orient="auto">
+              <path d="M0,0 L7,3 L0,6 Z" fill="#9aa7b8"/>
+            </marker>
+          </defs>
+
+          <!-- MDF (centro) -->
+          <rect x="290" y="14" width="180" height="64" rx="9" fill="#1c2230" stroke="#a78bfa"/>
+          <text x="380" y="38" font-size="13" fill="#e6edf3" text-anchor="middle" font-weight="700">MDF</text>
+          <text x="380" y="56" font-size="11" fill="#9aa7b8" text-anchor="middle">Cuarto Principal</text>
+          <text x="380" y="70" font-size="10" fill="#a78bfa" text-anchor="middle">Switch Core</text>
+
+          <!-- Enlace MDF → IDF-A (izquierda) -->
+          <line x1="290" y1="46" x2="186" y2="100" stroke="#f472b6" stroke-width="2" marker-end="url(#arr)"/>
+          <text x="220" y="74" font-size="10" fill="#f472b6" text-anchor="middle">SM OS2</text>
+          <text x="220" y="86" font-size="10" fill="#f472b6" text-anchor="middle">500 m</text>
+
+          <!-- Enlace MDF → IDF-B (derecha) -->
+          <line x1="470" y1="46" x2="574" y2="100" stroke="#22d3ee" stroke-width="2" marker-end="url(#arr)"/>
+          <text x="540" y="74" font-size="10" fill="#22d3ee" text-anchor="middle">OM4</text>
+          <text x="540" y="86" font-size="10" fill="#22d3ee" text-anchor="middle">150 m</text>
+
+          <!-- IDF-A -->
+          <rect x="80" y="100" width="212" height="64" rx="9" fill="#1c2230" stroke="#f472b6"/>
+          <text x="186" y="124" font-size="13" fill="#e6edf3" text-anchor="middle" font-weight="700">IDF-A · Edificio A</text>
+          <text x="186" y="142" font-size="11" fill="#9aa7b8" text-anchor="middle">2 empalmes · 4 conectores</text>
+          <text x="186" y="156" font-size="10" fill="#f472b6" text-anchor="middle">Switch PoE</text>
+
+          <!-- IDF-B -->
+          <rect x="468" y="100" width="212" height="64" rx="9" fill="#1c2230" stroke="#22d3ee"/>
+          <text x="574" y="124" font-size="13" fill="#e6edf3" text-anchor="middle" font-weight="700">IDF-B · Edificio B</text>
+          <text x="574" y="142" font-size="11" fill="#9aa7b8" text-anchor="middle">0 empalmes · 4 conectores</text>
+          <text x="574" y="156" font-size="10" fill="#22d3ee" text-anchor="middle">Switch PoE</text>
+
+          <!-- Tabla presupuesto -->
+          <rect x="10" y="182" width="740" height="22" rx="4" fill="#1c2230" stroke="#f59e0b"/>
+          <text x="380" y="198" font-size="12" fill="#f59e0b" text-anchor="middle" font-weight="700">Cálculo de Presupuesto Óptico</text>
+
+          <!-- Cabeceras -->
+          <rect x="10" y="204" width="740" height="20" rx="0" fill="#111720"/>
+          <text x="95" y="219" font-size="10" fill="#9aa7b8" text-anchor="middle">Enlace</text>
+          <text x="210" y="219" font-size="10" fill="#9aa7b8" text-anchor="middle">Budget (dB)</text>
+          <text x="330" y="219" font-size="10" fill="#9aa7b8" text-anchor="middle">Cable</text>
+          <text x="450" y="219" font-size="10" fill="#9aa7b8" text-anchor="middle">Conectores</text>
+          <text x="560" y="219" font-size="10" fill="#9aa7b8" text-anchor="middle">Empalmes</text>
+          <text x="670" y="219" font-size="10" fill="#9aa7b8" text-anchor="middle">Margen</text>
+
+          <!-- Fila 1: SM OS2 500m -->
+          <rect x="10" y="224" width="740" height="22" rx="0" fill="#0d1117"/>
+          <text x="95" y="240" font-size="11" fill="#f472b6" text-anchor="middle">MDF → IDF-A (SM OS2)</text>
+          <text x="210" y="240" font-size="11" fill="#e6edf3" text-anchor="middle">27 dB</text>
+          <text x="330" y="240" font-size="11" fill="#e6edf3" text-anchor="middle">0.18 dB</text>
+          <text x="450" y="240" font-size="11" fill="#e6edf3" text-anchor="middle">1.60 dB</text>
+          <text x="560" y="240" font-size="11" fill="#e6edf3" text-anchor="middle">0.16 dB</text>
+          <text x="670" y="240" font-size="11" fill="#34d399" text-anchor="middle">24.06 dB ✓</text>
+
+          <!-- Fila 2: OM4 150m -->
+          <rect x="10" y="246" width="740" height="22" rx="0" fill="#111720"/>
+          <text x="95" y="262" font-size="11" fill="#22d3ee" text-anchor="middle">MDF → IDF-B (OM4)</text>
+          <text x="210" y="262" font-size="11" fill="#e6edf3" text-anchor="middle">11 dB</text>
+          <text x="330" y="262" font-size="11" fill="#e6edf3" text-anchor="middle">0.53 dB</text>
+          <text x="450" y="262" font-size="11" fill="#e6edf3" text-anchor="middle">1.60 dB</text>
+          <text x="560" y="262" font-size="11" fill="#e6edf3" text-anchor="middle">0 dB</text>
+          <text x="670" y="262" font-size="11" fill="#34d399" text-anchor="middle">8.87 dB ✓</text>
+
+          <!-- Nota -->
+          <text x="380" y="295" font-size="10" fill="#9aa7b8" text-anchor="middle">OS2: Tx=+2 dBm, Rx_min=−25 dBm, 0.35 dB/km · OM4: Tx=−3 dBm, Rx_min=−14 dBm, 3.5 dB/km</text>
+        </svg>
+        <div class="cap">Ambos enlaces tienen margen holgado (&gt;3 dB). El enlace SM OS2 tiene un budget enorme (27 dB) porque la fibra monomodo tiene muy baja atenuación.</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="lab">
+    <div class="wrap block-body">
+      <h2 class="h"><span class="lead">Laboratorio 7</span> — Calcular presupuesto y armar BOM</h2>
+      <p class="subtitle">Ejercicio escrito: calcular si los enlaces son viables y preparar el BOM de un proyecto pequeño.</p>
+
+      <h3>Parte A — Verificación de presupuesto óptico</h3>
+      <p>Para cada enlace, calcula la pérdida total y el margen. Indica si el enlace es viable (margen ≥ 3 dB).</p>
+      <table>
+        <tr><th>Enlace</th><th>Fibra</th><th>Distancia</th><th>Tx</th><th>Rx_min</th><th>Conectores</th><th>Empalmes</th></tr>
+        <tr><td>A</td><td>SM OS2</td><td>800 m</td><td>+2 dBm</td><td>−25 dBm</td><td>4 × 0.4 dB</td><td>3 × 0.08 dB</td></tr>
+        <tr><td>B</td><td>MM OM4</td><td>350 m</td><td>−3 dBm</td><td>−12 dBm</td><td>8 × 0.7 dB*</td><td>0</td></tr>
+      </table>
+      <p style="font-size:0.9em;color:#9aa7b8">* Conectores sucios o mal terminados.</p>
+      <div class="callout tip">
+        <span class="label">Solución guiada</span>
+        Enlace A: Budget = 27 dB. Cable: 0.35 × 0.8 = 0.28 dB. Conectores: 1.6 dB. Empalmes: 0.24 dB. Total: 2.12 dB. Margen = 24.88 dB ✓.<br>
+        Enlace B: Budget = 9 dB. Cable: 3.5 × 0.35 = 1.225 dB. Conectores: 5.6 dB. Total: 6.825 dB. Margen = 2.18 dB ✗ — no viable. Solución: limpiar los 8 conectores (0.4 dB/c) → margen = 3.6 dB ✓.
+      </div>
+
+      <h3>Parte B — BOM de un proyecto pequeño</h3>
+      <ol class="steps">
+        <li>El proyecto tiene 8 puntos Cat6A (cable de 12 m promedio c/u) y un backbone OM4 de 60 m entre el MDF y un IDF.</li>
+        <li>Lista los materiales necesarios: cable Cat6A (metros), jacks Cat6A, faceplates, patch cords Cat6A 2 m, patch panel Cat6A 12p, cable OM4 duplex (metros), pigtails LC OM4, bandeja de empalme.</li>
+        <li>Asigna precios unitarios de mercado locales a cada ítem y calcula el subtotal de materiales.</li>
+        <li>Calcula la mano de obra: 8 puntos ÷ 22 puntos/día × tarifa diaria del técnico.</li>
+        <li>Suma materiales + mano de obra + certificación (estimado 5% de materiales) y aplica el 20% de margen comercial.</li>
+        <li>Presenta el resultado como un documento de cotización con líneas por ítem, subtotales y precio final.</li>
+      </ol>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="wrap block-body">
+      <h2 class="h"><span class="lead">Atenuación</span> de referencia por tipo de fibra</h2>
+      <table>
+        <tr><th>Fibra</th><th>Longitud de onda</th><th>Atenuación (dB/km)</th><th>Alcance típico @ 10G</th></tr>
+        <tr><td>SM OS2</td><td>1310 nm</td><td>≤ 0.35</td><td>10–40 km</td></tr>
+        <tr><td>SM OS2</td><td>1550 nm</td><td>≤ 0.20</td><td>40–80 km</td></tr>
+        <tr><td>MM OM3</td><td>850 nm</td><td>≤ 3.5</td><td>300 m</td></tr>
+        <tr><td>MM OM4</td><td>850 nm</td><td>≤ 3.5</td><td>400 m</td></tr>
+        <tr><td>MM OM5</td><td>850–950 nm</td><td>≤ 3.0</td><td>400 m (SWDM)</td></tr>
+      </table>
+    </div>
+  </section>
+
+  <section class="section" id="flash">
+    <div class="wrap block-body">
+      <h2 class="h"><span class="lead">Flashcards</span></h2>
+      <p class="subtitle">Haz clic en cada tarjeta para ver la respuesta.</p>
+      <div class="fc-grid">
+        <div class="flashcard"><div class="inner">
+          <div class="face front">¿Cuál es el margen mínimo recomendado en un presupuesto óptico?</div>
+          <div class="face back">3 dB. Este margen absorbe degradación futura: suciedad en conectores, variaciones de temperatura, envejecimiento de la fibra y posibles reteminaciones.</div>
+        </div></div>
+        <div class="flashcard"><div class="inner">
+          <div class="face front">¿Cuánto pierde típicamente un conector LC bien terminado?</div>
+          <div class="face back">0.3–0.5 dB por conector. Un conector sucio puede superar 1 dB. La limpieza con IPA 99% antes de cada conexión es crítica para mantener las pérdidas dentro del presupuesto.</div>
+        </div></div>
+        <div class="flashcard"><div class="inner">
+          <div class="face front">¿Qué diferencia un evento reflectivo de uno no reflectivo en OTDR?</div>
+          <div class="face back">El reflectivo genera un pico antes de la caída (conector, empalme mecánico, extremo de fibra). El no reflectivo solo muestra una caída sin pico (empalme de fusión correcto, doblez).</div>
+        </div></div>
+        <div class="flashcard"><div class="inner">
+          <div class="face front">¿Qué componentes forman el precio de una cotización profesional?</div>
+          <div class="face back">Materiales + mano de obra + certificación/pruebas + documentación + margen comercial (15–25%). Olvidar algún componente produce pérdidas en el proyecto.</div>
+        </div></div>
+        <div class="flashcard"><div class="inner">
+          <div class="face front">¿Qué es el BOM?</div>
+          <div class="face back">Bill of Materials: lista completa de todos los materiales necesarios con cantidades y precios unitarios. Es la base del cálculo de costos de cualquier proyecto de cableado.</div>
+        </div></div>
+        <div class="flashcard"><div class="inner">
+          <div class="face front">¿Qué incluye el dossier de entrega?</div>
+          <div class="face back">Informes de certificación Fluke DSX, planos as-built con etiquetas TIA-606, fichas técnicas de materiales instalados, certificados de garantía del fabricante y acta de recepción firmada.</div>
+        </div></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="quiz">
+    <div class="wrap block-body">
+      <h2 class="h"><span class="lead">Cuestionario</span></h2>
+      <div class="quiz" id="quiz7c">
+        <div class="q" data-answer="b">
+          <div class="qt">1. ¿Cuál es el margen mínimo recomendado en un presupuesto óptico para absorber degradaciones futuras?</div>
+          <label><input type="radio" name="q1h" value="a"> 1 dB</label>
+          <label><input type="radio" name="q1h" value="b"> 3 dB</label>
+          <label><input type="radio" name="q1h" value="c"> 10 dB</label>
+          <div class="explain">3 dB es el margen mínimo estándar. Cubre degradación de conectores con el uso, variaciones de temperatura y posibles rereterminaciones futuras.</div>
+        </div>
+        <div class="q" data-answer="a">
+          <div class="qt">2. En una traza OTDR, ¿qué indica un pico seguido de una caída de nivel?</div>
+          <label><input type="radio" name="q2h" value="a"> Un evento reflectivo (conector, empalme mecánico o extremo de fibra)</label>
+          <label><input type="radio" name="q2h" value="b"> Un doblez brusco de la fibra</label>
+          <label><input type="radio" name="q2h" value="c"> Una rotura total de la fibra</label>
+          <div class="explain">El pico antes de la caída indica reflexión de Fresnel: es un evento reflectivo (conector, empalme mecánico o extremo). Un doblez o empalme de fusión solo produce una caída sin pico.</div>
+        </div>
+        <div class="q" data-answer="c">
+          <div class="qt">3. Para calcular la pérdida total de un enlace de fibra, ¿qué se suma?</div>
+          <label><input type="radio" name="q3h" value="a"> Solo la atenuación del cable</label>
+          <label><input type="radio" name="q3h" value="b"> Atenuación del cable + pérdidas en conectores</label>
+          <label><input type="radio" name="q3h" value="c"> Atenuación del cable + pérdidas en conectores + pérdidas en empalmes</label>
+          <div class="explain">Todos los elementos del trayecto contribuyen a la pérdida total: el cable, cada conector y cada empalme. Olvidar los empalmes es un error común que puede dejar el margen por debajo de 3 dB.</div>
+        </div>
+        <div class="q" data-answer="b">
+          <div class="qt">4. ¿Qué significa BOM en un proyecto de cableado?</div>
+          <label><input type="radio" name="q4h" value="a"> Base of Measurements</label>
+          <label><input type="radio" name="q4h" value="b"> Bill of Materials (lista de materiales)</label>
+          <label><input type="radio" name="q4h" value="c"> Budget of Maintenance</label>
+          <div class="explain">BOM (Bill of Materials) es la lista de todos los materiales con cantidades y precios unitarios. Es el documento base para calcular el costo de materiales de un proyecto.</div>
+        </div>
+        <div class="q" data-answer="a">
+          <div class="qt">5. ¿Cuál es el margen comercial típico en una cotización profesional de cableado?</div>
+          <label><input type="radio" name="q5h" value="a"> 15 – 25 %</label>
+          <label><input type="radio" name="q5h" value="b"> 50 – 60 %</label>
+          <label><input type="radio" name="q5h" value="c"> 5 – 8 %</label>
+          <div class="explain">15–25% sobre el costo total (materiales + mano de obra + certificación) es el rango estándar de mercado para proyectos de cableado estructurado. Un margen menor dificulta absorber imprevistos.</div>
+        </div>
+        <button class="btn" onclick="checkQuiz('quiz7c')">Comprobar respuestas</button>
+        <button class="btn ghost" onclick="resetQuiz('quiz7c')">Reiniciar</button>
+        <div class="quiz-result"></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="wrap block-body">
+      <h2 class="h"><span class="lead">Preguntas</span> de repaso</h2>
+      <ul class="review">
+        <li>¿Por qué es importante calcular el presupuesto óptico antes de instalar y no después?</li>
+        <li>Si el margen calculado es de 2.5 dB, ¿qué opciones tienes para mejorar el presupuesto sin cambiar la fibra?</li>
+        <li>¿Qué diferencia práctica hay entre usar el OTDR para certificación y usarlo para troubleshooting?</li>
+        <li>¿Qué elementos del BOM suelen olvidarse al hacer una cotización y cómo afectan al costo final?</li>
+        <li>¿Por qué el dossier de entrega protege tanto al cliente como al instalador?</li>
+      </ul>
+    </div>
+  </section>
+
+  <nav class="block-nav wrap">
+    <a class="prev" href="bloque6.html"><div class="dir">← Anterior</div><div class="ttl">Consideraciones Profesionales</div></a>
+  </nav>
+</main>
+
+<footer><div class="wrap">Módulo 7 de 7 · Curso de Cableado Estructurado</div></footer>
+<script src="script.js"></script>
+</body>
+</html>
