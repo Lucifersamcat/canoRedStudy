@@ -49,7 +49,7 @@ a:hover { text-decoration: underline; }
   display: flex; align-items: center; gap: 18px;
   height: 60px;
 }
-.brand { font-weight: 700; font-size: 1.05rem; white-space: nowrap; }
+.brand { font-weight: 700; font-size: 1.05rem; white-space: nowrap; color: var(--text); text-decoration: none; }
 .brand .dot { color: var(--accent); }
 .topnav nav { display: flex; gap: 6px; flex-wrap: wrap; margin-left: auto; }
 .topnav nav a {
