@@ -129,6 +129,77 @@
         </svg>
         <div class="cap">El proceso DORA ocurre en milisegundos. Discovery y Request son broadcasts. Offer y Acknowledge también son broadcast en el proceso inicial (el cliente aún no tiene IP); en renovaciones posteriores el servidor puede responder en unicast directamente al cliente.</div>
       </div>
+
+      <div class="diagram">
+        <svg viewBox="0 0 760 235" xmlns="http://www.w3.org/2000/svg" font-family="Segoe UI, sans-serif" font-size="12">
+          <text x="380" y="20" fill="#e6edf3" font-weight="bold" text-anchor="middle" font-size="13">Estructura de una Dirección IPv4 — Porción de Red vs. Host</text>
+
+          <!-- Example: 192.168.1.10 / 24 -->
+          <!-- Row 1 label -->
+          <text x="28" y="56" fill="#9aa7b8" font-size="10">Dirección</text>
+
+          <!-- Octets (x: 110 to 650, 4 octets + 3 dots) -->
+          <!-- Each octet box width=118, gap between=14 -->
+          <!-- Octet x positions: 110, 242, 374, 506 -->
+          <rect x="110" y="40" width="118" height="34" rx="6" fill="#1a2a3a" stroke="#4f9cf9" stroke-width="2"/>
+          <text x="169" y="62" fill="#4f9cf9" font-weight="bold" text-anchor="middle" font-size="17">192</text>
+          <text x="233" y="62" fill="#9aa7b8" text-anchor="middle" font-size="17">.</text>
+
+          <rect x="242" y="40" width="118" height="34" rx="6" fill="#1a2a3a" stroke="#4f9cf9" stroke-width="2"/>
+          <text x="301" y="62" fill="#4f9cf9" font-weight="bold" text-anchor="middle" font-size="17">168</text>
+          <text x="365" y="62" fill="#9aa7b8" text-anchor="middle" font-size="17">.</text>
+
+          <rect x="374" y="40" width="118" height="34" rx="6" fill="#1a2a3a" stroke="#4f9cf9" stroke-width="2"/>
+          <text x="433" y="62" fill="#4f9cf9" font-weight="bold" text-anchor="middle" font-size="17">1</text>
+          <text x="497" y="62" fill="#9aa7b8" text-anchor="middle" font-size="17">.</text>
+
+          <rect x="506" y="40" width="118" height="34" rx="6" fill="#1c1a00" stroke="#f59e0b" stroke-width="2"/>
+          <text x="565" y="62" fill="#f59e0b" font-weight="bold" text-anchor="middle" font-size="17">10</text>
+          <text x="638" y="62" fill="#a78bfa" font-weight="bold" font-size="17">/24</text>
+
+          <!-- Row 2: Mask -->
+          <text x="28" y="92" fill="#9aa7b8" font-size="10">Máscara</text>
+
+          <rect x="110" y="78" width="118" height="28" rx="5" fill="#0d1624" stroke="#4f9cf9" stroke-width="1"/>
+          <text x="169" y="96" fill="#4f9cf9" text-anchor="middle" font-size="13">255</text>
+          <text x="233" y="96" fill="#9aa7b8" text-anchor="middle" font-size="13">.</text>
+
+          <rect x="242" y="78" width="118" height="28" rx="5" fill="#0d1624" stroke="#4f9cf9" stroke-width="1"/>
+          <text x="301" y="96" fill="#4f9cf9" text-anchor="middle" font-size="13">255</text>
+          <text x="365" y="96" fill="#9aa7b8" text-anchor="middle" font-size="13">.</text>
+
+          <rect x="374" y="78" width="118" height="28" rx="5" fill="#0d1624" stroke="#4f9cf9" stroke-width="1"/>
+          <text x="433" y="96" fill="#4f9cf9" text-anchor="middle" font-size="13">255</text>
+          <text x="497" y="96" fill="#9aa7b8" text-anchor="middle" font-size="13">.</text>
+
+          <rect x="506" y="78" width="118" height="28" rx="5" fill="#0f0f0a" stroke="#9aa7b8" stroke-width="1"/>
+          <text x="565" y="96" fill="#9aa7b8" text-anchor="middle" font-size="13">0</text>
+
+          <!-- Network bracket -->
+          <line x1="110" y1="118" x2="492" y2="118" stroke="#4f9cf9" stroke-width="1.5"/>
+          <line x1="110" y1="113" x2="110" y2="123" stroke="#4f9cf9" stroke-width="1.5"/>
+          <line x1="492" y1="113" x2="492" y2="123" stroke="#4f9cf9" stroke-width="1.5"/>
+          <text x="301" y="135" fill="#4f9cf9" text-anchor="middle" font-size="11">Porción de RED — 24 bits — identifica la subred</text>
+
+          <!-- Host bracket -->
+          <line x1="506" y1="118" x2="624" y2="118" stroke="#f59e0b" stroke-width="1.5"/>
+          <line x1="506" y1="113" x2="506" y2="123" stroke="#f59e0b" stroke-width="1.5"/>
+          <line x1="624" y1="113" x2="624" y2="123" stroke="#f59e0b" stroke-width="1.5"/>
+          <text x="565" y="135" fill="#f59e0b" text-anchor="middle" font-size="11">HOST — 8 bits</text>
+          <text x="565" y="151" fill="#f59e0b" font-weight="bold" text-anchor="middle">2⁸ − 2 = 254 hosts</text>
+
+          <!-- Private ranges bar -->
+          <rect x="28" y="168" width="704" height="58" rx="6" fill="#11161f"/>
+          <text x="45" y="184" fill="#9aa7b8" font-size="10" font-weight="bold">Rangos privados (RFC 1918 — no enrutables en Internet):</text>
+          <rect x="45" y="191" width="14" height="14" rx="2" fill="#ef4444"/>
+          <text x="64" y="203" fill="#9aa7b8" font-size="10">Clase A: 10.0.0.0 / 8 (16 millones de hosts)</text>
+          <rect x="45" y="210" width="14" height="14" rx="2" fill="#f59e0b"/>
+          <text x="64" y="222" fill="#9aa7b8" font-size="10">Clase B: 172.16.0.0 – 172.31.255.255 / 12 (1 millón de hosts)</text>
+          <rect x="400" y="191" width="14" height="14" rx="2" fill="#34d399"/>
+          <text x="420" y="203" fill="#9aa7b8" font-size="10">Clase C: 192.168.0.0 / 16 (65,536 hosts)</text>
+        </svg>
+        <div class="cap">En una /24, los primeros 24 bits (3 octetos) identifican la red y los últimos 8 bits identifican el host. La máscara 255.255.255.0 señala qué parte es fija. Con 8 bits de host: 2⁸ − 2 = 254 hosts útiles.</div>
+      </div>
     </div>
   </section>
 

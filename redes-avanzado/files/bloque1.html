@@ -186,6 +186,71 @@
         </svg>
         <div class="cap">Laboratorio 1: PC de administración y router conectados al switch; acceso inicial por consola, gestión posterior por SSH.</div>
       </div>
+
+      <div class="diagram">
+        <svg viewBox="0 0 760 320" xmlns="http://www.w3.org/2000/svg" font-family="Segoe UI, sans-serif" font-size="12">
+          <defs>
+            <marker id="iosArr" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+              <path d="M0,0 L8,3 L0,6 Z" fill="#9aa7b8"/>
+            </marker>
+          </defs>
+
+          <text x="380" y="20" fill="#e6edf3" font-weight="bold" text-anchor="middle" font-size="13">Jerarquía de Modos CLI — Cisco IOS</text>
+
+          <!-- Level 0: User EXEC -->
+          <rect x="260" y="30" width="240" height="52" rx="8" fill="#1c2230" stroke="#9aa7b8" stroke-width="1.5"/>
+          <text x="380" y="52" fill="#e6edf3" font-weight="bold" text-anchor="middle" font-size="12">User EXEC</text>
+          <text x="380" y="66" fill="#34d399" text-anchor="middle" font-size="11" font-family="'Cascadia Code', Consolas, monospace">Switch&gt;</text>
+          <text x="380" y="78" fill="#9aa7b8" text-anchor="middle" font-size="10">Solo diagnóstico básico (ping, show)</text>
+
+          <!-- Arrow down with command -->
+          <line x1="380" y1="82" x2="380" y2="108" stroke="#9aa7b8" stroke-width="1.5" marker-end="url(#iosArr)"/>
+          <text x="398" y="100" fill="#f59e0b" font-size="10" font-family="'Cascadia Code', Consolas, monospace">enable</text>
+
+          <!-- Level 1: Privileged EXEC -->
+          <rect x="240" y="108" width="280" height="52" rx="8" fill="#1c2230" stroke="#f59e0b" stroke-width="2"/>
+          <text x="380" y="130" fill="#e6edf3" font-weight="bold" text-anchor="middle" font-size="12">Privileged EXEC</text>
+          <text x="380" y="144" fill="#f59e0b" text-anchor="middle" font-size="11" font-family="'Cascadia Code', Consolas, monospace">Switch#</text>
+          <text x="380" y="156" fill="#9aa7b8" text-anchor="middle" font-size="10">Guardar · Reiniciar · Debug · Acceso completo</text>
+
+          <!-- Arrow down with command -->
+          <line x1="380" y1="160" x2="380" y2="186" stroke="#9aa7b8" stroke-width="1.5" marker-end="url(#iosArr)"/>
+          <text x="398" y="178" fill="#f59e0b" font-size="10" font-family="'Cascadia Code', Consolas, monospace">configure terminal</text>
+
+          <!-- Level 2: Global Config -->
+          <rect x="210" y="186" width="340" height="52" rx="8" fill="#1c2230" stroke="#4f9cf9" stroke-width="2"/>
+          <text x="380" y="208" fill="#e6edf3" font-weight="bold" text-anchor="middle" font-size="12">Configuración Global</text>
+          <text x="380" y="222" fill="#4f9cf9" text-anchor="middle" font-size="11" font-family="'Cascadia Code', Consolas, monospace">Switch(config)#</text>
+          <text x="380" y="234" fill="#9aa7b8" text-anchor="middle" font-size="10">Modificar hostname · IP · usuarios · VLANs · SSH</text>
+
+          <!-- Arrows to sub-modes -->
+          <line x1="278" y1="238" x2="150" y2="268" stroke="#9aa7b8" stroke-width="1.5" marker-end="url(#iosArr)"/>
+          <text x="187" y="260" fill="#9aa7b8" font-size="9" font-family="'Cascadia Code', Consolas, monospace">interface fa0/1</text>
+
+          <line x1="380" y1="238" x2="380" y2="268" stroke="#9aa7b8" stroke-width="1.5" marker-end="url(#iosArr)"/>
+          <text x="390" y="258" fill="#9aa7b8" font-size="9" font-family="'Cascadia Code', Consolas, monospace">line vty 0 15</text>
+
+          <line x1="482" y1="238" x2="610" y2="268" stroke="#9aa7b8" stroke-width="1.5" marker-end="url(#iosArr)"/>
+          <text x="520" y="258" fill="#9aa7b8" font-size="9" font-family="'Cascadia Code', Consolas, monospace">vlan 10</text>
+
+          <!-- Sub-mode boxes -->
+          <rect x="30"  y="268" width="200" height="42" rx="6" fill="#1c2230" stroke="#34d399" stroke-width="1.5"/>
+          <text x="130" y="286" fill="#34d399" text-anchor="middle" font-size="11">Interface Config</text>
+          <text x="130" y="300" fill="#34d399" text-anchor="middle" font-size="10" font-family="'Cascadia Code', Consolas, monospace">(config-if)#</text>
+
+          <rect x="280" y="268" width="200" height="42" rx="6" fill="#1c2230" stroke="#a78bfa" stroke-width="1.5"/>
+          <text x="380" y="286" fill="#a78bfa" text-anchor="middle" font-size="11">Line Config</text>
+          <text x="380" y="300" fill="#a78bfa" text-anchor="middle" font-size="10" font-family="'Cascadia Code', Consolas, monospace">(config-line)#</text>
+
+          <rect x="530" y="268" width="200" height="42" rx="6" fill="#1c2230" stroke="#22d3ee" stroke-width="1.5"/>
+          <text x="630" y="286" fill="#22d3ee" text-anchor="middle" font-size="11">VLAN Config</text>
+          <text x="630" y="300" fill="#22d3ee" text-anchor="middle" font-size="10" font-family="'Cascadia Code', Consolas, monospace">(config-vlan)#</text>
+
+          <!-- Return note -->
+          <text x="380" y="316" fill="#9aa7b8" text-anchor="middle" font-size="10" font-style="italic">exit retrocede un nivel · end (Ctrl+Z) vuelve directo a Privileged EXEC desde cualquier punto</text>
+        </svg>
+        <div class="cap">IOS tiene modos jerárquicos: User EXEC (solo lectura básica) → Privileged EXEC (acceso completo) → Configuración Global → sub-modos (interfaz, línea VTY, VLAN). El prompt cambia en cada nivel: &gt; / # / (config)#.</div>
+      </div>
     </div>
   </section>
 
