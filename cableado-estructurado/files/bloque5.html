@@ -189,6 +189,101 @@
         </svg>
         <div class="cap">Izquierda: sección transversal de la fibra (core → cladding → coating → jacket). Derecha: en SM un solo modo viaja recto; en MM múltiples modos zigzaguean produciendo dispersión modal.</div>
       </div>
+
+      <div class="diagram">
+        <svg viewBox="0 0 760 230" xmlns="http://www.w3.org/2000/svg" font-family="Segoe UI, sans-serif" font-size="12">
+          <text x="380" y="20" fill="#e6edf3" font-weight="bold" text-anchor="middle" font-size="13">Identificación por Color de Cable y Tipos de Conector</text>
+
+          <!-- ── COLOR DE CUBIERTA ── -->
+          <text x="180" y="42" fill="#9aa7b8" text-anchor="middle" font-size="11">Color de la cubierta (jacket)</text>
+
+          <!-- SM: yellow cable -->
+          <rect x="30" y="52" width="52" height="90" rx="8" fill="#ca8a04" stroke="#f59e0b" stroke-width="2"/>
+          <rect x="42" y="64" width="28" height="66" rx="5" fill="#1c2230" stroke="#9aa7b8" stroke-width="1"/>
+          <circle cx="56" cy="97" r="9" fill="#0e1a2e" stroke="#4f9cf9" stroke-width="1.5"/>
+          <circle cx="56" cy="97" r="3" fill="#f59e0b"/>
+          <text x="56" y="158" fill="#f59e0b" text-anchor="middle" font-weight="bold" font-size="11">Amarillo</text>
+          <text x="56" y="172" fill="#9aa7b8" text-anchor="middle" font-size="10">Singlemode</text>
+          <text x="56" y="184" fill="#9aa7b8" text-anchor="middle" font-size="10">OS1 / OS2</text>
+          <text x="56" y="196" fill="#9aa7b8" text-anchor="middle" font-size="10">Core 8–9 µm</text>
+
+          <!-- MM OM1/OM2: orange cable -->
+          <rect x="110" y="52" width="52" height="90" rx="8" fill="#c2410c" stroke="#f97316" stroke-width="2"/>
+          <rect x="122" y="64" width="28" height="66" rx="5" fill="#1c2230" stroke="#9aa7b8" stroke-width="1"/>
+          <circle cx="136" cy="97" r="12" fill="#0d1e0d" stroke="#34d399" stroke-width="1.5"/>
+          <circle cx="136" cy="97" r="5" fill="#34d399" opacity="0.6"/>
+          <text x="136" y="158" fill="#f97316" text-anchor="middle" font-weight="bold" font-size="11">Naranja</text>
+          <text x="136" y="172" fill="#9aa7b8" text-anchor="middle" font-size="10">Multimode</text>
+          <text x="136" y="184" fill="#9aa7b8" text-anchor="middle" font-size="10">OM1 / OM2</text>
+          <text x="136" y="196" fill="#9aa7b8" text-anchor="middle" font-size="10">Core 62.5 µm</text>
+
+          <!-- MM OM3/OM4: aqua cable -->
+          <rect x="190" y="52" width="52" height="90" rx="8" fill="#0e7490" stroke="#22d3ee" stroke-width="2"/>
+          <rect x="202" y="64" width="28" height="66" rx="5" fill="#1c2230" stroke="#9aa7b8" stroke-width="1"/>
+          <circle cx="216" cy="97" r="12" fill="#0d1e0d" stroke="#22d3ee" stroke-width="1.5"/>
+          <circle cx="216" cy="97" r="5" fill="#22d3ee" opacity="0.6"/>
+          <text x="216" y="158" fill="#22d3ee" text-anchor="middle" font-weight="bold" font-size="11">Aqua</text>
+          <text x="216" y="172" fill="#9aa7b8" text-anchor="middle" font-size="10">Multimode</text>
+          <text x="216" y="184" fill="#9aa7b8" text-anchor="middle" font-size="10">OM3 / OM4</text>
+          <text x="216" y="196" fill="#9aa7b8" text-anchor="middle" font-size="10">Core 50 µm</text>
+
+          <!-- Divider -->
+          <line x1="278" y1="42" x2="278" y2="215" stroke="#2b3242" stroke-width="1.5" stroke-dasharray="4,3"/>
+
+          <!-- ── TIPOS DE CONECTOR ── -->
+          <text x="520" y="42" fill="#9aa7b8" text-anchor="middle" font-size="11">Conectores más comunes</text>
+
+          <!-- LC connector (small, modern) -->
+          <g transform="translate(300,55)">
+            <rect x="0" y="12" width="18" height="28" rx="3" fill="#1a2a40" stroke="#34d399" stroke-width="2"/>
+            <rect x="5" y="0" width="8" height="15" rx="2" fill="#1a2a40" stroke="#34d399" stroke-width="1.5"/>
+            <rect x="7" y="40" width="4" height="14" rx="1" fill="#9aa7b8"/>
+            <text x="9" y="66" fill="#34d399" text-anchor="middle" font-size="10" font-weight="bold">LC</text>
+            <text x="9" y="78" fill="#9aa7b8" text-anchor="middle" font-size="9">1.25 mm</text>
+            <text x="9" y="89" fill="#9aa7b8" text-anchor="middle" font-size="9">Data centers</text>
+            <text x="9" y="100" fill="#9aa7b8" text-anchor="middle" font-size="9">SFP / moderno</text>
+          </g>
+
+          <!-- SC connector -->
+          <g transform="translate(390,55)">
+            <rect x="0" y="8" width="26" height="32" rx="4" fill="#1a2a40" stroke="#4f9cf9" stroke-width="2"/>
+            <rect x="5" y="0" width="16" height="12" rx="2" fill="#1a2a40" stroke="#4f9cf9" stroke-width="1.5"/>
+            <rect x="10" y="40" width="6" height="14" rx="1" fill="#9aa7b8"/>
+            <text x="13" y="66" fill="#4f9cf9" text-anchor="middle" font-size="10" font-weight="bold">SC</text>
+            <text x="13" y="78" fill="#9aa7b8" text-anchor="middle" font-size="9">2.5 mm</text>
+            <text x="13" y="89" fill="#9aa7b8" text-anchor="middle" font-size="9">FTTH / telecom</text>
+            <text x="13" y="100" fill="#9aa7b8" text-anchor="middle" font-size="9">push-pull</text>
+          </g>
+
+          <!-- ST connector (bayonet) -->
+          <g transform="translate(490,55)">
+            <circle cx="14" cy="24" r="14" fill="#1a2a40" stroke="#f59e0b" stroke-width="2"/>
+            <circle cx="14" cy="24" r="5" fill="#9aa7b8"/>
+            <rect x="11" y="38" width="6" height="16" rx="1" fill="#9aa7b8"/>
+            <rect x="20" y="18" width="12" height="6" rx="2" fill="#f59e0b" opacity="0.6"/>
+            <text x="14" y="66" fill="#f59e0b" text-anchor="middle" font-size="10" font-weight="bold">ST</text>
+            <text x="14" y="78" fill="#9aa7b8" text-anchor="middle" font-size="9">2.5 mm</text>
+            <text x="14" y="89" fill="#9aa7b8" text-anchor="middle" font-size="9">Legacy / CCTV</text>
+            <text x="14" y="100" fill="#9aa7b8" text-anchor="middle" font-size="9">bayoneta</text>
+          </g>
+
+          <!-- MPO/MTP connector -->
+          <g transform="translate(590,55)">
+            <rect x="0" y="10" width="40" height="28" rx="4" fill="#1a2a40" stroke="#a78bfa" stroke-width="2"/>
+            <rect x="5" y="2" width="30" height="12" rx="2" fill="#1a2a40" stroke="#a78bfa" stroke-width="1.5"/>
+            <rect x="18" y="38" width="4" height="16" rx="1" fill="#9aa7b8"/>
+            <text x="20" y="66" fill="#a78bfa" text-anchor="middle" font-size="10" font-weight="bold">MPO/MTP</text>
+            <text x="20" y="78" fill="#9aa7b8" text-anchor="middle" font-size="9">12–24 fibras</text>
+            <text x="20" y="89" fill="#9aa7b8" text-anchor="middle" font-size="9">Data center HD</text>
+            <text x="20" y="100" fill="#9aa7b8" text-anchor="middle" font-size="9">trunks pre-term.</text>
+          </g>
+
+          <!-- Mnemonic rule at bottom -->
+          <rect x="30" y="208" width="700" height="20" rx="5" fill="#11161f"/>
+          <text x="380" y="222" fill="#9aa7b8" text-anchor="middle" font-size="10">Regla de color: Amarillo = SM (un sol·ario) · Naranja = MM legacy · Aqua = MM moderno (OM3/OM4) · LC es el estándar actual en data centers</text>
+        </svg>
+        <div class="cap">Color de cubierta: amarillo para singlemode, naranja para multimode OM1/OM2, aguamarina (aqua) para OM3/OM4. El conector LC (ferule 1.25 mm) es el más usado hoy; SC para FTTH; ST es legacy; MPO/MTP para alta densidad.</div>
+      </div>
     </div>
   </section>
 
