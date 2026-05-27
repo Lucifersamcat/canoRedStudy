@@ -1,0 +1,693 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Requerimientos · Redes y Cableado Estructurado</title>
+<meta name="description" content="Hardware, equipo y software necesario para los cursos de Redes Básicas, Redes Avanzado y Cableado Estructurado.">
+<style>
+/* ===== Tokens ===== */
+:root {
+  --bg: #0e1117;
+  --bg-soft: #161b22;
+  --bg-card: #1c2230;
+  --border: #2b3242;
+  --text: #e6edf3;
+  --text-dim: #9aa7b8;
+  --accent: #f59e0b;
+  --accent-2: #34d399;
+  --accent-3: #4f9cf9;
+  --b1: #f59e0b;
+  --b2: #4f9cf9;
+  --b3: #a78bfa;
+  --b4: #34d399;
+  --b5: #22d3ee;
+  --b6: #f472b6;
+  --radius: 14px;
+  --shadow: 0 8px 28px rgba(0,0,0,.45);
+  --font: 'Segoe UI', system-ui, -apple-system, Roboto, Helvetica, Arial, sans-serif;
+  --mono: 'Cascadia Code', 'Consolas', 'SF Mono', Menlo, monospace;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font);
+  line-height: 1.65;
+  -webkit-font-smoothing: antialiased;
+  min-height: 100vh;
+}
+
+/* ===== Layout ===== */
+.wrap { max-width: 1080px; margin: 0 auto; padding: 0 22px; }
+
+/* ===== Top nav ===== */
+.topnav {
+  position: sticky; top: 0; z-index: 50;
+  background: rgba(14,17,23,.92);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--border);
+}
+.topnav .wrap {
+  display: flex; align-items: center; gap: 18px;
+  height: 60px;
+}
+.brand { font-weight: 700; font-size: 1.05rem; white-space: nowrap; text-decoration: none; color: var(--text); }
+.brand .dot { color: var(--accent); }
+.nav-back {
+  margin-left: auto;
+  font-size: .88rem; color: var(--text-dim);
+  text-decoration: none; display: flex; align-items: center; gap: 6px;
+  transition: color .15s;
+}
+.nav-back:hover { color: var(--accent); }
+
+/* ===== Hero ===== */
+.hero { padding: 64px 0 44px; text-align: center; }
+.hero h1 { font-size: 2.4rem; line-height: 1.2; margin-bottom: 16px; }
+.hero h1 .grad {
+  background: linear-gradient(90deg, var(--b1), var(--b5), var(--b3));
+  -webkit-background-clip: text; background-clip: text; color: transparent;
+}
+.hero p { color: var(--text-dim); font-size: 1.05rem; max-width: 640px; margin: 0 auto; }
+.kicker {
+  font-family: var(--mono); font-size: .8rem; letter-spacing: 2px;
+  text-transform: uppercase; color: var(--text-dim); margin-bottom: 12px;
+}
+
+/* ===== Notice banner ===== */
+.notice {
+  background: rgba(245,158,11,.08);
+  border: 1px solid rgba(245,158,11,.3);
+  border-radius: 10px;
+  padding: 14px 20px;
+  display: flex; align-items: flex-start; gap: 12px;
+  margin: 28px 0;
+  color: var(--text-dim); font-size: .92rem;
+}
+.notice .icon { font-size: 1.2rem; flex-shrink: 0; margin-top: 1px; }
+.notice strong { color: var(--accent); }
+
+/* ===== Section headings ===== */
+.section { padding: 38px 0; border-top: 1px solid var(--border); }
+.section:first-of-type { border-top: none; }
+h2.h { font-size: 1.55rem; margin-bottom: 6px; display: flex; align-items: center; gap: 12px; }
+h2.h .lead { color: var(--accent); }
+h2.h .badge {
+  font-family: var(--mono); font-size: .7rem; letter-spacing: 1px;
+  text-transform: uppercase; padding: 3px 10px; border-radius: 6px;
+  background: var(--bg-soft); border: 1px solid;
+}
+.badge-basico  { color: var(--b4); border-color: var(--b4) !important; }
+.badge-avanzado{ color: var(--b2); border-color: var(--b2) !important; }
+.badge-cableado{ color: var(--b1); border-color: var(--b1) !important; }
+.badge-all     { color: var(--b5); border-color: var(--b5) !important; }
+.subtitle { color: var(--text-dim); margin-bottom: 26px; }
+
+/* ===== Req grid ===== */
+.req-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
+  gap: 20px;
+}
+.req-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+}
+.req-card .rc-header {
+  padding: 16px 20px 12px;
+  border-bottom: 1px solid var(--border);
+  display: flex; align-items: center; gap: 10px;
+}
+.rc-icon { font-size: 1.3rem; }
+.rc-title { font-weight: 600; font-size: .98rem; }
+.req-card ul {
+  list-style: none; padding: 14px 20px 16px;
+  display: flex; flex-direction: column; gap: 8px;
+}
+.req-card ul li {
+  display: flex; align-items: flex-start; gap: 9px;
+  color: var(--text-dim); font-size: .9rem;
+}
+.req-card ul li::before {
+  content: "▸";
+  color: var(--accent); flex-shrink: 0; margin-top: 1px;
+}
+.req-card ul li strong { color: var(--text); font-weight: 600; }
+.req-card ul li span { color: var(--text-dim); }
+
+/* ===== Full-width table for software ===== */
+.sw-table-wrap { overflow-x: auto; margin-top: 6px; }
+table.sw-table {
+  width: 100%; border-collapse: collapse;
+  font-size: .9rem;
+}
+table.sw-table thead th {
+  text-align: left; padding: 10px 14px;
+  background: var(--bg-soft);
+  border-bottom: 2px solid var(--border);
+  color: var(--text-dim); font-weight: 600;
+  font-family: var(--mono); font-size: .78rem; letter-spacing: 1px; text-transform: uppercase;
+}
+table.sw-table tbody tr {
+  border-bottom: 1px solid var(--border);
+  transition: background .15s;
+}
+table.sw-table tbody tr:hover { background: var(--bg-soft); }
+table.sw-table tbody td { padding: 10px 14px; color: var(--text-dim); vertical-align: top; }
+table.sw-table tbody td:first-child { color: var(--text); font-weight: 500; }
+.chip {
+  display: inline-block; padding: 2px 8px; border-radius: 5px;
+  font-size: .75rem; font-family: var(--mono); letter-spacing: .5px;
+  background: var(--bg-soft); border: 1px solid var(--border); color: var(--text-dim);
+}
+.chip.free  { border-color: var(--b4); color: var(--b4); }
+.chip.paid  { border-color: var(--b6); color: var(--b6); }
+.chip.trial { border-color: var(--b1); color: var(--b1); }
+
+/* ===== Highlight box ===== */
+.highlight-box {
+  background: var(--bg-card); border: 1px solid var(--border);
+  border-radius: var(--radius); padding: 22px 26px; margin-top: 4px;
+}
+.highlight-box h3 { font-size: 1.05rem; margin-bottom: 12px; color: var(--text); }
+.highlight-box ul { list-style: none; display: flex; flex-direction: column; gap: 7px; }
+.highlight-box ul li { display: flex; align-items: flex-start; gap: 9px; color: var(--text-dim); font-size: .92rem; }
+.highlight-box ul li::before { content: "✓"; color: var(--b4); font-weight: 700; flex-shrink: 0; }
+
+/* ===== Footer ===== */
+footer {
+  border-top: 1px solid var(--border); padding: 28px 0; margin-top: 30px;
+  color: var(--text-dim); font-size: .85rem; text-align: center;
+}
+
+/* ===== Responsive ===== */
+@media (max-width: 720px) {
+  .hero h1 { font-size: 1.85rem; }
+  .req-grid { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+
+<header class="topnav">
+  <div class="wrap">
+    <a href="index.html" class="brand">Cursos<span class="dot">.</span>Networking</a>
+    <a href="index.html" class="nav-back">← Volver al inicio</a>
+  </div>
+</header>
+
+<main>
+
+  <!-- ===== Hero ===== -->
+  <section class="hero wrap">
+    <div class="kicker">Guía de preparación</div>
+    <h1><span class="grad">Requerimientos</span> del curso</h1>
+    <p>Todo el hardware, equipamiento y software que necesitas para seguir los tres cursos con laboratorios y prácticas reales.</p>
+  </section>
+
+  <div class="wrap">
+    <div class="notice">
+      <span class="icon">💡</span>
+      <div>
+        <strong>Nota:</strong> La mayoría del software es <strong>gratuito o de código abierto</strong>.
+        El hardware físico puede sustituirse parcialmente con simuladores como <strong>Packet Tracer</strong> o <strong>GNS3</strong> si aún no cuentas con equipo real.
+      </div>
+    </div>
+  </div>
+
+  <!-- =====================================================
+       SECCIÓN 1 — REQUERIMIENTOS GENERALES
+  ====================================================== -->
+  <section class="section">
+    <div class="wrap">
+      <h2 class="h">
+        <span class="lead">Requerimientos</span> generales
+        <span class="badge badge-all">todos los cursos</span>
+      </h2>
+      <p class="subtitle">Equipo base recomendado para cualquiera de los tres cursos.</p>
+
+      <div class="req-grid">
+
+        <div class="req-card">
+          <div class="rc-header">
+            <span class="rc-icon">💻</span>
+            <span class="rc-title">Computadora / Laptop</span>
+          </div>
+          <ul>
+            <li><strong>CPU:</strong> <span>Intel Core i5 / AMD Ryzen 5 o superior</span></li>
+            <li><strong>RAM:</strong> <span>8 GB mínimo (16 GB recomendado para virtualización)</span></li>
+            <li><strong>Almacenamiento:</strong> <span>SSD de 256 GB o más</span></li>
+            <li><strong>SO:</strong> <span>Windows 10/11, Ubuntu 20.04+ o macOS 12+</span></li>
+            <li><strong>Puertos:</strong> <span>Al menos 1 puerto USB-A y acceso a red Ethernet (adaptador si es necesario)</span></li>
+          </ul>
+        </div>
+
+        <div class="req-card">
+          <div class="rc-header">
+            <span class="rc-icon">🌐</span>
+            <span class="rc-title">Conectividad</span>
+          </div>
+          <ul>
+            <li><strong>Acceso a Internet:</strong> <span>Para descargar software, firmware e imágenes IOS</span></li>
+            <li><strong>Tarjeta de red Ethernet:</strong> <span>Integrada o adaptador USB-RJ45</span></li>
+            <li><strong>Switch básico:</strong> <span>Opcional para prácticas de cableado en casa (cualquier switch no administrado de 4–8 puertos)</span></li>
+          </ul>
+        </div>
+
+        <div class="req-card">
+          <div class="rc-header">
+            <span class="rc-icon">📱</span>
+            <span class="rc-title">Dispositivos adicionales (opcionales)</span>
+          </div>
+          <ul>
+            <li><strong>Smartphone / tablet:</strong> <span>Para probar conectividad inalámbrica en prácticas WiFi</span></li>
+            <li><strong>Segundo equipo:</strong> <span>Útil para simular entornos cliente-servidor reales</span></li>
+          </ul>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- =====================================================
+       SECCIÓN 2 — REDES BÁSICAS
+  ====================================================== -->
+  <section class="section">
+    <div class="wrap">
+      <h2 class="h">
+        <span class="lead">Redes</span> Básicas
+        <span class="badge badge-basico">nivel básico</span>
+      </h2>
+      <p class="subtitle">Equipo y software para los 5 módulos: OSI, TCP/IP, DHCP/DNS/NTP, WiFi y Proxmox.</p>
+
+      <div class="req-grid">
+
+        <div class="req-card">
+          <div class="rc-header">
+            <span class="rc-icon">🖥️</span>
+            <span class="rc-title">Hardware para virtualización</span>
+          </div>
+          <ul>
+            <li><strong>CPU con VT-x / AMD-V:</strong> <span>Virtualización por hardware habilitada en BIOS/UEFI</span></li>
+            <li><strong>RAM:</strong> <span>16 GB para correr Proxmox y al menos 2 VMs simultáneas</span></li>
+            <li><strong>Disco adicional:</strong> <span>HDD/SSD secundario o USB 3.0 de 64 GB para instalar Proxmox</span></li>
+            <li><strong>Servidor físico (opcional):</strong> <span>PC de escritorio vieja o mini-PC para dedicar a Proxmox</span></li>
+          </ul>
+        </div>
+
+        <div class="req-card">
+          <div class="rc-header">
+            <span class="rc-icon">📡</span>
+            <span class="rc-title">Equipo de red</span>
+          </div>
+          <ul>
+            <li><strong>Router doméstico:</strong> <span>Cualquier router con acceso a la configuración DHCP/DNS</span></li>
+            <li><strong>Access Point WiFi:</strong> <span>Para módulo de redes inalámbricas (puede ser el propio router)</span></li>
+            <li><strong>Cable UTP CAT5e/CAT6:</strong> <span>1–2 cables Ethernet para conexiones directas</span></li>
+          </ul>
+        </div>
+
+        <div class="req-card">
+          <div class="rc-header">
+            <span class="rc-icon">🔧</span>
+            <span class="rc-title">Software simulación (alternativa física)</span>
+          </div>
+          <ul>
+            <li><strong>Cisco Packet Tracer:</strong> <span>Simulador gratuito (requiere cuenta Cisco Networking Academy)</span></li>
+            <li><strong>VirtualBox / VMware Player:</strong> <span>Hipervisor gratuito para crear máquinas virtuales</span></li>
+            <li><strong>Wireshark:</strong> <span>Análisis de tráfico de red (gratuito)</span></li>
+          </ul>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- =====================================================
+       SECCIÓN 3 — REDES AVANZADO
+  ====================================================== -->
+  <section class="section">
+    <div class="wrap">
+      <h2 class="h">
+        <span class="lead">Redes</span> Avanzado
+        <span class="badge badge-avanzado">nivel avanzado</span>
+      </h2>
+      <p class="subtitle">Equipo para los 6 bloques: Cisco IOS, VLANs/STP, Ubiquiti, RADIUS, WiFi 802.1X y Multicast.</p>
+
+      <div class="req-grid">
+
+        <div class="req-card">
+          <div class="rc-header">
+            <span class="rc-icon">🔀</span>
+            <span class="rc-title">Switches administrables</span>
+          </div>
+          <ul>
+            <li><strong>Cisco Catalyst 2960 / 2960S:</strong> <span>Switches de capa 2 para prácticas de VLANs y STP (recomendados para laboratorio físico)</span></li>
+            <li><strong>Cisco Catalyst 3560 / 3750:</strong> <span>Switch capa 3 para inter-VLAN routing y OSPF básico</span></li>
+            <li><strong>Cable de consola RJ45-DB9 / USB:</strong> <span>Para acceder al CLI de Cisco IOS</span></li>
+            <li><strong>Cables UTP CAT5e/CAT6:</strong> <span>Mínimo 4–6 cables para topologías multi-switch</span></li>
+          </ul>
+        </div>
+
+        <div class="req-card">
+          <div class="rc-header">
+            <span class="rc-icon">📶</span>
+            <span class="rc-title">Infraestructura Ubiquiti</span>
+          </div>
+          <ul>
+            <li><strong>UniFi Access Point:</strong> <span>AP UniFi UAP-AC-Lite, UAP-AC-Pro o similar para módulo WiFi empresarial</span></li>
+            <li><strong>UniFi Switch (opcional):</strong> <span>Switch PoE UniFi para alimentar APs sin fuente separada</span></li>
+            <li><strong>Inyector PoE 802.3af:</strong> <span>Alimentar el AP si no se tiene switch PoE</span></li>
+            <li><strong>Servidor UniFi Network (Software):</strong> <span>Gratuito; puede correr en PC local o VM Linux</span></li>
+          </ul>
+        </div>
+
+        <div class="req-card">
+          <div class="rc-header">
+            <span class="rc-icon">🔐</span>
+            <span class="rc-title">Servidor RADIUS / AAA</span>
+          </div>
+          <ul>
+            <li><strong>FreeRADIUS:</strong> <span>Servidor RADIUS gratuito; corre en Linux (Ubuntu/Debian recomendado)</span></li>
+            <li><strong>VM o PC dedicado:</strong> <span>Para instalar el servidor RADIUS y pruebas de autenticación 802.1X</span></li>
+            <li><strong>Supplicant 802.1X:</strong> <span>Windows 10/11 o Linux con wpa_supplicant para clientes de prueba</span></li>
+          </ul>
+        </div>
+
+        <div class="req-card">
+          <div class="rc-header">
+            <span class="rc-icon">🖧</span>
+            <span class="rc-title">Simulación (sin hardware físico)</span>
+          </div>
+          <ul>
+            <li><strong>GNS3 + imágenes IOS-L2:</strong> <span>Simulador avanzado para Cisco (requiere imágenes IOS reales)</span></li>
+            <li><strong>EVE-NG Community:</strong> <span>Alternativa a GNS3; corre como VM (gratuita en versión Community)</span></li>
+            <li><strong>Cisco Packet Tracer:</strong> <span>Para prácticas de VLANs y STP sin equipos físicos</span></li>
+          </ul>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- =====================================================
+       SECCIÓN 4 — CABLEADO ESTRUCTURADO
+  ====================================================== -->
+  <section class="section">
+    <div class="wrap">
+      <h2 class="h">
+        <span class="lead">Cableado</span> Estructurado
+        <span class="badge badge-cableado">especialización</span>
+      </h2>
+      <p class="subtitle">Herramientas, materiales y equipo para los 6 módulos: medios físicos, canalización, data center, campo de trabajo y fibra óptica.</p>
+
+      <div class="req-grid">
+
+        <div class="req-card">
+          <div class="rc-header">
+            <span class="rc-icon">🔌</span>
+            <span class="rc-title">Materiales de cableado</span>
+          </div>
+          <ul>
+            <li><strong>Cable UTP CAT6 (bobina 25 m):</strong> <span>Para prácticas de armado y ponchado</span></li>
+            <li><strong>Conectores RJ45 CAT6:</strong> <span>Pack de al menos 20 conectores para prácticas</span></li>
+            <li><strong>Cable FTP/SFTP CAT6A (opcional):</strong> <span>Para módulo de medios apantallados</span></li>
+            <li><strong>Patch panel CAT6 (12/24 puertos):</strong> <span>Para prácticas de terminación en panel</span></li>
+            <li><strong>Keystone jack CAT6:</strong> <span>Pack de 6–10 unidades para cajas de salida</span></li>
+          </ul>
+        </div>
+
+        <div class="req-card">
+          <div class="rc-header">
+            <span class="rc-icon">🛠️</span>
+            <span class="rc-title">Herramientas de instalación</span>
+          </div>
+          <ul>
+            <li><strong>Ponchadora RJ45:</strong> <span>Herramienta para crimpar conectores (8P8C)</span></li>
+            <li><strong>Herramienta de impacto (punch-down):</strong> <span>110/88 para keystones y patch panels</span></li>
+            <li><strong>Pelacable / decapador:</strong> <span>Para preparar el cable sin dañar los pares</span></li>
+            <li><strong>Tijeras para cable o cortacables:</strong> <span>Corte limpio y nivelado</span></li>
+            <li><strong>Destornilladores:</strong> <span>Plano y Phillips para montaje en rack y cajas</span></li>
+            <li><strong>Taladro / berbiquí (opcional):</strong> <span>Para instalación en paredes y canalizaciones</span></li>
+          </ul>
+        </div>
+
+        <div class="req-card">
+          <div class="rc-header">
+            <span class="rc-icon">🧰</span>
+            <span class="rc-title">Herramientas de medición y prueba</span>
+          </div>
+          <ul>
+            <li><strong>Tester de cable básico:</strong> <span>Verificar continuidad y mapa de pines en cobre</span></li>
+            <li><strong>Certificador de red (avanzado):</strong> <span>Fluke DSX-5000 o similar para certificación CAT6/6A (laboratorio profesional)</span></li>
+            <li><strong>Trazador de cable (tone generator):</strong> <span>Para identificar cables en canalizaciones</span></li>
+            <li><strong>Nivel de burbuja:</strong> <span>Montaje nivelado de racks y canalizaciones</span></li>
+            <li><strong>Cinta métrica:</strong> <span>Medición de tendidos y recorridos</span></li>
+          </ul>
+        </div>
+
+        <div class="req-card">
+          <div class="rc-header">
+            <span class="rc-icon">🔦</span>
+            <span class="rc-title">Fibra óptica</span>
+          </div>
+          <ul>
+            <li><strong>Cable fibra multimodo OM3/OM4:</strong> <span>Tramo corto (2–5 m) para prácticas de identificación</span></li>
+            <li><strong>Conectores LC/SC prepolidos (mecánicos):</strong> <span>Pack de 4–6 para práctica de terminación en frío</span></li>
+            <li><strong>Cleaver de fibra (cortadora):</strong> <span>Para corte perpendicular de fibra</span></li>
+            <li><strong>Visual Fault Locator (VFL):</strong> <span>Localizador de fallas visible (lápiz rojo láser) para multimodo</span></li>
+            <li><strong>Optical Power Meter (OPM):</strong> <span>Medición de pérdida de inserción en enlaces de fibra</span></li>
+            <li><strong>Patch cords LC-LC / SC-SC:</strong> <span>Para prácticas de conexión en ODF</span></li>
+          </ul>
+        </div>
+
+        <div class="req-card">
+          <div class="rc-header">
+            <span class="rc-icon">🗄️</span>
+            <span class="rc-title">Infraestructura de rack / data center</span>
+          </div>
+          <ul>
+            <li><strong>Rack abierto 6U–12U (mini):</strong> <span>Para practicar montaje y organización de un cuarto técnico a escala reducida</span></li>
+            <li><strong>PDU básica (regleta para rack):</strong> <span>Distribución de energía en el rack</span></li>
+            <li><strong>Organizadores de cable 1U:</strong> <span>Guías horizontales de cable para mantener orden</span></li>
+            <li><strong>Patch cords de colores:</strong> <span>Cat6, varios colores para identificación de VLANs / circuitos</span></li>
+          </ul>
+        </div>
+
+        <div class="req-card">
+          <div class="rc-header">
+            <span class="rc-icon">📐</span>
+            <span class="rc-title">Canalización y campo de trabajo</span>
+          </div>
+          <ul>
+            <li><strong>Canaleta plástica 20×12 mm / 40×25 mm:</strong> <span>Para prácticas de tendido ordenado</span></li>
+            <li><strong>Cajas de salida dobles/cuádruples:</strong> <span>Para terminaciones en puestos de trabajo</span></li>
+            <li><strong>Etiquetas autoadhesivas:</strong> <span>Rotulación de cables, puertos y circuitos (norma TIA-606)</span></li>
+            <li><strong>Bridas / amarres de cables:</strong> <span>Pack de plástico y velcro para organización</span></li>
+          </ul>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- =====================================================
+       SECCIÓN 5 — SOFTWARE
+  ====================================================== -->
+  <section class="section">
+    <div class="wrap">
+      <h2 class="h">
+        <span class="lead">Software</span> requerido y recomendado
+        <span class="badge badge-all">todos los cursos</span>
+      </h2>
+      <p class="subtitle">Listado completo de aplicaciones utilizadas en los laboratorios.</p>
+
+      <div class="sw-table-wrap">
+        <table class="sw-table">
+          <thead>
+            <tr>
+              <th>Software</th>
+              <th>Uso principal</th>
+              <th>Curso(s)</th>
+              <th>Licencia</th>
+            </tr>
+          </thead>
+          <tbody>
+            <!-- Simulación de redes -->
+            <tr>
+              <td>Cisco Packet Tracer</td>
+              <td>Simulación de redes Cisco (routers, switches, VLANs, STP, DHCP, DNS)</td>
+              <td>Básico · Avanzado</td>
+              <td><span class="chip free">Gratuito</span></td>
+            </tr>
+            <tr>
+              <td>GNS3</td>
+              <td>Emulación avanzada con imágenes IOS reales; multicast, OSPF, routing</td>
+              <td>Avanzado</td>
+              <td><span class="chip free">Open Source</span></td>
+            </tr>
+            <tr>
+              <td>EVE-NG Community</td>
+              <td>Laboratorio virtual de redes; alternativa a GNS3, interfaz web</td>
+              <td>Avanzado</td>
+              <td><span class="chip free">Gratuito</span></td>
+            </tr>
+            <!-- Virtualización -->
+            <tr>
+              <td>Proxmox VE</td>
+              <td>Hipervisor tipo 1; gestión de VMs y contenedores LXC, clusters</td>
+              <td>Básico</td>
+              <td><span class="chip free">Open Source</span></td>
+            </tr>
+            <tr>
+              <td>VirtualBox</td>
+              <td>Hipervisor tipo 2 para crear VMs en Windows/Linux/macOS</td>
+              <td>Básico · Avanzado</td>
+              <td><span class="chip free">Open Source</span></td>
+            </tr>
+            <tr>
+              <td>VMware Workstation Player</td>
+              <td>Alternativa a VirtualBox; mejor rendimiento en algunos escenarios</td>
+              <td>Básico · Avanzado</td>
+              <td><span class="chip free">Gratuito (personal)</span></td>
+            </tr>
+            <!-- Análisis -->
+            <tr>
+              <td>Wireshark</td>
+              <td>Captura y análisis de paquetes; inspección de protocolos TCP/IP, DHCP, DNS, STP</td>
+              <td>Básico · Avanzado</td>
+              <td><span class="chip free">Open Source</span></td>
+            </tr>
+            <tr>
+              <td>nmap</td>
+              <td>Descubrimiento de hosts y escaneo de puertos en la red</td>
+              <td>Básico · Avanzado</td>
+              <td><span class="chip free">Open Source</span></td>
+            </tr>
+            <!-- Servicios de red -->
+            <tr>
+              <td>FreeRADIUS</td>
+              <td>Servidor RADIUS para autenticación 802.1X y portal cautivo</td>
+              <td>Avanzado</td>
+              <td><span class="chip free">Open Source</span></td>
+            </tr>
+            <tr>
+              <td>UniFi Network Application</td>
+              <td>Controlador software para APs y switches Ubiquiti UniFi</td>
+              <td>Avanzado</td>
+              <td><span class="chip free">Gratuito</span></td>
+            </tr>
+            <tr>
+              <td>ISC DHCP / Kea DHCP</td>
+              <td>Servidor DHCP en Linux para laboratorios de servicios de red</td>
+              <td>Básico</td>
+              <td><span class="chip free">Open Source</span></td>
+            </tr>
+            <tr>
+              <td>BIND9 / dnsmasq</td>
+              <td>Servidor DNS autoritativo y recursivo para prácticas del módulo DNS</td>
+              <td>Básico</td>
+              <td><span class="chip free">Open Source</span></td>
+            </tr>
+            <tr>
+              <td>Chrony / ntpd</td>
+              <td>Servidor/cliente NTP para sincronización de tiempo en red</td>
+              <td>Básico</td>
+              <td><span class="chip free">Open Source</span></td>
+            </tr>
+            <!-- Documentación / cableado -->
+            <tr>
+              <td>draw.io (diagrams.net)</td>
+              <td>Creación de diagramas de red, planos de cableado y topologías</td>
+              <td>Básico · Avanzado · Cableado</td>
+              <td><span class="chip free">Gratuito</span></td>
+            </tr>
+            <tr>
+              <td>Fluke LinkWare Live (web)</td>
+              <td>Gestión de proyectos de certificación y reportes de cableado estructurado</td>
+              <td>Cableado</td>
+              <td><span class="chip trial">Trial disponible</span></td>
+            </tr>
+            <!-- Consola / terminal -->
+            <tr>
+              <td>PuTTY / SecureCRT</td>
+              <td>Acceso a consola de switches y routers vía Serial (COM), Telnet y SSH</td>
+              <td>Avanzado</td>
+              <td><span class="chip free">Gratuito</span></td>
+            </tr>
+            <tr>
+              <td>Windows Terminal / iTerm2</td>
+              <td>Terminal avanzado para gestión de VMs y herramientas de red vía SSH</td>
+              <td>Básico · Avanzado</td>
+              <td><span class="chip free">Gratuito</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- =====================================================
+       SECCIÓN 6 — CONFIGURACIÓN MÍNIMA RECOMENDADA
+  ====================================================== -->
+  <section class="section">
+    <div class="wrap">
+      <h2 class="h">
+        <span class="lead">Configuración</span> mínima recomendada por curso
+      </h2>
+      <p class="subtitle">Si tu presupuesto o acceso a equipo es limitado, aquí está lo esencial para empezar.</p>
+
+      <div class="req-grid" style="margin-top:4px">
+
+        <div class="highlight-box">
+          <h3>🟢 Redes Básicas — Mínimo indispensable</h3>
+          <ul>
+            <li>Laptop/PC con 8 GB RAM y Windows 10 o Ubuntu</li>
+            <li>VirtualBox instalado para crear VMs</li>
+            <li>Cisco Packet Tracer (cuenta gratuita Cisco NetAcad)</li>
+            <li>Wireshark para análisis de tráfico</li>
+            <li>Acceso al router doméstico para laboratorios DHCP/DNS</li>
+          </ul>
+        </div>
+
+        <div class="highlight-box">
+          <h3>🔵 Redes Avanzado — Mínimo indispensable</h3>
+          <ul>
+            <li>Laptop/PC con 16 GB RAM (para GNS3 o EVE-NG en VM)</li>
+            <li>Cisco Packet Tracer para VLANs y STP básico</li>
+            <li>GNS3 con imagen IOSvL2 para laboratorios avanzados</li>
+            <li>VM Ubuntu Server con FreeRADIUS para módulo RADIUS/802.1X</li>
+            <li>1 AP UniFi real o simulación en UniFi Network App</li>
+          </ul>
+        </div>
+
+        <div class="highlight-box">
+          <h3>🟡 Cableado Estructurado — Mínimo indispensable</h3>
+          <ul>
+            <li>1 m de cable UTP CAT6 y 4 conectores RJ45 para ponchado básico</li>
+            <li>Ponchadora y pelacable manuales</li>
+            <li>Tester de cable básico para verificar continuidad</li>
+            <li>2 keystones CAT6 y una caja de salida doble</li>
+            <li>draw.io para documentar planos de tendido</li>
+          </ul>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    Cursos de Redes y Cableado Estructurado · Requerimientos de hardware, equipo y software · <a href="index.html" style="color:var(--accent);text-decoration:none;">← Volver al inicio</a>
+  </div>
+</footer>
+
+</body>
+</html>
