@@ -1,5 +1,7 @@
 # canoRedStudy
 
+[![License: CC BY-NC 4.0](https://img.shields.io/badge/License-CC%20BY--NC%204.0-lightgrey.svg)](https://creativecommons.org/licenses/by-nc/4.0/)
+
 Portal educativo con tres cursos de redes y cableado, en formato HTML estático con flashcards y quizzes interactivos. Incluye un grafo de conocimiento generado con [graphify](https://pypi.org/project/graphifyy/) que mapea las relaciones entre módulos, conceptos y cursos.
 
 ## Cursos
@@ -33,3 +35,10 @@ Abrir `index.html` en cualquier navegador. No requiere servidor.
 - **62 nodos · 62 aristas · 12 comunidades**
 - God nodes (más conectados): los tres índices de curso actúan como hubs centrales
 - Conexiones cruzadas detectadas: el bloque de WiFi básico se vincula semánticamente con el de WiFi empresarial Ubiquiti del avanzado
+
+## Licencia
+
+© 2026 [Janio Casasnovas](https://github.com/Lucifersamcat)
+
+Este material está licenciado bajo [Creative Commons Attribution-NonCommercial 4.0 International (CC BY-NC 4.0)](https://creativecommons.org/licenses/by-nc/4.0/).
+Puedes compartirlo y adaptarlo libremente siempre que des crédito al autor y no lo uses con fines comerciales.
