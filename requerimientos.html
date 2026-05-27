@@ -168,6 +168,16 @@ table.sw-table tbody td:first-child { color: var(--text); font-weight: 500; }
 .chip.free  { border-color: var(--b4); color: var(--b4); }
 .chip.paid  { border-color: var(--b6); color: var(--b6); }
 .chip.trial { border-color: var(--b1); color: var(--b1); }
+.sw-link {
+  display: inline-flex; align-items: center; gap: 4px;
+  font-size: .8rem; color: var(--accent-3);
+  text-decoration: none; white-space: nowrap;
+  padding: 2px 0;
+  transition: color .15s;
+}
+.sw-link:hover { color: var(--accent); text-decoration: underline; }
+.sw-link::after { content: "↗"; font-size: .72rem; opacity: .7; }
+.sw-links { display: flex; flex-direction: column; gap: 4px; }
 
 /* ===== Highlight box ===== */
 .highlight-box {
@@ -515,6 +525,7 @@ footer {
               <th>Uso principal</th>
               <th>Curso(s)</th>
               <th>Licencia</th>
+              <th>Sitio web</th>
             </tr>
           </thead>
           <tbody>
@@ -524,18 +535,21 @@ footer {
               <td>Simulación de redes Cisco (routers, switches, VLANs, STP, DHCP, DNS)</td>
               <td>Básico · Avanzado</td>
               <td><span class="chip free">Gratuito</span></td>
+              <td><a class="sw-link" href="https://www.netacad.com/courses/packet-tracer" target="_blank" rel="noopener">NetAcad</a></td>
             </tr>
             <tr>
               <td>GNS3</td>
               <td>Emulación avanzada con imágenes IOS reales; multicast, OSPF, routing</td>
               <td>Avanzado</td>
               <td><span class="chip free">Open Source</span></td>
+              <td><a class="sw-link" href="https://www.gns3.com" target="_blank" rel="noopener">gns3.com</a></td>
             </tr>
             <tr>
               <td>EVE-NG Community</td>
               <td>Laboratorio virtual de redes; alternativa a GNS3, interfaz web</td>
               <td>Avanzado</td>
               <td><span class="chip free">Gratuito</span></td>
+              <td><a class="sw-link" href="https://www.eve-ng.net" target="_blank" rel="noopener">eve-ng.net</a></td>
             </tr>
             <!-- Virtualización -->
             <tr>
@@ -543,18 +557,21 @@ footer {
               <td>Hipervisor tipo 1; gestión de VMs y contenedores LXC, clusters</td>
               <td>Básico</td>
               <td><span class="chip free">Open Source</span></td>
+              <td><a class="sw-link" href="https://www.proxmox.com/en/proxmox-virtual-environment/overview" target="_blank" rel="noopener">proxmox.com</a></td>
             </tr>
             <tr>
               <td>VirtualBox</td>
               <td>Hipervisor tipo 2 para crear VMs en Windows/Linux/macOS</td>
               <td>Básico · Avanzado</td>
               <td><span class="chip free">Open Source</span></td>
+              <td><a class="sw-link" href="https://www.virtualbox.org" target="_blank" rel="noopener">virtualbox.org</a></td>
             </tr>
             <tr>
               <td>VMware Workstation Player</td>
               <td>Alternativa a VirtualBox; mejor rendimiento en algunos escenarios</td>
               <td>Básico · Avanzado</td>
               <td><span class="chip free">Gratuito (personal)</span></td>
+              <td><a class="sw-link" href="https://www.vmware.com/products/desktop-hypervisor/workstation-and-fusion" target="_blank" rel="noopener">vmware.com</a></td>
             </tr>
             <!-- Análisis -->
             <tr>
@@ -562,12 +579,14 @@ footer {
               <td>Captura y análisis de paquetes; inspección de protocolos TCP/IP, DHCP, DNS, STP</td>
               <td>Básico · Avanzado</td>
               <td><span class="chip free">Open Source</span></td>
+              <td><a class="sw-link" href="https://www.wireshark.org" target="_blank" rel="noopener">wireshark.org</a></td>
             </tr>
             <tr>
               <td>nmap</td>
               <td>Descubrimiento de hosts y escaneo de puertos en la red</td>
               <td>Básico · Avanzado</td>
               <td><span class="chip free">Open Source</span></td>
+              <td><a class="sw-link" href="https://nmap.org" target="_blank" rel="noopener">nmap.org</a></td>
             </tr>
             <!-- Servicios de red -->
             <tr>
@@ -575,30 +594,41 @@ footer {
               <td>Servidor RADIUS para autenticación 802.1X y portal cautivo</td>
               <td>Avanzado</td>
               <td><span class="chip free">Open Source</span></td>
+              <td><a class="sw-link" href="https://www.freeradius.org" target="_blank" rel="noopener">freeradius.org</a></td>
             </tr>
             <tr>
               <td>UniFi Network Application</td>
               <td>Controlador software para APs y switches Ubiquiti UniFi</td>
               <td>Avanzado</td>
               <td><span class="chip free">Gratuito</span></td>
+              <td><a class="sw-link" href="https://ui.com/download/releases/network-server" target="_blank" rel="noopener">ui.com</a></td>
             </tr>
             <tr>
               <td>ISC DHCP / Kea DHCP</td>
               <td>Servidor DHCP en Linux para laboratorios de servicios de red</td>
               <td>Básico</td>
               <td><span class="chip free">Open Source</span></td>
+              <td class="sw-links">
+                <a class="sw-link" href="https://www.isc.org/kea" target="_blank" rel="noopener">isc.org/kea</a>
+                <a class="sw-link" href="https://www.isc.org/dhcp" target="_blank" rel="noopener">isc.org/dhcp</a>
+              </td>
             </tr>
             <tr>
               <td>BIND9 / dnsmasq</td>
               <td>Servidor DNS autoritativo y recursivo para prácticas del módulo DNS</td>
               <td>Básico</td>
               <td><span class="chip free">Open Source</span></td>
+              <td class="sw-links">
+                <a class="sw-link" href="https://www.isc.org/bind" target="_blank" rel="noopener">isc.org/bind</a>
+                <a class="sw-link" href="https://thekelleys.org.uk/dnsmasq/doc.html" target="_blank" rel="noopener">dnsmasq</a>
+              </td>
             </tr>
             <tr>
               <td>Chrony / ntpd</td>
               <td>Servidor/cliente NTP para sincronización de tiempo en red</td>
               <td>Básico</td>
               <td><span class="chip free">Open Source</span></td>
+              <td><a class="sw-link" href="https://chrony-project.org" target="_blank" rel="noopener">chrony-project.org</a></td>
             </tr>
             <!-- Documentación / cableado -->
             <tr>
@@ -606,12 +636,14 @@ footer {
               <td>Creación de diagramas de red, planos de cableado y topologías</td>
               <td>Básico · Avanzado · Cableado</td>
               <td><span class="chip free">Gratuito</span></td>
+              <td><a class="sw-link" href="https://www.diagrams.net" target="_blank" rel="noopener">diagrams.net</a></td>
             </tr>
             <tr>
               <td>Fluke LinkWare Live (web)</td>
               <td>Gestión de proyectos de certificación y reportes de cableado estructurado</td>
               <td>Cableado</td>
               <td><span class="chip trial">Trial disponible</span></td>
+              <td><a class="sw-link" href="https://www.flukenetworks.com/linkwarelive" target="_blank" rel="noopener">flukenetworks.com</a></td>
             </tr>
             <!-- Consola / terminal -->
             <tr>
@@ -619,12 +651,20 @@ footer {
               <td>Acceso a consola de switches y routers vía Serial (COM), Telnet y SSH</td>
               <td>Avanzado</td>
               <td><span class="chip free">Gratuito</span></td>
+              <td class="sw-links">
+                <a class="sw-link" href="https://www.putty.org" target="_blank" rel="noopener">putty.org</a>
+                <a class="sw-link" href="https://www.vandyke.com/products/securecrt" target="_blank" rel="noopener">SecureCRT</a>
+              </td>
             </tr>
             <tr>
               <td>Windows Terminal / iTerm2</td>
               <td>Terminal avanzado para gestión de VMs y herramientas de red vía SSH</td>
               <td>Básico · Avanzado</td>
               <td><span class="chip free">Gratuito</span></td>
+              <td class="sw-links">
+                <a class="sw-link" href="https://aka.ms/terminal" target="_blank" rel="noopener">aka.ms/terminal</a>
+                <a class="sw-link" href="https://iterm2.com" target="_blank" rel="noopener">iterm2.com</a>
+              </td>
             </tr>
           </tbody>
         </table>
