@@ -54,9 +54,18 @@
   },
   "nodes": [
     {
+      "label": "config.js",
+      "file_type": "code",
+      "source_file": "cableado-estructurado/files/config.js",
+      "source_location": "L1",
+      "id": "cableado_estructurado_files_config_js",
+      "community": 9,
+      "norm_label": "config.js"
+    },
+    {
       "label": "script.js",
       "file_type": "code",
-      "source_file": "CABLEADO ESTRUCTURADO/files/script.js",
+      "source_file": "cableado-estructurado/files/script.js",
       "source_location": "L1",
       "id": "cableado_estructurado_files_script_js",
       "community": 4,
@@ -65,38 +74,155 @@
     {
       "label": "checkQuiz()",
       "file_type": "code",
-      "source_file": "REDES BASICO/files/script.js",
-      "source_location": "L10",
-      "id": "files_script_checkquiz",
+      "source_file": "cableado-estructurado/files/script.js",
+      "source_location": "L30",
+      "id": "cableado_estructurado_files_script_js_files_script_checkquiz",
       "community": 4,
       "norm_label": "checkquiz()"
     },
     {
       "label": "resetQuiz()",
       "file_type": "code",
-      "source_file": "REDES BASICO/files/script.js",
-      "source_location": "L41",
-      "id": "files_script_resetquiz",
+      "source_file": "cableado-estructurado/files/script.js",
+      "source_location": "L61",
+      "id": "cableado_estructurado_files_script_js_files_script_resetquiz",
       "community": 4,
       "norm_label": "resetquiz()"
     },
     {
-      "label": "script.js",
+      "label": "config.js",
       "file_type": "code",
-      "source_file": "REDES AVANZADO/files/script.js",
+      "source_file": "redes-avanzado/files/config.js",
       "source_location": "L1",
-      "id": "redes_avanzado_files_script_js",
-      "community": 4,
-      "norm_label": "script.js"
+      "id": "redes_avanzado_files_config_js",
+      "community": 10,
+      "norm_label": "config.js"
     },
     {
       "label": "script.js",
       "file_type": "code",
-      "source_file": "REDES BASICO/files/script.js",
+      "source_file": "redes-avanzado/files/script.js",
+      "source_location": "L1",
+      "id": "redes_avanzado_files_script_js",
+      "community": 6,
+      "norm_label": "script.js"
+    },
+    {
+      "label": "checkQuiz()",
+      "file_type": "code",
+      "source_file": "redes-avanzado/files/script.js",
+      "source_location": "L30",
+      "id": "redes_avanzado_files_script_js_files_script_checkquiz",
+      "community": 6,
+      "norm_label": "checkquiz()"
+    },
+    {
+      "label": "resetQuiz()",
+      "file_type": "code",
+      "source_file": "redes-avanzado/files/script.js",
+      "source_location": "L61",
+      "id": "redes_avanzado_files_script_js_files_script_resetquiz",
+      "community": 6,
+      "norm_label": "resetquiz()"
+    },
+    {
+      "label": "config.js",
+      "file_type": "code",
+      "source_file": "redes-basico/files/config.js",
+      "source_location": "L1",
+      "id": "redes_basico_files_config_js",
+      "community": 11,
+      "norm_label": "config.js"
+    },
+    {
+      "label": "script.js",
+      "file_type": "code",
+      "source_file": "redes-basico/files/script.js",
       "source_location": "L1",
       "id": "redes_basico_files_script_js",
-      "community": 4,
+      "community": 7,
       "norm_label": "script.js"
+    },
+    {
+      "label": "checkQuiz()",
+      "file_type": "code",
+      "source_file": "redes-basico/files/script.js",
+      "source_location": "L30",
+      "id": "redes_basico_files_script_js_files_script_checkquiz",
+      "community": 7,
+      "norm_label": "checkquiz()"
+    },
+    {
+      "label": "resetQuiz()",
+      "file_type": "code",
+      "source_file": "redes-basico/files/script.js",
+      "source_location": "L61",
+      "id": "redes_basico_files_script_js_files_script_resetquiz",
+      "community": 7,
+      "norm_label": "resetquiz()"
+    },
+    {
+      "label": "README.md",
+      "file_type": "document",
+      "source_file": "README.md",
+      "source_location": "L1",
+      "id": "readme_md",
+      "community": 3,
+      "norm_label": "readme.md"
+    },
+    {
+      "label": "canoRedStudy",
+      "file_type": "document",
+      "source_file": "README.md",
+      "source_location": "L1",
+      "id": "cursos_readme_canoredstudy",
+      "community": 3,
+      "norm_label": "canoredstudy"
+    },
+    {
+      "label": "Cursos",
+      "file_type": "document",
+      "source_file": "README.md",
+      "source_location": "L5",
+      "id": "cursos_readme_cursos",
+      "community": 3,
+      "norm_label": "cursos"
+    },
+    {
+      "label": "Estructura",
+      "file_type": "document",
+      "source_file": "README.md",
+      "source_location": "L15",
+      "id": "cursos_readme_estructura",
+      "community": 3,
+      "norm_label": "estructura"
+    },
+    {
+      "label": "code:block1 (MENU_PRINCIPAL.html              \u2190 entrada del portal)",
+      "file_type": "document",
+      "source_file": "README.md",
+      "source_location": "L17",
+      "id": "cursos_readme_codeblock_1",
+      "community": 3,
+      "norm_label": "code:block1 (menu_principal.html              \u2190 entrada del portal)"
+    },
+    {
+      "label": "C\u00f3mo usar",
+      "file_type": "document",
+      "source_file": "README.md",
+      "source_location": "L28",
+      "id": "cursos_readme_c\u00f3mo_usar",
+      "community": 3,
+      "norm_label": "como usar"
+    },
+    {
+      "label": "Grafo de conocimiento",
+      "file_type": "document",
+      "source_file": "README.md",
+      "source_location": "L32",
+      "id": "cursos_readme_grafo_de_conocimiento",
+      "community": 3,
+      "norm_label": "grafo de conocimiento"
     },
     {
       "label": "Portal Principal de Cursos",
@@ -107,9 +233,9 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "id": "menu_principal",
-      "community": 6,
-      "norm_label": "portal principal de cursos"
+      "community": 2,
+      "norm_label": "portal principal de cursos",
+      "id": "menu_principal"
     },
     {
       "label": "Cableado Estructurado \u2014 \u00cdndice",
@@ -120,9 +246,9 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "id": "cab_index",
-      "community": 6,
-      "norm_label": "cableado estructurado \u2014 indice"
+      "community": 5,
+      "norm_label": "cableado estructurado \u2014 indice",
+      "id": "cab_index"
     },
     {
       "label": "Cableado B1 \u2014 Introducci\u00f3n al Cableado Estructurado",
@@ -133,9 +259,9 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "id": "cab_bloque1",
       "community": 5,
-      "norm_label": "cableado b1 \u2014 introduccion al cableado estructurado"
+      "norm_label": "cableado b1 \u2014 introduccion al cableado estructurado",
+      "id": "cab_bloque1"
     },
     {
       "label": "Cableado B2 \u2014 Canalizaci\u00f3n Profesional",
@@ -146,9 +272,9 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "id": "cab_bloque2",
-      "community": 7,
-      "norm_label": "cableado b2 \u2014 canalizacion profesional"
+      "community": 5,
+      "norm_label": "cableado b2 \u2014 canalizacion profesional",
+      "id": "cab_bloque2"
     },
     {
       "label": "Cableado B3 \u2014 Elementos del Data Center",
@@ -159,9 +285,9 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "id": "cab_bloque3",
-      "community": 10,
-      "norm_label": "cableado b3 \u2014 elementos del data center"
+      "community": 5,
+      "norm_label": "cableado b3 \u2014 elementos del data center",
+      "id": "cab_bloque3"
     },
     {
       "label": "Cableado B4 \u2014 En el Campo de Trabajo",
@@ -172,9 +298,9 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "id": "cab_bloque4",
-      "community": 11,
-      "norm_label": "cableado b4 \u2014 en el campo de trabajo"
+      "community": 5,
+      "norm_label": "cableado b4 \u2014 en el campo de trabajo",
+      "id": "cab_bloque4"
     },
     {
       "label": "Cableado B5 \u2014 Introducci\u00f3n a Fibra \u00d3ptica",
@@ -185,9 +311,9 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "id": "cab_bloque5",
       "community": 5,
-      "norm_label": "cableado b5 \u2014 introduccion a fibra optica"
+      "norm_label": "cableado b5 \u2014 introduccion a fibra optica",
+      "id": "cab_bloque5"
     },
     {
       "label": "Cableado B6 \u2014 Consideraciones Profesionales",
@@ -198,22 +324,9 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "id": "cab_bloque6",
-      "community": 12,
-      "norm_label": "cableado b6 \u2014 consideraciones profesionales"
-    },
-    {
-      "label": "Cableado script.js (flashcards/quiz)",
-      "file_type": "code",
-      "source_file": "CABLEADO ESTRUCTURADO/files/script.js",
-      "source_location": null,
-      "source_url": null,
-      "captured_at": null,
-      "author": null,
-      "contributor": null,
-      "id": "cab_script",
       "community": 5,
-      "norm_label": "cableado script.js (flashcards/quiz)"
+      "norm_label": "cableado b6 \u2014 consideraciones profesionales",
+      "id": "cab_bloque6"
     },
     {
       "label": "Redes Avanzado \u2014 \u00cdndice",
@@ -224,9 +337,9 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "id": "adv_index",
-      "community": 6,
-      "norm_label": "redes avanzado \u2014 indice"
+      "community": 2,
+      "norm_label": "redes avanzado \u2014 indice",
+      "id": "adv_index"
     },
     {
       "label": "Avanzado B1 \u2014 Switches Cisco Fundamentos",
@@ -237,9 +350,9 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "id": "adv_bloque1",
       "community": 1,
-      "norm_label": "avanzado b1 \u2014 switches cisco fundamentos"
+      "norm_label": "avanzado b1 \u2014 switches cisco fundamentos",
+      "id": "adv_bloque1"
     },
     {
       "label": "Avanzado B2 \u2014 VLANs y Spanning Tree",
@@ -250,9 +363,9 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "id": "adv_bloque2",
       "community": 0,
-      "norm_label": "avanzado b2 \u2014 vlans y spanning tree"
+      "norm_label": "avanzado b2 \u2014 vlans y spanning tree",
+      "id": "adv_bloque2"
     },
     {
       "label": "Avanzado B3 \u2014 Switches Ubiquiti",
@@ -263,9 +376,9 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "id": "adv_bloque3",
-      "community": 9,
-      "norm_label": "avanzado b3 \u2014 switches ubiquiti"
+      "community": 2,
+      "norm_label": "avanzado b3 \u2014 switches ubiquiti",
+      "id": "adv_bloque3"
     },
     {
       "label": "Avanzado B4 \u2014 RADIUS Server Windows",
@@ -276,9 +389,9 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "id": "adv_bloque4",
       "community": 2,
-      "norm_label": "avanzado b4 \u2014 radius server windows"
+      "norm_label": "avanzado b4 \u2014 radius server windows",
+      "id": "adv_bloque4"
     },
     {
       "label": "Avanzado B5 \u2014 WiFi Empresarial Ubiquiti",
@@ -289,9 +402,9 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "id": "adv_bloque5",
       "community": 2,
-      "norm_label": "avanzado b5 \u2014 wifi empresarial ubiquiti"
+      "norm_label": "avanzado b5 \u2014 wifi empresarial ubiquiti",
+      "id": "adv_bloque5"
     },
     {
       "label": "Avanzado B6 \u2014 Multicast con Cisco",
@@ -302,22 +415,9 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "id": "adv_bloque6",
       "community": 8,
-      "norm_label": "avanzado b6 \u2014 multicast con cisco"
-    },
-    {
-      "label": "Avanzado script.js",
-      "file_type": "code",
-      "source_file": "REDES AVANZADO/files/script.js",
-      "source_location": null,
-      "source_url": null,
-      "captured_at": null,
-      "author": null,
-      "contributor": null,
-      "id": "adv_script",
-      "community": 1,
-      "norm_label": "avanzado script.js"
+      "norm_label": "avanzado b6 \u2014 multicast con cisco",
+      "id": "adv_bloque6"
     },
     {
       "label": "Redes B\u00e1sico \u2014 \u00cdndice",
@@ -328,9 +428,9 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "id": "bas_index",
-      "community": 3,
-      "norm_label": "redes basico \u2014 indice"
+      "community": 2,
+      "norm_label": "redes basico \u2014 indice",
+      "id": "bas_index"
     },
     {
       "label": "B\u00e1sico B1 \u2014 Introducci\u00f3n a Redes de Datos",
@@ -341,9 +441,9 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "id": "bas_bloque1",
-      "community": 3,
-      "norm_label": "basico b1 \u2014 introduccion a redes de datos"
+      "community": 2,
+      "norm_label": "basico b1 \u2014 introduccion a redes de datos",
+      "id": "bas_bloque1"
     },
     {
       "label": "B\u00e1sico B2 \u2014 Conceptos y Protocolos de Red",
@@ -354,9 +454,9 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "id": "bas_bloque2",
       "community": 1,
-      "norm_label": "basico b2 \u2014 conceptos y protocolos de red"
+      "norm_label": "basico b2 \u2014 conceptos y protocolos de red",
+      "id": "bas_bloque2"
     },
     {
       "label": "B\u00e1sico B3 \u2014 Direccionamiento IP y Servicios",
@@ -367,9 +467,9 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "id": "bas_bloque3",
       "community": 0,
-      "norm_label": "basico b3 \u2014 direccionamiento ip y servicios"
+      "norm_label": "basico b3 \u2014 direccionamiento ip y servicios",
+      "id": "bas_bloque3"
     },
     {
       "label": "B\u00e1sico B4 \u2014 Redes Inal\u00e1mbricas",
@@ -380,9 +480,9 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "id": "bas_bloque4",
       "community": 2,
-      "norm_label": "basico b4 \u2014 redes inalambricas"
+      "norm_label": "basico b4 \u2014 redes inalambricas",
+      "id": "bas_bloque4"
     },
     {
       "label": "B\u00e1sico B5 \u2014 Virtualizaci\u00f3n (Proxmox)",
@@ -393,22 +493,9 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "id": "bas_bloque5",
-      "community": 3,
-      "norm_label": "basico b5 \u2014 virtualizacion (proxmox)"
-    },
-    {
-      "label": "B\u00e1sico script.js",
-      "file_type": "code",
-      "source_file": "REDES BASICO/files/script.js",
-      "source_location": null,
-      "source_url": null,
-      "captured_at": null,
-      "author": null,
-      "contributor": null,
-      "id": "bas_script",
-      "community": 3,
-      "norm_label": "basico script.js"
+      "community": 2,
+      "norm_label": "basico b5 \u2014 virtualizacion (proxmox)",
+      "id": "bas_bloque5"
     },
     {
       "label": "Modelo OSI",
@@ -419,9 +506,9 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "id": "concept_osi",
       "community": 1,
-      "norm_label": "modelo osi"
+      "norm_label": "modelo osi",
+      "id": "concept_osi"
     },
     {
       "label": "TCP/IP",
@@ -432,9 +519,9 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "id": "concept_tcpip",
       "community": 1,
-      "norm_label": "tcp/ip"
+      "norm_label": "tcp/ip",
+      "id": "concept_tcpip"
     },
     {
       "label": "Direccionamiento IP / Subnetting",
@@ -445,9 +532,9 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "id": "concept_ip_addressing",
       "community": 0,
-      "norm_label": "direccionamiento ip / subnetting"
+      "norm_label": "direccionamiento ip / subnetting",
+      "id": "concept_ip_addressing"
     },
     {
       "label": "DHCP",
@@ -458,9 +545,9 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "id": "concept_dhcp",
       "community": 0,
-      "norm_label": "dhcp"
+      "norm_label": "dhcp",
+      "id": "concept_dhcp"
     },
     {
       "label": "DNS",
@@ -471,9 +558,9 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "id": "concept_dns",
       "community": 0,
-      "norm_label": "dns"
+      "norm_label": "dns",
+      "id": "concept_dns"
     },
     {
       "label": "NTP",
@@ -484,9 +571,9 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "id": "concept_ntp",
       "community": 0,
-      "norm_label": "ntp"
+      "norm_label": "ntp",
+      "id": "concept_ntp"
     },
     {
       "label": "Redes Inal\u00e1mbricas (WiFi)",
@@ -497,9 +584,9 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "id": "concept_wifi",
       "community": 2,
-      "norm_label": "redes inalambricas (wifi)"
+      "norm_label": "redes inalambricas (wifi)",
+      "id": "concept_wifi"
     },
     {
       "label": "Virtualizaci\u00f3n / Proxmox",
@@ -510,9 +597,9 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "id": "concept_virtualization",
-      "community": 3,
-      "norm_label": "virtualizacion / proxmox"
+      "community": 2,
+      "norm_label": "virtualizacion / proxmox",
+      "id": "concept_virtualization"
     },
     {
       "label": "Topolog\u00edas de Red",
@@ -523,9 +610,9 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "id": "concept_topologies",
-      "community": 3,
-      "norm_label": "topologias de red"
+      "community": 2,
+      "norm_label": "topologias de red",
+      "id": "concept_topologies"
     },
     {
       "label": "Cisco IOS / Switches Cisco",
@@ -536,9 +623,9 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "id": "concept_cisco_ios",
       "community": 1,
-      "norm_label": "cisco ios / switches cisco"
+      "norm_label": "cisco ios / switches cisco",
+      "id": "concept_cisco_ios"
     },
     {
       "label": "VLAN",
@@ -549,9 +636,9 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "id": "concept_vlan",
       "community": 0,
-      "norm_label": "vlan"
+      "norm_label": "vlan",
+      "id": "concept_vlan"
     },
     {
       "label": "Spanning Tree Protocol (STP)",
@@ -562,9 +649,9 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "id": "concept_stp",
       "community": 0,
-      "norm_label": "spanning tree protocol (stp)"
+      "norm_label": "spanning tree protocol (stp)",
+      "id": "concept_stp"
     },
     {
       "label": "Ubiquiti UniFi",
@@ -575,9 +662,9 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "id": "concept_ubiquiti",
-      "community": 9,
-      "norm_label": "ubiquiti unifi"
+      "community": 2,
+      "norm_label": "ubiquiti unifi",
+      "id": "concept_ubiquiti"
     },
     {
       "label": "RADIUS / 802.1X",
@@ -588,9 +675,9 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "id": "concept_radius",
       "community": 2,
-      "norm_label": "radius / 802.1x"
+      "norm_label": "radius / 802.1x",
+      "id": "concept_radius"
     },
     {
       "label": "WiFi Empresarial",
@@ -601,9 +688,9 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "id": "concept_wifi_enterprise",
       "community": 2,
-      "norm_label": "wifi empresarial"
+      "norm_label": "wifi empresarial",
+      "id": "concept_wifi_enterprise"
     },
     {
       "label": "Multicast / PIM",
@@ -614,9 +701,9 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "id": "concept_multicast_pim",
       "community": 8,
-      "norm_label": "multicast / pim"
+      "norm_label": "multicast / pim",
+      "id": "concept_multicast_pim"
     },
     {
       "label": "Medios de Cobre (UTP/STP)",
@@ -627,9 +714,9 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "id": "concept_copper_media",
       "community": 5,
-      "norm_label": "medios de cobre (utp/stp)"
+      "norm_label": "medios de cobre (utp/stp)",
+      "id": "concept_copper_media"
     },
     {
       "label": "Canalizaci\u00f3n (Bandejas/Conduit)",
@@ -640,9 +727,9 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "id": "concept_canalizacion",
-      "community": 7,
-      "norm_label": "canalizacion (bandejas/conduit)"
+      "community": 5,
+      "norm_label": "canalizacion (bandejas/conduit)",
+      "id": "concept_canalizacion"
     },
     {
       "label": "Data Center / Rack",
@@ -653,9 +740,9 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "id": "concept_datacenter",
-      "community": 10,
-      "norm_label": "data center / rack"
+      "community": 5,
+      "norm_label": "data center / rack",
+      "id": "concept_datacenter"
     },
     {
       "label": "Trabajo de Campo / Instalaci\u00f3n",
@@ -666,9 +753,9 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "id": "concept_field_work",
-      "community": 11,
-      "norm_label": "trabajo de campo / instalacion"
+      "community": 5,
+      "norm_label": "trabajo de campo / instalacion",
+      "id": "concept_field_work"
     },
     {
       "label": "Fibra \u00d3ptica",
@@ -679,9 +766,9 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "id": "concept_fiber_optic",
       "community": 5,
-      "norm_label": "fibra optica"
+      "norm_label": "fibra optica",
+      "id": "concept_fiber_optic"
     },
     {
       "label": "Normas/Est\u00e1ndares (TIA/EIA)",
@@ -692,81 +779,131 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "id": "concept_standards",
-      "community": 12,
-      "norm_label": "normas/estandares (tia/eia)"
+      "community": 5,
+      "norm_label": "normas/estandares (tia/eia)",
+      "id": "concept_standards"
     }
   ],
   "links": [
     {
       "relation": "contains",
       "confidence": "EXTRACTED",
-      "source_file": "CABLEADO ESTRUCTURADO/files/script.js",
-      "source_location": "L10",
+      "source_file": "cableado-estructurado/files/script.js",
+      "source_location": "L30",
       "weight": 1.0,
       "source": "cableado_estructurado_files_script_js",
-      "target": "files_script_checkquiz",
+      "target": "cableado_estructurado_files_script_js_files_script_checkquiz",
       "confidence_score": 1.0
     },
     {
       "relation": "contains",
       "confidence": "EXTRACTED",
-      "source_file": "CABLEADO ESTRUCTURADO/files/script.js",
-      "source_location": "L41",
+      "source_file": "cableado-estructurado/files/script.js",
+      "source_location": "L61",
       "weight": 1.0,
       "source": "cableado_estructurado_files_script_js",
-      "target": "files_script_resetquiz",
+      "target": "cableado_estructurado_files_script_js_files_script_resetquiz",
       "confidence_score": 1.0
     },
     {
       "relation": "contains",
       "confidence": "EXTRACTED",
-      "source_file": "REDES AVANZADO/files/script.js",
-      "source_location": "L10",
+      "source_file": "redes-avanzado/files/script.js",
+      "source_location": "L30",
       "weight": 1.0,
       "source": "redes_avanzado_files_script_js",
-      "target": "files_script_checkquiz",
+      "target": "redes_avanzado_files_script_js_files_script_checkquiz",
       "confidence_score": 1.0
     },
     {
       "relation": "contains",
       "confidence": "EXTRACTED",
-      "source_file": "REDES BASICO/files/script.js",
-      "source_location": "L10",
-      "weight": 1.0,
-      "source": "redes_basico_files_script_js",
-      "target": "files_script_checkquiz",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "REDES AVANZADO/files/script.js",
-      "source_location": "L41",
+      "source_file": "redes-avanzado/files/script.js",
+      "source_location": "L61",
       "weight": 1.0,
       "source": "redes_avanzado_files_script_js",
-      "target": "files_script_resetquiz",
+      "target": "redes_avanzado_files_script_js_files_script_resetquiz",
       "confidence_score": 1.0
     },
     {
       "relation": "contains",
       "confidence": "EXTRACTED",
-      "source_file": "REDES BASICO/files/script.js",
-      "source_location": "L41",
+      "source_file": "redes-basico/files/script.js",
+      "source_location": "L30",
       "weight": 1.0,
       "source": "redes_basico_files_script_js",
-      "target": "files_script_resetquiz",
+      "target": "redes_basico_files_script_js_files_script_checkquiz",
       "confidence_score": 1.0
     },
     {
-      "relation": "references",
+      "relation": "contains",
       "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "MENU_PRINCIPAL.html",
-      "source_location": null,
+      "source_file": "redes-basico/files/script.js",
+      "source_location": "L61",
       "weight": 1.0,
-      "source": "menu_principal",
-      "target": "bas_index"
+      "source": "redes_basico_files_script_js",
+      "target": "redes_basico_files_script_js_files_script_resetquiz",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "README.md",
+      "source_location": "L1",
+      "weight": 1.0,
+      "source": "readme_md",
+      "target": "cursos_readme_canoredstudy",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "README.md",
+      "source_location": "L5",
+      "weight": 1.0,
+      "source": "cursos_readme_canoredstudy",
+      "target": "cursos_readme_cursos",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "README.md",
+      "source_location": "L28",
+      "weight": 1.0,
+      "source": "cursos_readme_canoredstudy",
+      "target": "cursos_readme_c\u00f3mo_usar",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "README.md",
+      "source_location": "L15",
+      "weight": 1.0,
+      "source": "cursos_readme_canoredstudy",
+      "target": "cursos_readme_estructura",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "README.md",
+      "source_location": "L32",
+      "weight": 1.0,
+      "source": "cursos_readme_canoredstudy",
+      "target": "cursos_readme_grafo_de_conocimiento",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "README.md",
+      "source_location": "L17",
+      "weight": 1.0,
+      "source": "cursos_readme_estructura",
+      "target": "cursos_readme_codeblock_1",
+      "confidence_score": 1.0
     },
     {
       "relation": "references",
@@ -786,6 +923,26 @@
       "source_location": null,
       "weight": 1.0,
       "source": "menu_principal",
+      "target": "bas_index"
+    },
+    {
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "MENU_PRINCIPAL.html",
+      "source_location": null,
+      "weight": 1.0,
+      "source": "menu_principal",
+      "target": "cab_index"
+    },
+    {
+      "relation": "conceptually_related_to",
+      "confidence": "INFERRED",
+      "confidence_score": 0.75,
+      "source_file": "MENU_PRINCIPAL.html",
+      "source_location": null,
+      "weight": 1.0,
+      "source": "adv_index",
       "target": "cab_index"
     },
     {
@@ -849,16 +1006,6 @@
       "target": "cab_bloque6"
     },
     {
-      "relation": "conceptually_related_to",
-      "confidence": "INFERRED",
-      "confidence_score": 0.75,
-      "source_file": "MENU_PRINCIPAL.html",
-      "source_location": null,
-      "weight": 1.0,
-      "source": "adv_index",
-      "target": "cab_index"
-    },
-    {
       "relation": "rationale_for",
       "confidence": "INFERRED",
       "confidence_score": 0.85,
@@ -867,16 +1014,6 @@
       "weight": 1.0,
       "source": "cab_bloque1",
       "target": "concept_copper_media"
-    },
-    {
-      "relation": "calls",
-      "confidence": "INFERRED",
-      "confidence_score": 0.85,
-      "source_file": "CABLEADO ESTRUCTURADO/files/bloque1.html",
-      "source_location": null,
-      "weight": 1.0,
-      "source": "cab_bloque1",
-      "target": "cab_script"
     },
     {
       "relation": "rationale_for",
@@ -1019,14 +1156,14 @@
       "target": "adv_bloque1"
     },
     {
-      "relation": "calls",
-      "confidence": "INFERRED",
-      "confidence_score": 0.85,
-      "source_file": "REDES AVANZADO/files/bloque1.html",
+      "relation": "rationale_for",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "REDES AVANZADO/files/bloque2.html",
       "source_location": null,
       "weight": 1.0,
-      "source": "adv_bloque1",
-      "target": "adv_script"
+      "source": "adv_bloque2",
+      "target": "concept_stp"
     },
     {
       "relation": "rationale_for",
@@ -1037,16 +1174,6 @@
       "weight": 1.0,
       "source": "adv_bloque2",
       "target": "concept_vlan"
-    },
-    {
-      "relation": "rationale_for",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "REDES AVANZADO/files/bloque2.html",
-      "source_location": null,
-      "weight": 1.0,
-      "source": "adv_bloque2",
-      "target": "concept_stp"
     },
     {
       "relation": "conceptually_related_to",
@@ -1079,16 +1206,6 @@
       "target": "concept_radius"
     },
     {
-      "relation": "rationale_for",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "REDES AVANZADO/files/bloque5.html",
-      "source_location": null,
-      "weight": 1.0,
-      "source": "adv_bloque5",
-      "target": "concept_wifi_enterprise"
-    },
-    {
       "relation": "conceptually_related_to",
       "confidence": "INFERRED",
       "confidence_score": 0.85,
@@ -1097,6 +1214,16 @@
       "weight": 1.0,
       "source": "adv_bloque5",
       "target": "concept_radius"
+    },
+    {
+      "relation": "rationale_for",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "REDES AVANZADO/files/bloque5.html",
+      "source_location": null,
+      "weight": 1.0,
+      "source": "adv_bloque5",
+      "target": "concept_wifi_enterprise"
     },
     {
       "relation": "semantically_similar_to",
@@ -1179,16 +1306,6 @@
       "target": "concept_topologies"
     },
     {
-      "relation": "calls",
-      "confidence": "INFERRED",
-      "confidence_score": 0.85,
-      "source_file": "REDES BASICO/files/bloque1.html",
-      "source_location": null,
-      "weight": 1.0,
-      "source": "bas_bloque1",
-      "target": "bas_script"
-    },
-    {
       "relation": "rationale_for",
       "confidence": "INFERRED",
       "confidence_score": 0.95,
@@ -1216,16 +1333,6 @@
       "source_location": null,
       "weight": 1.0,
       "source": "bas_bloque3",
-      "target": "concept_ip_addressing"
-    },
-    {
-      "relation": "rationale_for",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "REDES BASICO/files/bloque3.html",
-      "source_location": null,
-      "weight": 1.0,
-      "source": "bas_bloque3",
       "target": "concept_dhcp"
     },
     {
@@ -1237,6 +1344,16 @@
       "weight": 1.0,
       "source": "bas_bloque3",
       "target": "concept_dns"
+    },
+    {
+      "relation": "rationale_for",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "REDES BASICO/files/bloque3.html",
+      "source_location": null,
+      "weight": 1.0,
+      "source": "bas_bloque3",
+      "target": "concept_ip_addressing"
     },
     {
       "relation": "rationale_for",
@@ -1337,5 +1454,6 @@
       "confidence_score": 1.0,
       "source_file": "CABLEADO ESTRUCTURADO/files/index.html"
     }
-  ]
+  ],
+  "built_at_commit": "1fa93ff91dcf7a6474a186392c3a9ce9350ee6bc"
 }

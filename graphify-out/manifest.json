@@ -1,98 +1,162 @@
 {
-  "C:\\Users\\mrjan\\Desktop\\cano_redes\\CABLEADO ESTRUCTURADO\\files\\script.js": {
-    "mtime": 1779544246.0132353,
-    "hash": "688eb1c50b86fae1580ef055526dceb6"
+  "C:\\Users\\HP\\Desktop\\cursos\\cableado-estructurado\\files\\config.js": {
+    "mtime": 1779890022.3346584,
+    "ast_hash": "503973ed147260e717d440d7e52179c0",
+    "semantic_hash": ""
   },
-  "C:\\Users\\mrjan\\Desktop\\cano_redes\\REDES AVANZADO\\files\\script.js": {
-    "mtime": 1779472512.7980716,
-    "hash": "bf8f05d5b84f5a5aba91af1583951875"
+  "C:\\Users\\HP\\Desktop\\cursos\\cableado-estructurado\\files\\script.js": {
+    "mtime": 1779890022.3346584,
+    "ast_hash": "5ba05db2c905ad0ec09edd0856326dc6",
+    "semantic_hash": ""
   },
-  "C:\\Users\\mrjan\\Desktop\\cano_redes\\REDES BASICO\\files\\script.js": {
-    "mtime": 1779544779.5447025,
-    "hash": "148120ae36f26093a908b07e19c993a8"
+  "C:\\Users\\HP\\Desktop\\cursos\\redes-avanzado\\files\\config.js": {
+    "mtime": 1779890022.3659015,
+    "ast_hash": "2a50ad84ed1c8a171bb8d86fbad08f01",
+    "semantic_hash": ""
   },
-  "C:\\Users\\mrjan\\Desktop\\cano_redes\\MENU_PRINCIPAL.html": {
-    "mtime": 1779550447.6446955,
-    "hash": "e96534ca732ccb14d9d3f3d13f8bc6aa"
+  "C:\\Users\\HP\\Desktop\\cursos\\redes-avanzado\\files\\script.js": {
+    "mtime": 1779890022.3659015,
+    "ast_hash": "3bb4b3c0a9cfafedd7aa439db70f4056",
+    "semantic_hash": ""
   },
-  "C:\\Users\\mrjan\\Desktop\\cano_redes\\CABLEADO ESTRUCTURADO\\files\\bloque1.html": {
-    "mtime": 1779547115.0331964,
-    "hash": "61d27fb637944aa9caf641386ec23e13"
+  "C:\\Users\\HP\\Desktop\\cursos\\redes-basico\\files\\config.js": {
+    "mtime": 1779890022.3659015,
+    "ast_hash": "f9fa110167c977b939da1c4a8c7bbeaf",
+    "semantic_hash": ""
   },
-  "C:\\Users\\mrjan\\Desktop\\cano_redes\\CABLEADO ESTRUCTURADO\\files\\bloque2.html": {
-    "mtime": 1779547339.1747875,
-    "hash": "8ceb6d1a5d9a45f3c19ffdef17debbf1"
+  "C:\\Users\\HP\\Desktop\\cursos\\redes-basico\\files\\script.js": {
+    "mtime": 1779890022.3659015,
+    "ast_hash": "c68389c10d1be03b5a2dd1de90bd9f0f",
+    "semantic_hash": ""
   },
-  "C:\\Users\\mrjan\\Desktop\\cano_redes\\CABLEADO ESTRUCTURADO\\files\\bloque3.html": {
-    "mtime": 1779547456.7550614,
-    "hash": "ecb48ad1d961bf001fc6f7f9da222383"
+  "C:\\Users\\HP\\Desktop\\cursos\\index.html": {
+    "mtime": 1779890022.3502798,
+    "ast_hash": "9b22abebf4de4ef1ae57cc9c5c4736c7",
+    "semantic_hash": ""
   },
-  "C:\\Users\\mrjan\\Desktop\\cano_redes\\CABLEADO ESTRUCTURADO\\files\\bloque4.html": {
-    "mtime": 1779547576.5572555,
-    "hash": "1c1be2fe96b385df94c2daf8842172da"
+  "C:\\Users\\HP\\Desktop\\cursos\\README.md": {
+    "mtime": 1779890022.3346584,
+    "ast_hash": "cdf059b86f81b292dacc4309419ac7e7",
+    "semantic_hash": ""
   },
-  "C:\\Users\\mrjan\\Desktop\\cano_redes\\CABLEADO ESTRUCTURADO\\files\\bloque5.html": {
-    "mtime": 1779547702.5278761,
-    "hash": "2ce8882edf3aeb188ef712fd6fda1a36"
+  "C:\\Users\\HP\\Desktop\\cursos\\requerimientos.html": {
+    "mtime": 1779890022.3815224,
+    "ast_hash": "13d5e5845f39a87e10ec8e1b0af6f575",
+    "semantic_hash": ""
   },
-  "C:\\Users\\mrjan\\Desktop\\cano_redes\\CABLEADO ESTRUCTURADO\\files\\bloque6.html": {
-    "mtime": 1779547839.070225,
-    "hash": "64abeaece9c8f2752cd1e0bda616e67b"
+  "C:\\Users\\HP\\Desktop\\cursos\\cableado-estructurado\\files\\bloque1.html": {
+    "mtime": 1779890022.3346584,
+    "ast_hash": "e0448da7d17bb56fbb5be75a74d1fabd",
+    "semantic_hash": ""
   },
-  "C:\\Users\\mrjan\\Desktop\\cano_redes\\CABLEADO ESTRUCTURADO\\files\\index.html": {
-    "mtime": 1779544311.3098817,
-    "hash": "8224b0e115e0ac5c6c20897ff73fdf4b"
+  "C:\\Users\\HP\\Desktop\\cursos\\cableado-estructurado\\files\\bloque2.html": {
+    "mtime": 1779890022.3346584,
+    "ast_hash": "b98e7de3f84d616f61cb19013eb59bdc",
+    "semantic_hash": ""
   },
-  "C:\\Users\\mrjan\\Desktop\\cano_redes\\REDES AVANZADO\\files\\bloque1.html": {
-    "mtime": 1779472642.7836108,
-    "hash": "8a09797cc30c4cc4781a0c05d6e1cd0e"
+  "C:\\Users\\HP\\Desktop\\cursos\\cableado-estructurado\\files\\bloque3.html": {
+    "mtime": 1779890022.3346584,
+    "ast_hash": "187ac9ea5fa36466fa0254c911f10b68",
+    "semantic_hash": ""
   },
-  "C:\\Users\\mrjan\\Desktop\\cano_redes\\REDES AVANZADO\\files\\bloque2.html": {
-    "mtime": 1779472723.685649,
-    "hash": "2459d4a853678329949dfbb1c721334d"
+  "C:\\Users\\HP\\Desktop\\cursos\\cableado-estructurado\\files\\bloque4.html": {
+    "mtime": 1779890022.3346584,
+    "ast_hash": "2904ddeef1d817946d5d5b9f218c9ad3",
+    "semantic_hash": ""
   },
-  "C:\\Users\\mrjan\\Desktop\\cano_redes\\REDES AVANZADO\\files\\bloque3.html": {
-    "mtime": 1779472802.9408996,
-    "hash": "23e165bc7214266202e285d114c29107"
+  "C:\\Users\\HP\\Desktop\\cursos\\cableado-estructurado\\files\\bloque5.html": {
+    "mtime": 1779890022.3346584,
+    "ast_hash": "1e3658394383f29c70a2fec16a488185",
+    "semantic_hash": ""
   },
-  "C:\\Users\\mrjan\\Desktop\\cano_redes\\REDES AVANZADO\\files\\bloque4.html": {
-    "mtime": 1779472880.0236373,
-    "hash": "2bbe3fac1c0c047da0118343a02fd1db"
+  "C:\\Users\\HP\\Desktop\\cursos\\cableado-estructurado\\files\\bloque6.html": {
+    "mtime": 1779890022.3346584,
+    "ast_hash": "d808f4b39550d7805ac78981ede840b5",
+    "semantic_hash": ""
   },
-  "C:\\Users\\mrjan\\Desktop\\cano_redes\\REDES AVANZADO\\files\\bloque5.html": {
-    "mtime": 1779472954.971679,
-    "hash": "678eece07fa5c238132fb2699356f317"
+  "C:\\Users\\HP\\Desktop\\cursos\\cableado-estructurado\\files\\bloque7.html": {
+    "mtime": 1779890022.3346584,
+    "ast_hash": "aa72b7713c08fc56b320f9895c871511",
+    "semantic_hash": ""
   },
-  "C:\\Users\\mrjan\\Desktop\\cano_redes\\REDES AVANZADO\\files\\bloque6.html": {
-    "mtime": 1779473040.6605587,
-    "hash": "8b504da99e72c44c5b6b953b91f5d860"
+  "C:\\Users\\HP\\Desktop\\cursos\\cableado-estructurado\\files\\index.html": {
+    "mtime": 1779890022.3346584,
+    "ast_hash": "4622e79649dfd7bef645626a62a2a9b1",
+    "semantic_hash": ""
   },
-  "C:\\Users\\mrjan\\Desktop\\cano_redes\\REDES AVANZADO\\files\\index.html": {
-    "mtime": 1779472556.399286,
-    "hash": "bdacc16844a28b8813def69f62ae492b"
+  "C:\\Users\\HP\\Desktop\\cursos\\redes-avanzado\\files\\bloque1.html": {
+    "mtime": 1779890022.3659015,
+    "ast_hash": "3120286f447080b84515c20ea69e2b9d",
+    "semantic_hash": ""
   },
-  "C:\\Users\\mrjan\\Desktop\\cano_redes\\REDES BASICO\\files\\bloque1.html": {
-    "mtime": 1779545322.0290642,
-    "hash": "c5371f96950e2dd151282b39f373d781"
+  "C:\\Users\\HP\\Desktop\\cursos\\redes-avanzado\\files\\bloque2.html": {
+    "mtime": 1779890022.3659015,
+    "ast_hash": "7d0d3cb8a1af4a041edee0b34ae5a9e8",
+    "semantic_hash": ""
   },
-  "C:\\Users\\mrjan\\Desktop\\cano_redes\\REDES BASICO\\files\\bloque2.html": {
-    "mtime": 1779545407.2171104,
-    "hash": "67d7e8283acf2552e1f160c5e576dda8"
+  "C:\\Users\\HP\\Desktop\\cursos\\redes-avanzado\\files\\bloque3.html": {
+    "mtime": 1779890022.3659015,
+    "ast_hash": "1e2c942201aeb1f905111ce02300b3b0",
+    "semantic_hash": ""
   },
-  "C:\\Users\\mrjan\\Desktop\\cano_redes\\REDES BASICO\\files\\bloque3.html": {
-    "mtime": 1779545484.2949326,
-    "hash": "0ef4d63cfaacb5008f585bdaffcfe80e"
+  "C:\\Users\\HP\\Desktop\\cursos\\redes-avanzado\\files\\bloque4.html": {
+    "mtime": 1779890022.3659015,
+    "ast_hash": "89b5dadcfc27c67a36531283b16471ef",
+    "semantic_hash": ""
   },
-  "C:\\Users\\mrjan\\Desktop\\cano_redes\\REDES BASICO\\files\\bloque4.html": {
-    "mtime": 1779545560.01519,
-    "hash": "0284d1e9b9e4a7e01b8fbf2cc54e99d3"
+  "C:\\Users\\HP\\Desktop\\cursos\\redes-avanzado\\files\\bloque5.html": {
+    "mtime": 1779890022.3659015,
+    "ast_hash": "06391c72bc826a8408ec102488291876",
+    "semantic_hash": ""
   },
-  "C:\\Users\\mrjan\\Desktop\\cano_redes\\REDES BASICO\\files\\bloque5.html": {
-    "mtime": 1779545636.8115768,
-    "hash": "9bfda82bad09b837989f2c87076ed62a"
+  "C:\\Users\\HP\\Desktop\\cursos\\redes-avanzado\\files\\bloque6.html": {
+    "mtime": 1779890022.3659015,
+    "ast_hash": "4ac10aff577bbb169d23b5168796ee58",
+    "semantic_hash": ""
   },
-  "C:\\Users\\mrjan\\Desktop\\cano_redes\\REDES BASICO\\files\\index.html": {
-    "mtime": 1779544840.8768866,
-    "hash": "469ca45278c5164ad68d38943460c738"
+  "C:\\Users\\HP\\Desktop\\cursos\\redes-avanzado\\files\\bloque7.html": {
+    "mtime": 1779890022.3659015,
+    "ast_hash": "390e22ba77ec626b554aaac00bfa2333",
+    "semantic_hash": ""
+  },
+  "C:\\Users\\HP\\Desktop\\cursos\\redes-avanzado\\files\\index.html": {
+    "mtime": 1779890022.3659015,
+    "ast_hash": "d74369e163f045dd54f3d982a91c5227",
+    "semantic_hash": ""
+  },
+  "C:\\Users\\HP\\Desktop\\cursos\\redes-basico\\files\\bloque1.html": {
+    "mtime": 1779890022.3659015,
+    "ast_hash": "61d86809ab4186cc1a5cceca8b38d035",
+    "semantic_hash": ""
+  },
+  "C:\\Users\\HP\\Desktop\\cursos\\redes-basico\\files\\bloque2.html": {
+    "mtime": 1779890022.3659015,
+    "ast_hash": "b193cd5b0c0bd81ae75aae2cd409ee35",
+    "semantic_hash": ""
+  },
+  "C:\\Users\\HP\\Desktop\\cursos\\redes-basico\\files\\bloque3.html": {
+    "mtime": 1779890022.3659015,
+    "ast_hash": "24d3cf57a3f787e5ea7e3b31963cc07f",
+    "semantic_hash": ""
+  },
+  "C:\\Users\\HP\\Desktop\\cursos\\redes-basico\\files\\bloque4.html": {
+    "mtime": 1779890022.3659015,
+    "ast_hash": "9faa146e25fe99fde3f7769f85e667da",
+    "semantic_hash": ""
+  },
+  "C:\\Users\\HP\\Desktop\\cursos\\redes-basico\\files\\bloque5.html": {
+    "mtime": 1779890022.3659015,
+    "ast_hash": "2aac5b690dcecad3de074d108f5b89a7",
+    "semantic_hash": ""
+  },
+  "C:\\Users\\HP\\Desktop\\cursos\\redes-basico\\files\\bloque6.html": {
+    "mtime": 1779890022.3659015,
+    "ast_hash": "48f1f25fd28dc5d14103e3a584de0242",
+    "semantic_hash": ""
+  },
+  "C:\\Users\\HP\\Desktop\\cursos\\redes-basico\\files\\index.html": {
+    "mtime": 1779890022.3659015,
+    "ast_hash": "f213880b357071871fb79cd20b6309e8",
+    "semantic_hash": ""
   }
 }
