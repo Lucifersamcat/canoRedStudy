@@ -56,6 +56,16 @@ body {
 }
 .brand { font-weight: 700; font-size: 1.05rem; white-space: nowrap; }
 .brand .dot { color: var(--accent); }
+.nav-link {
+  margin-left: auto;
+  font-size: .88rem; color: var(--text-dim);
+  text-decoration: none; display: flex; align-items: center; gap: 6px;
+  padding: 6px 14px; border-radius: 8px;
+  border: 1px solid var(--border);
+  background: var(--bg-card);
+  transition: color .15s, border-color .15s;
+}
+.nav-link:hover { color: var(--accent); border-color: var(--accent); }
 
 /* ===== Hero ===== */
 .hero { padding: 72px 0 52px; text-align: center; }
@@ -231,6 +241,7 @@ footer {
 <header class="topnav">
   <div class="wrap">
     <span class="brand">Cursos<span class="dot">.</span>Networking</span>
+    <a href="requerimientos.html" class="nav-link">🔧 Requerimientos</a>
   </div>
 </header>
 
@@ -398,6 +409,27 @@ footer {
           </ul>
         </div>
       </div>
+    </div>
+  </section>
+
+  <!-- ===== Requerimientos ===== -->
+  <section class="section">
+    <div class="wrap">
+      <h2 class="h"><span class="lead">¿Qué</span> necesito para empezar?</h2>
+      <p class="subtitle">Consulta el listado completo de hardware, equipo y software antes de comenzar.</p>
+      <a href="requerimientos.html" style="
+        display: inline-flex; align-items: center; gap: 10px;
+        background: var(--bg-card); border: 1px solid var(--border);
+        border-radius: 12px; padding: 18px 28px;
+        text-decoration: none; color: var(--text);
+        transition: border-color .2s, transform .2s, box-shadow .2s;
+        font-size: 1rem; font-weight: 600;
+      "
+      onmouseover="this.style.borderColor='var(--accent)';this.style.transform='translateY(-3px)';this.style.boxShadow='0 8px 24px rgba(0,0,0,.4)'"
+      onmouseout="this.style.borderColor='var(--border)';this.style.transform='';this.style.boxShadow=''">
+        🔧&nbsp; Ver requerimientos del curso
+        <span style="color:var(--accent); font-size:1.1rem;">→</span>
+      </a>
     </div>
   </section>
 
