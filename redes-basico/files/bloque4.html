@@ -12,7 +12,7 @@
   <section class="block-head wrap">
     <div class="num">MÓDULO 04</div>
     <h1>Redes Inalámbricas</h1>
-    <p>Frecuencias, longitud de onda, canales y anchos de canal. El conocimiento del espectro radioeléctrico es indispensable para diseñar redes WiFi que no se interfieran entre sí y que ofrezcan el máximo rendimiento.</p>
+    <p>Frecuencias, longitud de onda, canales y anchos de canal. El conocimiento del espectro radioeléctrico es indispensable para diseñar redes WiFi que no se interfieran entre sí y que ofrezcan el máximo rendimiento. También veremos las generaciones WiFi (4, 5, 6, 6E y 7) y la seguridad inalámbrica, del obsoleto WEP al actual WPA3.</p>
     <div class="progress-dots"><span class="on"></span><span class="on"></span><span class="on"></span><span class="on"></span><span></span><span></span></div>
     <div class="toc">
       <a href="#teoria">Teoría</a><a href="#conceptos">Conceptos</a>
@@ -42,6 +42,15 @@
       <p>La banda de 5 GHz abarca desde 5.180 hasta 5.825 GHz y se divide en sub-bandas <strong>U-NII</strong> (Unlicensed National Information Infrastructure): U-NII-1, U-NII-2, U-NII-2e y U-NII-3. Ofrece <strong>25 canales no solapados de 20 MHz</strong>, lo que permite asignar canales independientes a muchos más APs sin interferencia.</p>
       <p>Con 802.11ac es posible agregar hasta <strong>160 MHz</strong> de ancho de canal (bonding 8 × 20 MHz), logrando velocidades teóricas superiores a 1 Gbps. En entornos densos se recomienda 20 o 40 MHz para maximizar la coexistencia.</p>
 
+      <h3>Banda de 6 GHz (WiFi 6E)</h3>
+      <p>En 2020 los reguladores (la FCC en EE.UU. y, después, otras regiones) abrieron la banda de <strong>6 GHz</strong> (5.925–7.125 GHz) para uso no licenciado. <strong>WiFi 6E</strong> es la extensión de WiFi 6 (802.11ax) a esta banda, y <strong>WiFi 7</strong> (802.11be) también la aprovecha. Ventajas:</p>
+      <ul class="bullets">
+        <li>Hasta <strong>59 canales nuevos de 20 MHz</strong> (o 7 de 160 MHz / 3 de 320 MHz), libres de dispositivos heredados que generen interferencia.</li>
+        <li>Espacio de sobra para canales anchos: 160 MHz en WiFi 6E y <strong>320 MHz</strong> en WiFi 7.</li>
+        <li><strong>Seguridad WPA3 obligatoria</strong> con Protected Management Frames (PMF): no se admiten WPA2 ni redes abiertas en 6 GHz.</li>
+      </ul>
+      <p>El precio a pagar es el menor alcance: a mayor frecuencia, mayor atenuación al atravesar paredes y obstáculos. La banda de 6 GHz brilla en alta densidad y distancias cortas.</p>
+
       <h3>Tipos de interferencia</h3>
       <ul class="bullets">
         <li><strong>Co-Channel (CCI):</strong> Dos APs usando el mismo canal en la misma área. Las tramas colisionan y se degrada el rendimiento. Se mitiga planificando los canales del plano de RF.</li>
@@ -50,6 +59,42 @@
       <div class="callout tip">
         <span class="label">Regla de diseño</span>
         En 2.4 GHz: solo canales 1, 6 y 11. En 5 GHz: puedes asignar casi cualquier canal U-NII. Usa aplicaciones como <strong>WiFi Analyzer</strong> para ver qué canales están ocupados antes de configurar tus APs.
+      </div>
+
+      <h3>Generaciones WiFi (IEEE 802.11)</h3>
+      <p>La Wi-Fi Alliance renombró los estándares 802.11 con números de generación más fáciles de recordar. Cada generación es retrocompatible con las anteriores:</p>
+      <table>
+        <tr><th>Generación</th><th>Estándar</th><th>Año</th><th>Bandas</th><th>Vel. máx. teórica</th><th>Novedad clave</th></tr>
+        <tr><td>WiFi 4</td><td>802.11n</td><td>2009</td><td>2.4 + 5 GHz</td><td>600 Mbps</td><td>MIMO, canales de 40 MHz</td></tr>
+        <tr><td>WiFi 5</td><td>802.11ac</td><td>2013</td><td>5 GHz</td><td>6.9 Gbps</td><td>MU-MIMO (bajada), 256-QAM, 160 MHz</td></tr>
+        <tr><td>WiFi 6</td><td>802.11ax</td><td>2019</td><td>2.4 + 5 GHz</td><td>9.6 Gbps</td><td>OFDMA, 1024-QAM, TWT, MU-MIMO bidireccional</td></tr>
+        <tr><td>WiFi 6E</td><td>802.11ax</td><td>2021</td><td>+ 6 GHz</td><td>9.6 Gbps</td><td>Extiende WiFi 6 a la banda de 6 GHz</td></tr>
+        <tr><td>WiFi 7</td><td>802.11be</td><td>2024</td><td>2.4 + 5 + 6 GHz</td><td>~46 Gbps</td><td>MLO, 4096-QAM, canales de 320 MHz</td></tr>
+      </table>
+      <div class="callout note">
+        <span class="label">MLO — Multi-Link Operation</span>
+        La gran novedad de WiFi 7: un cliente puede transmitir por <strong>varias bandas a la vez</strong> (2.4, 5 y 6 GHz simultáneamente), agregando ancho de banda y reduciendo la latencia al elegir el mejor enlace en cada momento.
+      </div>
+
+      <h3>Seguridad inalámbrica: del WEP al WPA3</h3>
+      <p>Como el medio es el aire, cualquiera dentro del alcance puede capturar las tramas. El cifrado y la autenticación son imprescindibles. Evolución de los protocolos:</p>
+      <table>
+        <tr><th>Protocolo</th><th>Año</th><th>Cifrado</th><th>Estado actual</th></tr>
+        <tr><td>WEP</td><td>1997</td><td>RC4 (clave estática)</td><td>Roto — se descifra en minutos. No usar.</td></tr>
+        <tr><td>WPA</td><td>2003</td><td>TKIP (aún sobre RC4)</td><td>Obsoleto — fue un parche temporal de WEP.</td></tr>
+        <tr><td>WPA2</td><td>2004</td><td>AES-CCMP</td><td>Vigente, pero vulnerable a KRACK y a diccionario offline sobre PSK débiles.</td></tr>
+        <tr><td>WPA3</td><td>2018</td><td>AES-CCMP/GCMP + SAE</td><td>Actual y recomendado. Obligatorio en 6 GHz.</td></tr>
+      </table>
+      <p>WPA3 introduce mejoras de seguridad clave frente a WPA2:</p>
+      <ul class="bullets">
+        <li><strong>SAE (Simultaneous Authentication of Equals):</strong> reemplaza el handshake de 4 vías de WPA2-PSK. Aporta <em>forward secrecy</em> y resiste ataques de diccionario offline aunque la contraseña sea débil.</li>
+        <li><strong>OWE (Opportunistic Wireless Encryption):</strong> cifra las redes abiertas (sin contraseña), de modo que el tráfico ya no viaja en texto plano.</li>
+        <li><strong>PMF (Protected Management Frames, 802.11w):</strong> protege las tramas de gestión contra ataques de desautenticación/DoS. Es obligatorio en WPA3 y en toda la banda de 6 GHz.</li>
+        <li><strong>WPA3-Enterprise modo 192 bits:</strong> nivel de seguridad reforzado para entornos gubernamentales y financieros.</li>
+      </ul>
+      <div class="callout note">
+        <span class="label">WPA2/WPA3 en transición</span>
+        Muchas redes operan en modo <strong>transición WPA2/WPA3</strong> para mantener compatibilidad con dispositivos antiguos. En 6 GHz (WiFi 6E/7) eso no se permite: solo se admite WPA3 con PMF, y las redes abiertas deben usar OWE.
       </div>
     </div>
   </section>
@@ -70,6 +115,12 @@
         <tr><td>ACI (Adjacent-Channel)</td><td>Interferencia entre canales que se solapan parcialmente</td></tr>
         <tr><td>802.11ac</td><td>WiFi 5 — opera en 5 GHz, soporta hasta 160 MHz de ancho de canal</td></tr>
         <tr><td>802.11ax</td><td>WiFi 6 — mejora la eficiencia en entornos densos (OFDMA)</td></tr>
+        <tr><td>6 GHz</td><td>Banda abierta en 2020 (5.925–7.125 GHz) — usada por WiFi 6E y 7; exige WPA3</td></tr>
+        <tr><td>802.11be</td><td>WiFi 7 — MLO, canales de 320 MHz y 4096-QAM; hasta ~46 Gbps</td></tr>
+        <tr><td>MLO</td><td>Multi-Link Operation — usa varias bandas (2.4/5/6 GHz) a la vez (WiFi 7)</td></tr>
+        <tr><td>WPA2</td><td>Cifrado AES-CCMP — aún común, vulnerable a KRACK y a diccionario offline</td></tr>
+        <tr><td>WPA3</td><td>Estándar actual — SAE, OWE y PMF; obligatorio en 6 GHz</td></tr>
+        <tr><td>PMF (802.11w)</td><td>Protege las tramas de gestión contra DoS/desautenticación; obligatorio en WPA3</td></tr>
       </table>
     </div>
   </section>
@@ -159,6 +210,43 @@
         </svg>
         <div class="cap">Los canales 2–5, 7–10, 12–13 (línea roja punteada) se superponen con sus vecinos generando interferencia ACI. Al asignar Ch 1, Ch 6 y Ch 11 a APs adyacentes se garantiza que no se interfieren entre sí.</div>
       </div>
+
+      <div class="diagram">
+        <svg viewBox="0 0 760 200" xmlns="http://www.w3.org/2000/svg" font-family="Segoe UI, sans-serif">
+          <defs><marker id="wsec" markerWidth="9" markerHeight="9" refX="7" refY="3" orient="auto"><path d="M0,0 L7,3 L0,6 Z" fill="#9aa7b8"/></marker></defs>
+          <text x="380" y="22" fill="#e6edf3" font-weight="bold" text-anchor="middle" font-size="13">Evolución de la seguridad WiFi</text>
+          <!-- WEP -->
+          <rect x="14" y="48" width="165" height="100" rx="8" fill="rgba(239,68,68,0.12)" stroke="#ef4444" stroke-width="1.5"/>
+          <text x="96" y="76" fill="#ef4444" font-weight="700" text-anchor="middle" font-size="15">WEP</text>
+          <text x="96" y="98" fill="#9aa7b8" text-anchor="middle" font-size="10">1997 · RC4</text>
+          <text x="96" y="120" fill="#9aa7b8" text-anchor="middle" font-size="10">Clave estática</text>
+          <text x="96" y="138" fill="#ef4444" text-anchor="middle" font-size="11">✗ Roto</text>
+          <!-- WPA -->
+          <rect x="200" y="48" width="165" height="100" rx="8" fill="rgba(245,158,11,0.12)" stroke="#f59e0b" stroke-width="1.5"/>
+          <text x="282" y="76" fill="#f59e0b" font-weight="700" text-anchor="middle" font-size="15">WPA</text>
+          <text x="282" y="98" fill="#9aa7b8" text-anchor="middle" font-size="10">2003 · TKIP</text>
+          <text x="282" y="120" fill="#9aa7b8" text-anchor="middle" font-size="10">Parche de WEP</text>
+          <text x="282" y="138" fill="#f59e0b" text-anchor="middle" font-size="11">✗ Obsoleto</text>
+          <!-- WPA2 -->
+          <rect x="386" y="48" width="165" height="100" rx="8" fill="rgba(79,156,249,0.12)" stroke="#4f9cf9" stroke-width="1.5"/>
+          <text x="468" y="76" fill="#4f9cf9" font-weight="700" text-anchor="middle" font-size="15">WPA2</text>
+          <text x="468" y="98" fill="#9aa7b8" text-anchor="middle" font-size="10">2004 · AES-CCMP</text>
+          <text x="468" y="120" fill="#9aa7b8" text-anchor="middle" font-size="10">Vulnerable a KRACK</text>
+          <text x="468" y="138" fill="#4f9cf9" text-anchor="middle" font-size="11">~ Vigente</text>
+          <!-- WPA3 -->
+          <rect x="572" y="48" width="165" height="100" rx="8" fill="rgba(52,211,153,0.14)" stroke="#34d399" stroke-width="2"/>
+          <text x="654" y="76" fill="#34d399" font-weight="700" text-anchor="middle" font-size="15">WPA3</text>
+          <text x="654" y="98" fill="#9aa7b8" text-anchor="middle" font-size="10">2018 · SAE + PMF</text>
+          <text x="654" y="120" fill="#9aa7b8" text-anchor="middle" font-size="10">Obligatorio en 6 GHz</text>
+          <text x="654" y="138" fill="#34d399" text-anchor="middle" font-size="11">✓ Recomendado</text>
+          <!-- Arrows -->
+          <line x1="181" y1="98" x2="198" y2="98" stroke="#9aa7b8" stroke-width="1.5" marker-end="url(#wsec)"/>
+          <line x1="367" y1="98" x2="384" y2="98" stroke="#9aa7b8" stroke-width="1.5" marker-end="url(#wsec)"/>
+          <line x1="553" y1="98" x2="570" y2="98" stroke="#9aa7b8" stroke-width="1.5" marker-end="url(#wsec)"/>
+          <text x="380" y="178" fill="#9aa7b8" text-anchor="middle" font-size="10">Más débil  ←————————————————————————→  Más seguro</text>
+        </svg>
+        <div class="cap">Hoy se recomienda WPA3 (o, como mínimo, WPA2-AES con contraseñas robustas). WEP y WPA están rotos y no deben usarse. En 6 GHz solo se admite WPA3 con PMF.</div>
+      </div>
     </div>
   </section>
 
@@ -205,6 +293,22 @@
           <div class="face front">¿Qué son las sub-bandas U-NII?</div>
           <div class="face back">Divisiones del espectro de 5 GHz: U-NII-1, U-NII-2, U-NII-2e y U-NII-3. Permiten tener 25 canales no solapados.</div>
         </div></div>
+        <div class="flashcard"><div class="inner">
+          <div class="face front">¿Qué cifrado usa WPA2 y cuál es su debilidad?</div>
+          <div class="face back">AES-CCMP. Es robusto, pero vulnerable al ataque KRACK (2017) y a ataques de diccionario offline si la contraseña PSK es débil.</div>
+        </div></div>
+        <div class="flashcard"><div class="inner">
+          <div class="face front">¿Qué aporta SAE en WPA3 frente a WPA2-PSK?</div>
+          <div class="face back">SAE reemplaza el handshake de 4 vías: da forward secrecy y resiste ataques de diccionario offline aunque la contraseña sea débil.</div>
+        </div></div>
+        <div class="flashcard"><div class="inner">
+          <div class="face front">¿Qué banda se abrió en 2020 y qué generaciones la usan?</div>
+          <div class="face back">La banda de 6 GHz (5.925–7.125 GHz). La usan WiFi 6E (802.11ax) y WiFi 7 (802.11be), y exige seguridad WPA3.</div>
+        </div></div>
+        <div class="flashcard"><div class="inner">
+          <div class="face front">¿Qué es MLO en WiFi 7?</div>
+          <div class="face back">Multi-Link Operation: permite usar 2.4, 5 y 6 GHz simultáneamente, agregando ancho de banda y reduciendo la latencia.</div>
+        </div></div>
       </div>
     </div>
   </section>
@@ -247,6 +351,27 @@
           <label><input type="radio" name="q5" value="b"> 25</label>
           <label><input type="radio" name="q5" value="c"> 14</label>
           <div class="explain">5 GHz ofrece 25 canales de 20 MHz no solapados distribuidos en las sub-bandas U-NII.</div>
+        </div>
+        <div class="q" data-answer="b">
+          <div class="qt">6. ¿Qué protocolo de seguridad WiFi se recomienda usar hoy?</div>
+          <label><input type="radio" name="q6" value="a"> WEP</label>
+          <label><input type="radio" name="q6" value="b"> WPA3</label>
+          <label><input type="radio" name="q6" value="c"> WPA</label>
+          <div class="explain">WPA3 (2018) es el estándar actual: usa SAE, OWE y PMF. WEP y WPA están rotos y obsoletos.</div>
+        </div>
+        <div class="q" data-answer="c">
+          <div class="qt">7. La banda de 6 GHz (WiFi 6E/7) exige obligatoriamente…</div>
+          <label><input type="radio" name="q7" value="a"> WEP de 128 bits</label>
+          <label><input type="radio" name="q7" value="b"> Red abierta sin cifrado</label>
+          <label><input type="radio" name="q7" value="c"> WPA3 con PMF</label>
+          <div class="explain">En 6 GHz no se admiten WPA2 ni redes abiertas: solo WPA3 con Protected Management Frames (y OWE para las abiertas).</div>
+        </div>
+        <div class="q" data-answer="a">
+          <div class="qt">8. ¿Qué estándar IEEE corresponde a WiFi 7?</div>
+          <label><input type="radio" name="q8" value="a"> 802.11be</label>
+          <label><input type="radio" name="q8" value="b"> 802.11ac</label>
+          <label><input type="radio" name="q8" value="c"> 802.11n</label>
+          <div class="explain">WiFi 7 = 802.11be (MLO, 320 MHz, 4096-QAM). 802.11ac es WiFi 5 y 802.11n es WiFi 4.</div>
         </div>
         <button class="btn" onclick="checkQuiz('quiz4')">Comprobar respuestas</button>
         <button class="btn ghost" onclick="resetQuiz('quiz4')">Reiniciar</button>
