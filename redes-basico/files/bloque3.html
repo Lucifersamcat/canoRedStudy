@@ -64,6 +64,31 @@
       <h3>DNS — Domain Name System</h3>
       <p>DNS traduce nombres de dominio a direcciones IP. Cuando escribes <code>canoacademy.com</code>, tu equipo consulta al DNS configurado (por ejemplo 8.8.8.8) que resuelve el nombre a una IP. La estructura de un dominio tiene tres niveles: <strong>TLD</strong> (.com, .org, .net), <strong>SLD</strong> (el nombre comercial, ej: canoacademy) y el <strong>subdominio</strong> (ej: www).</p>
 
+      <h3>Tipos de registro DNS</h3>
+      <p>Una zona DNS guarda distintos tipos de registro según lo que se quiera resolver:</p>
+      <table>
+        <tr><th>Registro</th><th>Función</th></tr>
+        <tr><td>A</td><td>Asocia un nombre a una dirección IPv4</td></tr>
+        <tr><td>AAAA</td><td>Asocia un nombre a una dirección IPv6</td></tr>
+        <tr><td>CNAME</td><td>Alias: apunta un nombre a otro nombre (ej. www → dominio raíz)</td></tr>
+        <tr><td>MX</td><td>Servidor de correo del dominio (con valor de prioridad)</td></tr>
+        <tr><td>NS</td><td>Servidores DNS autoritativos de la zona</td></tr>
+        <tr><td>TXT</td><td>Texto libre; usado por SPF, DKIM y verificaciones de dominio</td></tr>
+        <tr><td>PTR</td><td>Resolución inversa: de IP a nombre</td></tr>
+      </table>
+
+      <h3>DNS seguro: DNSSEC, DoT y DoH</h3>
+      <p>El DNS tradicional viaja en texto plano por UDP 53 y no valida la autenticidad de las respuestas, lo que lo expone a envenenamiento de caché y espionaje. Las defensas modernas:</p>
+      <ul class="bullets">
+        <li><strong>DNSSEC:</strong> firma criptográficamente las respuestas (registros RRSIG, DNSKEY y DS) creando una cadena de confianza desde la raíz. Garantiza <em>integridad y autenticidad</em>, pero no cifra (no aporta privacidad).</li>
+        <li><strong>DoT (DNS over TLS):</strong> cifra las consultas dentro de un túnel TLS por el puerto <strong>TCP 853</strong>.</li>
+        <li><strong>DoH (DNS over HTTPS):</strong> encapsula las consultas dentro de tráfico HTTPS por el puerto <strong>443</strong>, indistinguible del tráfico web normal.</li>
+      </ul>
+      <div class="callout note">
+        <span class="label">DNSSEC ≠ cifrado</span>
+        DNSSEC valida que la respuesta no fue alterada, pero su contenido sigue siendo visible. Para privacidad se usan DoT o DoH, que sí cifran la consulta.
+      </div>
+
       <h3>NTP — Network Time Protocol</h3>
       <p>NTP sincroniza el reloj de todos los equipos de la red usando el puerto <strong>UDP 123</strong>. La sincronización es crítica para: correlación de logs de seguridad, certificados SSL, grabadores CCTV, teléfonos IP y backups programados. Los servidores NTP públicos están organizados en pools por región (<code>do.pool.ntp.org</code> para República Dominicana).</p>
     </div>
@@ -83,6 +108,10 @@
         <tr><td>Lease time</td><td>Tiempo de arrendamiento de la IP asignada por DHCP</td></tr>
         <tr><td>DNS</td><td>Resuelve nombres de dominio a IPs — puerto UDP/TCP 53</td></tr>
         <tr><td>TLD</td><td>Top Level Domain: .com, .net, .org, .do</td></tr>
+        <tr><td>Registro A / AAAA</td><td>Mapea un nombre a una IPv4 (A) o a una IPv6 (AAAA)</td></tr>
+        <tr><td>Registro MX</td><td>Indica el servidor de correo del dominio</td></tr>
+        <tr><td>DNSSEC</td><td>Firma las respuestas DNS (integridad/autenticidad); no cifra</td></tr>
+        <tr><td>DoT / DoH</td><td>DNS cifrado sobre TLS (TCP 853) o sobre HTTPS (443)</td></tr>
         <tr><td>NTP</td><td>Sincroniza el tiempo de los equipos — puerto UDP 123</td></tr>
         <tr><td>Dirección privada</td><td>10.x, 172.16-31.x, 192.168.x — no enrutable en Internet</td></tr>
       </table>
@@ -236,6 +265,18 @@
           <div class="face front">¿Por qué se restan 2 al calcular hosts en una subred?</div>
           <div class="face back">La primera IP es la dirección de red y la última es el broadcast — ninguna se puede asignar a un host.</div>
         </div></div>
+        <div class="flashcard"><div class="inner">
+          <div class="face front">¿Diferencia entre un registro A y uno AAAA?</div>
+          <div class="face back">A resuelve un nombre a una dirección IPv4; AAAA lo resuelve a una dirección IPv6. Ambos asocian un nombre a una IP.</div>
+        </div></div>
+        <div class="flashcard"><div class="inner">
+          <div class="face front">¿Qué aporta DNSSEC y qué NO aporta?</div>
+          <div class="face back">Aporta integridad y autenticidad (firma las respuestas para evitar falsificación). NO aporta privacidad: no cifra. Para cifrar se usan DoT o DoH.</div>
+        </div></div>
+        <div class="flashcard"><div class="inner">
+          <div class="face front">¿Qué puertos usan DoT y DoH?</div>
+          <div class="face back">DoT (DNS over TLS) usa TCP 853. DoH (DNS over HTTPS) usa el 443, mezclándose con el tráfico web normal.</div>
+        </div></div>
       </div>
     </div>
   </section>
@@ -278,6 +319,20 @@
           <label><input type="radio" name="q5" value="b"> Clase A (10.0.0.0/8)</label>
           <label><input type="radio" name="q5" value="c"> Clase C (192.168.0.0/16)</label>
           <div class="explain">172.16.0.0 – 172.31.255.255 es el bloque B privado. 172.20.5.10 cae en ese rango.</div>
+        </div>
+        <div class="q" data-answer="b">
+          <div class="qt">6. ¿Qué garantiza DNSSEC?</div>
+          <label><input type="radio" name="q6" value="a"> Cifra la consulta DNS para que nadie la lea</label>
+          <label><input type="radio" name="q6" value="b"> La integridad y autenticidad de la respuesta (la firma)</label>
+          <label><input type="radio" name="q6" value="c"> Acelera la resolución de nombres</label>
+          <div class="explain">DNSSEC firma las respuestas (RRSIG/DNSKEY/DS) para evitar falsificación, pero no cifra. La privacidad la dan DoT y DoH.</div>
+        </div>
+        <div class="q" data-answer="c">
+          <div class="qt">7. DoH (DNS over HTTPS) envía las consultas DNS por el puerto…</div>
+          <label><input type="radio" name="q7" value="a"> 53</label>
+          <label><input type="radio" name="q7" value="b"> 853</label>
+          <label><input type="radio" name="q7" value="c"> 443</label>
+          <div class="explain">DoH usa el 443 (HTTPS), indistinguible del tráfico web. DoT usa TCP 853 y el DNS tradicional usa el 53.</div>
         </div>
         <button class="btn" onclick="checkQuiz('quiz3')">Comprobar respuestas</button>
         <button class="btn ghost" onclick="resetQuiz('quiz3')">Reiniciar</button>

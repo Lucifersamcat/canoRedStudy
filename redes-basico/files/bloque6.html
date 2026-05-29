@@ -53,6 +53,28 @@
         <li><strong>Dual-stack:</strong> un dispositivo opera IPv4 e IPv6 simultáneamente; usa IPv6 si está disponible, cae a IPv4 si no.</li>
       </ul>
 
+      <h3>Estructura de una dirección IPv6</h3>
+      <p>Una dirección global se divide en dos mitades de 64 bits: los primeros <strong>64 bits son el prefijo de red</strong> (los asigna el proveedor o anuncia el router) y los últimos <strong>64 bits son el identificador de interfaz</strong> (identifica al host dentro de la subred). Por eso la subred estándar de IPv6 es siempre un <code>/64</code>.</p>
+      <table>
+        <tr><th>Tipo / prefijo</th><th>Equivalente IPv4</th><th>Uso</th></tr>
+        <tr><td>Global unicast — 2000::/3</td><td>IP pública</td><td>Enrutable en Internet</td></tr>
+        <tr><td>Unique local (ULA) — fc00::/7</td><td>Privadas RFC 1918</td><td>Direccionamiento interno, no enrutable en Internet</td></tr>
+        <tr><td>Link-local — fe80::/10</td><td>APIPA 169.254.x.x</td><td>Solo válida en el segmento local</td></tr>
+        <tr><td>Multicast — ff00::/8</td><td>224.0.0.0/4</td><td>Uno-a-muchos (IPv6 sustituye el broadcast por multicast)</td></tr>
+        <tr><td>Loopback — ::1</td><td>127.0.0.1</td><td>El propio dispositivo</td></tr>
+      </table>
+      <div class="callout note">
+        <span class="label">IPv6 no tiene broadcast</span>
+        En lugar de broadcast, IPv6 usa direcciones multicast bien conocidas: <code>ff02::1</code> (todos los nodos del enlace) y <code>ff02::2</code> (todos los routers del enlace).
+      </div>
+
+      <h3>NDP — Neighbor Discovery Protocol</h3>
+      <p>IPv6 no usa ARP. Su equivalente es <strong>NDP</strong> (sobre ICMPv6), que resuelve direcciones y descubre routers con cuatro mensajes:</p>
+      <ul class="bullets">
+        <li><strong>RS / RA (Router Solicitation / Advertisement):</strong> el host pide y el router anuncia el prefijo de red y el gateway — la base de SLAAC.</li>
+        <li><strong>NS / NA (Neighbor Solicitation / Advertisement):</strong> resuelven la dirección MAC de un vecino (lo que ARP hacía en IPv4) y detectan direcciones duplicadas (DAD).</li>
+      </ul>
+
       <h3>Herramientas de diagnóstico de red</h3>
       <p>Un técnico de redes usa estas utilidades a diario para verificar conectividad y localizar fallas:</p>
       <ul class="bullets">
@@ -79,6 +101,10 @@
         <tr><td>Loopback IPv6</td><td>::1; equivalente a 127.0.0.1 en IPv4, apunta al propio dispositivo</td></tr>
         <tr><td>SLAAC</td><td>Autoconfiguración de IPv6 sin DHCP; usa el prefijo del router + ID de interfaz derivado de la MAC</td></tr>
         <tr><td>Dual-stack</td><td>Dispositivo que opera IPv4 e IPv6 simultáneamente; preferencia por IPv6 si está disponible</td></tr>
+        <tr><td>Prefijo /64</td><td>Tamaño estándar de subred IPv6: 64 bits de red + 64 bits de identificador de interfaz</td></tr>
+        <tr><td>ULA (fc00::/7)</td><td>Direcciones IPv6 locales únicas — equivalente privado a RFC 1918</td></tr>
+        <tr><td>Multicast (ff00::/8)</td><td>IPv6 reemplaza el broadcast por multicast (ff02::1 = todos los nodos)</td></tr>
+        <tr><td>NDP / ICMPv6</td><td>Neighbor Discovery — sustituye a ARP; usa los mensajes RS/RA y NS/NA</td></tr>
         <tr><td>ping (ICMP)</td><td>Verifica conectividad básica y mide el RTT (round-trip time)</td></tr>
         <tr><td>traceroute / tracert</td><td>Muestra cada salto (router) en la ruta hacia el destino usando TTL decremental</td></tr>
         <tr><td>Wireshark</td><td>Analizador de protocolos (sniffer) que captura paquetes para análisis detallado</td></tr>
@@ -233,6 +259,8 @@ dhcp                               <span class="cmt"># proceso DORA completo</sp
         <tr><td>Configuración</td><td>Manual, DHCP</td><td>Manual, DHCPv6, SLAAC</td></tr>
         <tr><td>NAT requerido</td><td>Sí (escasez)</td><td>No (abundancia)</td></tr>
         <tr><td>Loopback</td><td>127.0.0.1</td><td>::1</td></tr>
+        <tr><td>Resolución de capa 2</td><td>ARP</td><td>NDP (NS/NA sobre ICMPv6)</td></tr>
+        <tr><td>Broadcast</td><td>Sí</td><td>No — usa multicast (ff02::1)</td></tr>
       </table>
     </div>
   </section>
@@ -265,6 +293,18 @@ dhcp                               <span class="cmt"># proceso DORA completo</sp
         <div class="flashcard"><div class="inner">
           <div class="face front">¿Qué ventaja tiene traceroute sobre ping?</div>
           <div class="face back">Muestra cada router (salto) en la ruta hacia el destino. Si hay pérdida de paquetes o alta latencia, traceroute indica exactamente en qué salto ocurre el problema.</div>
+        </div></div>
+        <div class="flashcard"><div class="inner">
+          <div class="face front">¿Por qué la subred IPv6 estándar es /64?</div>
+          <div class="face back">Porque la dirección se divide en 64 bits de prefijo de red + 64 bits de identificador de interfaz. SLAAC depende de ese /64 para generar el host.</div>
+        </div></div>
+        <div class="flashcard"><div class="inner">
+          <div class="face front">¿Qué reemplaza a ARP en IPv6?</div>
+          <div class="face back">NDP (Neighbor Discovery Protocol), que corre sobre ICMPv6. Usa NS/NA para resolver vecinos y RS/RA para descubrir el router y el prefijo.</div>
+        </div></div>
+        <div class="flashcard"><div class="inner">
+          <div class="face front">¿IPv6 usa broadcast?</div>
+          <div class="face back">No. IPv6 elimina el broadcast y usa multicast en su lugar: ff02::1 (todos los nodos) y ff02::2 (todos los routers) del enlace.</div>
         </div></div>
       </div>
     </div>
@@ -308,6 +348,20 @@ dhcp                               <span class="cmt"># proceso DORA completo</sp
           <label><input type="radio" name="q5f" value="b"> UDP</label>
           <label><input type="radio" name="q5f" value="c"> ICMP</label>
           <div class="explain">ping usa ICMP Echo Request y espera un ICMP Echo Reply. No usa TCP ni UDP; es un protocolo de capa 3 para diagnóstico de red.</div>
+        </div>
+        <div class="q" data-answer="b">
+          <div class="qt">6. En IPv6, ¿qué protocolo cumple la función que ARP tenía en IPv4?</div>
+          <label><input type="radio" name="q6f" value="a"> DHCPv6</label>
+          <label><input type="radio" name="q6f" value="b"> NDP (sobre ICMPv6)</label>
+          <label><input type="radio" name="q6f" value="c"> SLAAC</label>
+          <div class="explain">NDP (Neighbor Discovery Protocol) usa NS/NA para resolver la dirección de capa 2 de un vecino, sustituyendo a ARP.</div>
+        </div>
+        <div class="q" data-answer="c">
+          <div class="qt">7. ¿Cómo entrega IPv6 el tráfico que en IPv4 sería broadcast?</div>
+          <label><input type="radio" name="q7f" value="a"> Con NAT</label>
+          <label><input type="radio" name="q7f" value="b"> Con la dirección 255.255.255.255</label>
+          <label><input type="radio" name="q7f" value="c"> Con multicast (ej. ff02::1)</label>
+          <div class="explain">IPv6 elimina el broadcast: usa direcciones multicast como ff02::1 (todos los nodos) y ff02::2 (todos los routers) del enlace.</div>
         </div>
         <button class="btn" onclick="checkQuiz('quiz6')">Comprobar respuestas</button>
         <button class="btn ghost" onclick="resetQuiz('quiz6')">Reiniciar</button>
