@@ -81,7 +81,7 @@
         <tr><td>DHCP starvation</td><td>Agota el pool de DHCP con solicitudes de MACs falsas; clientes legítimos no obtienen IP</td></tr>
         <tr><td>ARP spoofing</td><td>ARP Replies falsos envenenan las tablas ARP para ejecutar un ataque MITM</td></tr>
         <tr><td>Port Security</td><td>Limita las MACs autorizadas en un puerto; activa una violación si aparece una MAC no permitida</td></tr>
-        <tr><td>Sticky MAC</td><td>Aprendizaje automático y persistente de MACs en port security; se guarda en startup-config</td></tr>
+        <tr><td>Sticky MAC</td><td>Aprendizaje automático de MACs en port security; se añaden a la running-config y persisten tras reinicio solo si se guarda la configuración (write memory)</td></tr>
         <tr><td>Violation shutdown</td><td>El puerto pasa a err-disabled al detectar una violación; requiere rehabilitación manual</td></tr>
         <tr><td>Violation restrict</td><td>Descarta tráfico no autorizado + genera log/SNMP; el puerto sigue activo</td></tr>
         <tr><td>DHCP Snooping</td><td>Inspecciona DHCP; permite Offers/ACKs solo desde puertos trusted</td></tr>

@@ -188,7 +188,7 @@ add interface=ether2                   <span class="cmt"># hacia los receptores<
       </ol>
       <div class="callout tip">
         <span class="label">Verificación</span>
-        Con dos clientes viendo el video, el ancho de banda en el enlace servidor→router debe mantenerse en <strong>un único flujo</strong>; en <code>show ip mroute</code> aparece la entrada <code>(*, 239.1.1.1)</code> con las interfaces salientes pobladas.
+        Con dos clientes viendo el video, el ancho de banda en el enlace servidor→router debe mantenerse en <strong>un único flujo</strong>; en <code>show ip mroute</code> aparece la entrada <code>(*, 239.1.1.1)</code> del árbol compartido y, con el emisor activo, la entrada <code>(S, 239.1.1.1)</code> con la lista de interfaces de salida (OIL) poblada.
       </div>
     </div>
   </section>

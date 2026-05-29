@@ -58,7 +58,7 @@
         <li>Cada segmento elige un <strong>Designated Port</strong>.</li>
         <li>Los puertos restantes quedan en <strong>Blocking</strong>.</li>
       </ol>
-      <p>STP clásico converge lento (30–50 s pasando por Listening y Learning). <strong>RSTP</strong> (802.1w) lo hace en 1–2 s con nuevos roles (Alternate, Backup) y handshake entre switches.</p>
+      <p>STP clásico converge lento: 30 s al arrancar un puerto (15 s Listening + 15 s Learning) y hasta 50 s si interviene el temporizador Max Age (20 s) al detectar la caída de un enlace. <strong>RSTP</strong> (802.1w) lo hace en 1–2 s con nuevos roles (Alternate, Backup) y handshake entre switches.</p>
 
       <h3>Variantes</h3>
       <p><strong>PVST+</strong> ejecuta una instancia de STP por VLAN (control fino, más CPU). <strong>MSTP</strong> (802.1s) agrupa varias VLANs en pocas instancias: en una red con 200 VLANs, MSTP usa quizá 2–3 instancias en lugar de 200, ahorrando muchísimos recursos.</p>
