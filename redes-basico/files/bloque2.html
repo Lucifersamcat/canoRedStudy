@@ -16,8 +16,8 @@
     <div class="progress-dots"><span class="on"></span><span class="on"></span><span></span><span></span><span></span><span></span></div>
     <div class="toc">
       <a href="#teoria">Teoría</a><a href="#conceptos">Conceptos</a>
-      <a href="#diagrama">Diagrama OSI</a><a href="#lab">Laboratorio</a>
-      <a href="#flash">Flashcards</a><a href="#quiz">Cuestionario</a>
+      <a href="#diagrama">Diagrama OSI</a><a href="#comandos">Comandos</a>
+      <a href="#lab">Laboratorio</a><a href="#flash">Flashcards</a><a href="#quiz">Cuestionario</a>
     </div>
   </section>
 
@@ -55,6 +55,44 @@
         <span class="label">Para recordar</span>
         <strong>TCP = Llamada telefónica</strong> (se establece la comunicación antes de hablar). <strong>UDP = Carta postal</strong> (se envía y no se sabe si llegó).
       </div>
+      <p>TCP también <strong>cierra</strong> la sesión de forma ordenada con un intercambio de cuatro mensajes (FIN → ACK → FIN → ACK), liberando los recursos en ambos extremos.</p>
+
+      <h3>Encapsulación y PDUs</h3>
+      <p>Cuando los datos bajan por las capas del emisor, cada capa les añade su propia cabecera. A la unidad de datos de cada capa se le llama <strong>PDU</strong> (Protocol Data Unit) y cambia de nombre según el nivel. En el receptor el proceso es inverso (desencapsulación): cada capa quita su cabecera y entrega el contenido a la capa superior.</p>
+      <table>
+        <tr><th>Capa</th><th>PDU</th><th>Información que añade</th></tr>
+        <tr><td>Aplicación / Presentación / Sesión</td><td>Datos</td><td>El mensaje del usuario (HTTP, etc.)</td></tr>
+        <tr><td>Transporte (4)</td><td>Segmento (TCP) / Datagrama (UDP)</td><td>Puerto origen y destino</td></tr>
+        <tr><td>Red (3)</td><td>Paquete</td><td>IP origen y destino</td></tr>
+        <tr><td>Enlace (2)</td><td>Trama</td><td>MAC origen y destino + FCS</td></tr>
+        <tr><td>Física (1)</td><td>Bits</td><td>Señal eléctrica / óptica / RF</td></tr>
+      </table>
+
+      <h3>Modelo TCP/IP vs OSI</h3>
+      <p>OSI es el modelo teórico de referencia (7 capas), pero Internet funciona realmente sobre el modelo <strong>TCP/IP</strong>, más compacto (4 capas). Conviene saber cómo se corresponden:</p>
+      <table>
+        <tr><th>TCP/IP (4 capas)</th><th>Capas OSI equivalentes</th><th>Ejemplos</th></tr>
+        <tr><td>Aplicación</td><td>7 + 6 + 5</td><td>HTTP, DNS, SMTP, TLS</td></tr>
+        <tr><td>Transporte</td><td>4</td><td>TCP, UDP</td></tr>
+        <tr><td>Internet</td><td>3</td><td>IP, ICMP</td></tr>
+        <tr><td>Acceso a red</td><td>2 + 1</td><td>Ethernet, WiFi, ARP</td></tr>
+      </table>
+
+      <h3>Puertos bien conocidos</h3>
+      <p>El puerto identifica el servicio dentro de un host. Los puertos <strong>0–1023</strong> son "bien conocidos" (reservados a servicios estándar); 1024–49151 son registrados; 49152–65535 son dinámicos/efímeros (los que abre tu equipo como origen). Los esenciales:</p>
+      <table>
+        <tr><th>Puerto</th><th>Protocolo</th><th>Servicio</th></tr>
+        <tr><td>20 / 21</td><td>TCP</td><td>FTP (datos / control)</td></tr>
+        <tr><td>22</td><td>TCP</td><td>SSH / SFTP</td></tr>
+        <tr><td>23</td><td>TCP</td><td>Telnet (inseguro)</td></tr>
+        <tr><td>25</td><td>TCP</td><td>SMTP (correo saliente)</td></tr>
+        <tr><td>53</td><td>UDP/TCP</td><td>DNS</td></tr>
+        <tr><td>67 / 68</td><td>UDP</td><td>DHCP (servidor / cliente)</td></tr>
+        <tr><td>80</td><td>TCP</td><td>HTTP</td></tr>
+        <tr><td>123</td><td>UDP</td><td>NTP</td></tr>
+        <tr><td>443</td><td>TCP</td><td>HTTPS</td></tr>
+        <tr><td>3389</td><td>TCP</td><td>RDP (escritorio remoto)</td></tr>
+      </table>
 
       <h3>Dominios de broadcast y colisión</h3>
       <p>Un <strong>dominio de colisión</strong> es el segmento donde dos equipos pueden interferirse al transmitir simultáneamente. Los switches crean un dominio de colisión por puerto (full-duplex, sin colisiones). Los hubs crean un dominio de colisión único para todos los puertos.</p>
@@ -131,6 +169,31 @@
     </div>
   </section>
 
+  <section class="section" id="comandos">
+    <div class="wrap block-body">
+      <h2 class="h"><span class="lead">Comandos</span> — capas, puertos y sesiones</h2>
+      <p>Estos comandos permiten "ver" las capas en acción: qué sesiones TCP/UDP están abiertas, qué puertos escuchan y si un servicio remoto responde.</p>
+      <pre><code><span class="cmt"># Conexiones y puertos en escucha</span>
+netstat -an                  <span class="cmt"># Windows/Linux: sesiones activas y puertos LISTENING</span>
+ss -tuln                     <span class="cmt"># Linux moderno: TCP/UDP en escucha, numérico</span>
+
+<span class="cmt"># ¿Está abierto un puerto en un host remoto? (capa 4)</span>
+Test-NetConnection host -Port 443   <span class="cmt"># PowerShell (Windows)</span>
+nc -vz 8.8.8.8 53                   <span class="cmt"># Linux/macOS (netcat): probar UDP/TCP</span>
+
+<span class="cmt"># Ver el camino y la latencia (capa 3)</span>
+tracert google.com           <span class="cmt"># Windows</span>
+traceroute google.com        <span class="cmt"># Linux/macOS</span>
+
+<span class="cmt"># Ver la tabla MAC ↔ IP aprendida localmente (capa 2 ↔ 3)</span>
+arp -a</code></pre>
+      <div class="callout note">
+        <span class="label">Estados útiles de netstat</span>
+        <strong>LISTENING</strong> = el servicio espera conexiones · <strong>ESTABLISHED</strong> = sesión TCP activa · <strong>TIME_WAIT</strong> = sesión cerrándose. Si un servidor no responde, primero verifica que su puerto esté en LISTENING.
+      </div>
+    </div>
+  </section>
+
   <section class="section" id="lab">
     <div class="wrap block-body">
       <h2 class="h"><span class="lead">Laboratorio 2</span> — Packet Tracer y escaneo de red</h2>
@@ -149,11 +212,33 @@
     </div>
   </section>
 
+  <section class="section">
+    <div class="wrap block-body">
+      <h2 class="h"><span class="lead">Resumen</span> del módulo</h2>
+      <ul class="bullets">
+        <li>El modelo OSI (7 capas) es el marco teórico; TCP/IP (4 capas) es el modelo real de Internet.</li>
+        <li>Encapsulación: cada capa añade su cabecera. La PDU cambia de nombre: datos → segmento → paquete → trama → bits.</li>
+        <li>TCP es fiable y orientado a conexión (3-way handshake); UDP es rápido y sin garantía de entrega.</li>
+        <li>Los puertos identifican el servicio: 22 SSH, 53 DNS, 80 HTTP, 443 HTTPS, 3389 RDP.</li>
+        <li>Las VLANs y los routers separan dominios de broadcast; los switches separan dominios de colisión por puerto.</li>
+        <li>ARP resuelve IP→MAC; la MAC Address Table del switch mapea MAC↔puerto y es volátil.</li>
+      </ul>
+    </div>
+  </section>
+
   <section class="section" id="flash">
     <div class="wrap block-body">
       <h2 class="h"><span class="lead">Flashcards</span></h2>
       <p class="subtitle">Haz clic en cada tarjeta para ver la respuesta.</p>
       <div class="fc-grid">
+        <div class="flashcard"><div class="inner">
+          <div class="face front">¿Cómo se llama la PDU en cada capa?</div>
+          <div class="face back">Transporte = segmento (TCP) / datagrama (UDP); Red = paquete; Enlace = trama; Física = bits. El proceso de añadir cabeceras se llama encapsulación.</div>
+        </div></div>
+        <div class="flashcard"><div class="inner">
+          <div class="face front">¿Cuántas capas tiene el modelo TCP/IP y cómo se mapea a OSI?</div>
+          <div class="face back">4 capas: Aplicación (OSI 7-6-5), Transporte (4), Internet (3) y Acceso a red (2-1).</div>
+        </div></div>
         <div class="flashcard"><div class="inner">
           <div class="face front">¿Cuántas capas tiene el modelo OSI?</div>
           <div class="face back">7 capas: Física, Enlace, Red, Transporte, Sesión, Presentación y Aplicación.</div>
@@ -225,6 +310,19 @@
         <button class="btn ghost" onclick="resetQuiz('quiz2')">Reiniciar</button>
         <div class="quiz-result"></div>
       </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="wrap block-body">
+      <h2 class="h"><span class="lead">Preguntas</span> de repaso</h2>
+      <ul class="review">
+        <li>Describe qué le ocurre a un mensaje HTTP a medida que baja por las capas OSI hasta convertirse en bits.</li>
+        <li>¿Por qué elegirías UDP en lugar de TCP para una videollamada, y TCP para descargar un archivo?</li>
+        <li>Un servicio web no responde. ¿Cómo usarías <code>netstat</code>/<code>Test-NetConnection</code> para distinguir si el problema es el servidor o la red?</li>
+        <li>¿En qué se diferencia un dominio de colisión de un dominio de broadcast, y qué dispositivo separa cada uno?</li>
+        <li>¿Por qué dos PCs en VLANs distintas no se comunican aunque estén en el mismo switch?</li>
+      </ul>
     </div>
   </section>
 

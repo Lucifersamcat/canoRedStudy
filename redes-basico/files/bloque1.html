@@ -16,8 +16,9 @@
     <div class="progress-dots"><span class="on"></span><span></span><span></span><span></span><span></span><span></span></div>
     <div class="toc">
       <a href="#teoria">Teoría</a><a href="#conceptos">Conceptos</a>
-      <a href="#herramientas">Herramientas</a><a href="#diagrama">Diagrama</a>
-      <a href="#lab">Laboratorio</a><a href="#flash">Flashcards</a><a href="#quiz">Cuestionario</a>
+      <a href="#herramientas">Herramientas</a><a href="#comandos">Comandos</a>
+      <a href="#diagrama">Diagrama</a><a href="#lab">Laboratorio</a>
+      <a href="#flash">Flashcards</a><a href="#quiz">Cuestionario</a>
     </div>
   </section>
 
@@ -30,6 +31,19 @@
       <p><strong>Cobre (UTP/STP):</strong> El cable más común en instalaciones de edificio. Se clasifica por categorías (Cat5e, Cat6, Cat6A) que definen el ancho de banda soportado. Las terminaciones siguen la norma <strong>T568A o T568B</strong> — ambas válidas, pero nunca se mezclan en la misma instalación. T568B es la más usada en entornos comerciales.</p>
       <p><strong>Fibra óptica:</strong> Transmite datos mediante pulsos de luz. Inmune a interferencias electromagnéticas. Se divide en <strong>monomodo (SM)</strong> — núcleo 9 µm, largas distancias, chaqueta amarilla — y <strong>multimodo (MM)</strong> — núcleo 50/62.5 µm, distancias cortas, chaqueta naranja o aguamarina. En edificios se usa para el backbone que conecta el MDF con los IDF de cada piso.</p>
       <p><strong>Radio Frecuencia (RF):</strong> Permite transmisión inalámbrica. Las frecuencias no licenciadas más comunes en redes locales son 2.4 GHz y 5 GHz (WiFi). Las frecuencias licenciadas (3 GHz, 11 GHz) se usan para enlaces punto a punto de largo alcance.</p>
+      <p><strong>Cable coaxial:</strong> Un conductor central rodeado de un blindaje. Hoy es residual en datos (quedó atrás frente al UTP), pero sigue presente en acometidas de internet por cable (DOCSIS) y CCTV analógico heredado.</p>
+
+      <h3>Ancho de banda, throughput y latencia</h3>
+      <p>Tres métricas que suelen confundirse pero miden cosas distintas:</p>
+      <ul class="bullets">
+        <li><strong>Ancho de banda:</strong> la capacidad <em>teórica</em> máxima del enlace, en bits por segundo (ej. 1 Gbps). Es el "tamaño de la tubería".</li>
+        <li><strong>Throughput:</strong> la velocidad <em>real</em> que se alcanza, siempre menor que el ancho de banda por overhead de protocolos, colisiones, errores y retransmisiones.</li>
+        <li><strong>Latencia:</strong> el tiempo que tarda un paquete en ir de origen a destino, medido en milisegundos (ms). Un enlace puede tener mucho ancho de banda y aun así alta latencia (ej. enlaces satelitales).</li>
+      </ul>
+
+      <h3>Half-duplex vs Full-duplex</h3>
+      <p>El <strong>half-duplex</strong> permite transmitir o recibir, pero no a la vez (como un walkie-talkie); es propio de los hubs y genera colisiones. El <strong>full-duplex</strong> permite transmitir y recibir simultáneamente (como una llamada telefónica); es el modo normal de un puerto de switch moderno y elimina las colisiones en ese enlace.</p>
+
       <h3>Componentes principales de una red</h3>
       <ul class="bullets">
         <li><strong>Switch:</strong> Dispositivo de capa 2 que interconecta equipos en una misma red local usando direcciones MAC.</li>
@@ -79,6 +93,29 @@
         <tr><td>Crimping Pass-Thru</td><td>Conectores RJ45 de paso directo</td><td>Recorta conductores al ras del conector</td></tr>
         <tr><td>Tester de cable</td><td>Verificar continuidad y mapa de pares</td><td>Detecta cruce, corto y cable abierto</td></tr>
       </table>
+    </div>
+  </section>
+
+  <section class="section" id="comandos">
+    <div class="wrap block-body">
+      <h2 class="h"><span class="lead">Comandos</span> — primer contacto con la red</h2>
+      <p>Antes de configurar nada, todo técnico aprende a <em>leer</em> el estado de su propia conexión. Estos comandos funcionan en cualquier equipo y son el punto de partida de todo diagnóstico.</p>
+      <pre><code><span class="cmt"># --- Windows (CMD / PowerShell) ---</span>
+ipconfig /all                <span class="cmt"># IP, máscara, gateway, DNS, MAC de cada adaptador</span>
+getmac                       <span class="cmt"># dirección MAC de las interfaces</span>
+arp -a                       <span class="cmt"># tabla ARP: IP ↔ MAC de los vecinos conocidos</span>
+ping 192.168.1.1             <span class="cmt"># probar conectividad con el gateway</span>
+nslookup google.com          <span class="cmt"># resolver un nombre a su IP (DNS)</span>
+
+<span class="cmt"># --- Linux / macOS ---</span>
+ip address show              <span class="cmt"># (o `ip a`) IP y MAC de cada interfaz</span>
+ip route                     <span class="cmt"># tabla de rutas: ver el gateway por defecto</span>
+ip neigh                     <span class="cmt"># equivalente a arp -a (vecinos L2)</span>
+ping -c 4 192.168.1.1        <span class="cmt"># 4 pings al gateway</span></code></pre>
+      <div class="callout note">
+        <span class="label">Cómo leerlo</span>
+        Si <code>ipconfig</code>/<code>ip a</code> muestra una IP del tipo <strong>169.254.x.x</strong> (APIPA), el equipo <strong>no recibió IP del DHCP</strong>: revisa el cable, el puerto del switch o el servidor DHCP. Una IP 0.0.0.0 significa interfaz sin configurar.
+      </div>
     </div>
   </section>
 
@@ -138,11 +175,33 @@
     </div>
   </section>
 
+  <section class="section">
+    <div class="wrap block-body">
+      <h2 class="h"><span class="lead">Resumen</span> del módulo</h2>
+      <ul class="bullets">
+        <li>Una red de datos interconecta equipos con un protocolo común para intercambiar información; es la base de toda la TI.</li>
+        <li>Los medios físicos son cobre (UTP/STP/coaxial), fibra óptica (inmune a EMI, larga distancia) y RF (inalámbrico).</li>
+        <li>Ancho de banda es la capacidad teórica; throughput es la real; latencia es el retardo en ms — son métricas distintas.</li>
+        <li>El switch (L2, MAC) conmuta dentro de la LAN; el router (L3, IP) enruta entre redes distintas.</li>
+        <li>La IP llega al MDF; la fibra conecta MDF↔IDF; el cobre horizontal (máx. 90 m) llega a cada área de trabajo.</li>
+        <li>T568B es la terminación dominante; nunca se mezcla con T568A en la misma instalación.</li>
+      </ul>
+    </div>
+  </section>
+
   <section class="section" id="flash">
     <div class="wrap block-body">
       <h2 class="h"><span class="lead">Flashcards</span></h2>
       <p class="subtitle">Haz clic en cada tarjeta para ver la respuesta.</p>
       <div class="fc-grid">
+        <div class="flashcard"><div class="inner">
+          <div class="face front">Diferencia entre ancho de banda y throughput</div>
+          <div class="face back">El ancho de banda es la capacidad teórica máxima del enlace; el throughput es la velocidad real lograda, siempre menor por overhead, errores y retransmisiones.</div>
+        </div></div>
+        <div class="flashcard"><div class="inner">
+          <div class="face front">Half-duplex vs full-duplex</div>
+          <div class="face back">Half-duplex transmite o recibe pero no a la vez (hub, con colisiones). Full-duplex transmite y recibe simultáneamente (puerto de switch, sin colisiones).</div>
+        </div></div>
         <div class="flashcard"><div class="inner">
           <div class="face front">¿Qué es una red de datos?</div>
           <div class="face back">Conjunto de equipos interconectados por un protocolo inteligente capaz de organizar el envío de datos entre ellos.</div>
@@ -214,6 +273,19 @@
         <button class="btn ghost" onclick="resetQuiz('quiz1')">Reiniciar</button>
         <div class="quiz-result"></div>
       </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="wrap block-body">
+      <h2 class="h"><span class="lead">Preguntas</span> de repaso</h2>
+      <ul class="review">
+        <li>¿Por qué la fibra óptica es preferible al cobre para el backbone entre el MDF y los IDF?</li>
+        <li>Un usuario tiene un enlace de 1 Gbps pero solo logra 600 Mbps de descarga. ¿Qué métricas explican la diferencia?</li>
+        <li>¿Qué diferencia funcional hay entre un switch y un router? ¿En qué capa opera cada uno?</li>
+        <li>¿Por qué el cable horizontal de cobre no debe superar los 90 metros?</li>
+        <li>Tu PC muestra una IP 169.254.10.4. ¿Qué significa y cuáles son las causas probables?</li>
+      </ul>
     </div>
   </section>
 

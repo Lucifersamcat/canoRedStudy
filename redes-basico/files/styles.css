@@ -132,6 +132,9 @@ pre {
 }
 code { font-family: var(--mono); font-size: .88rem; }
 pre code { color: #c9d4e3; }
+.cmt { color: #5c6b7e; }
+.kw { color: #f472b6; }
+.val { color: var(--accent-3); }
 :not(pre) > code {
   background: var(--bg-soft); border: 1px solid var(--border);
   padding: 1px 6px; border-radius: 5px; font-size: .85em; color: var(--accent-2);
@@ -170,6 +173,20 @@ ol.steps li::before {
 }
 ul.bullets { margin: 10px 0 10px 20px; color: var(--text-dim); }
 ul.bullets li { margin: 4px 0; }
+
+/* ===== Review checklist ===== */
+.review { list-style: none; margin: 14px 0; }
+.review li {
+  list-style: none; padding: 8px 0 8px 30px; position: relative;
+  border-bottom: 1px dashed var(--border); color: var(--text-dim);
+}
+.review li:last-child { border-bottom: none; }
+.review li::before {
+  content: '?'; position: absolute; left: 0; top: 8px;
+  width: 20px; height: 20px; border-radius: 50%; background: var(--accent-3);
+  color: #000; font-weight: 700; font-size: .8rem;
+  display: flex; align-items: center; justify-content: center;
+}
 
 /* ===== Diagram box ===== */
 .diagram {
