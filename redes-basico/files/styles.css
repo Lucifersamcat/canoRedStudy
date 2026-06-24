@@ -196,6 +196,23 @@ ul.bullets li { margin: 4px 0; }
 .diagram svg { max-width: 100%; height: auto; }
 .diagram .cap { color: var(--text-dim); font-size: .85rem; margin-top: 10px; }
 
+/* ===== Resource list (material de apoyo) ===== */
+.reslist { list-style: none; margin: 12px 0; display: grid; gap: 8px; }
+.reslist li {
+  background: var(--bg-card); border: 1px solid var(--border);
+  border-radius: 10px; padding: 10px 14px; color: var(--text-dim);
+}
+.reslist li a { font-weight: 600; }
+.reslist .tag {
+  display: inline-block; font-family: var(--mono); font-size: .66rem;
+  text-transform: uppercase; letter-spacing: 1px; padding: 1px 7px;
+  border-radius: 5px; margin-right: 8px; vertical-align: middle;
+}
+.reslist .tag.video { background: rgba(244,114,182,.16); color: #f472b6; }
+.reslist .tag.doc { background: rgba(79,156,249,.16); color: #4f9cf9; }
+.reslist .tag.lab { background: rgba(52,211,153,.16); color: #34d399; }
+.reslist .tag.tool { background: rgba(245,158,11,.16); color: #f59e0b; }
+
 /* ===== Flashcards ===== */
 .fc-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px,1fr)); gap: 16px; }
 .flashcard { perspective: 1000px; height: 170px; cursor: pointer; }
