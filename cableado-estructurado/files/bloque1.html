@@ -34,6 +34,20 @@
 
       <h3>¿Qué es el Cableado Estructurado?</h3>
       <p>El <strong>cableado estructurado</strong> es un sistema de infraestructura de telecomunicaciones estandarizado que organiza el cableado de un edificio en un conjunto ordenado de elementos. Sigue normas como <strong>ANSI/TIA-568</strong> e <strong>ISO/IEC 11801</strong> para garantizar interoperabilidad, escalabilidad y orden. Se utiliza para voz, datos, video y control.</p>
+      <p>Sus ventajas frente a un cableado improvisado: <strong>consistencia y organización</strong>, soporte para equipos de múltiples proveedores, simplifica movimientos/adiciones/cambios (MAC), acelera la resolución de problemas, aísla fallos a un solo tramo y reduce los costos de mantenimiento a largo plazo — pero solo si se instala bien desde la primera vez.</p>
+
+      <h3>Modelo OSI — ¿Dónde Trabaja el Instalador?</h3>
+      <p>El modelo OSI describe en 7 capas cómo viaja la información entre sistemas. El instalador de cableado estructurado trabaja exclusivamente en la <strong>Capa 1 (Física)</strong>: define pines, voltajes y especificaciones del medio. Las capas 2 a 7 son responsabilidad de switches, routers y software — pero conocerlas ayuda a diagnosticar dónde está realmente un problema.</p>
+      <table>
+        <tr><th>Capa</th><th>Nombre</th><th>Función</th><th>Dispositivos / Protocolos</th></tr>
+        <tr><td>7</td><td>Aplicación</td><td>Servicios y apps que usa el usuario final</td><td>HTTP, FTP, SMTP, DNS</td></tr>
+        <tr><td>6</td><td>Presentación</td><td>Traduce y da formato a los datos para que el sistema receptor los entienda</td><td>TLS/SSL, JPEG</td></tr>
+        <tr><td>5</td><td>Sesión</td><td>Administra y termina las conexiones entre sistemas</td><td>NetBIOS, RPC</td></tr>
+        <tr><td>4</td><td>Transporte</td><td>Entrega confiable de extremo a extremo de los datos</td><td>TCP, UDP</td></tr>
+        <tr><td>3</td><td>Red</td><td>Direccionamiento IP y enrutamiento entre redes</td><td>Routers, IPv4/IPv6</td></tr>
+        <tr><td>2</td><td>Enlace de datos</td><td>Tramas, direccionamiento MAC, VLAN, control de acceso al medio</td><td>Switches, Ethernet</td></tr>
+        <tr><td>1</td><td>Física</td><td>Transmite bits (0 y 1) sobre el medio: pines, voltajes, especificaciones del cable</td><td>Cables de cobre/fibra, WiFi, NICs, repetidores</td></tr>
+      </table>
 
       <h3>Medios de la Capa Física</h3>
       <p>La capa física (Capa 1 del modelo OSI) define el medio por el que viajan las señales. Los tres tipos principales:</p>
@@ -42,6 +56,21 @@
         <li><strong>Fibra óptica:</strong> señal de luz, inmune a interferencias, larga distancia (hasta km).</li>
         <li><strong>Inalámbrico (RF):</strong> ondas de radio, flexible, con limitaciones de ancho de banda y seguridad.</li>
       </ul>
+
+      <h3>Los 6 Elementos del Cableado Estructurado</h3>
+      <p>La norma TIA-568 divide la infraestructura en seis subsistemas. Conocerlos evita confundir "cableado" con "cableado estructurado":</p>
+      <ul class="bullets">
+        <li><strong>1. Instalaciones de entrada (Entrance Facility):</strong> punto donde el cableado del proveedor de servicios ingresa al edificio.</li>
+        <li><strong>2. Sala de equipos / MDF</strong> (Main Distribution Frame): rack principal del edificio; aloja el core de red y la conexión con el proveedor.</li>
+        <li><strong>3. Cableado troncal o Backbone:</strong> interconecta el MDF con cada IDF; normalmente fibra óptica multimodo.</li>
+        <li><strong>4. Sala de telecomunicaciones / IDF</strong> (Intermediate Distribution Frame): distribución por piso o área; aloja patch panels y switches de acceso.</li>
+        <li><strong>5. Cableado horizontal:</strong> conecta el IDF con cada punto de red del área de trabajo (máx. 90 m).</li>
+        <li><strong>6. Área de trabajo / Telecommunications Outlet (TO):</strong> el jack en la pared y el equipo final del usuario.</li>
+      </ul>
+      <div class="callout note">
+        <span class="label">Distancias</span>
+        Además de los <strong>90 m</strong> de cableado horizontal permanente, la norma permite hasta <strong>10 m adicionales</strong> repartidos entre el patch cord del área de trabajo y el jumper de la sala de telecomunicaciones — sin superar el canal total de 100 m.
+      </div>
 
       <h3>Categorías de Cable UTP</h3>
       <p>Los pares trenzados cancelan interferencia por inducción mutua. La categoría define el ancho de banda soportado:</p>
@@ -53,6 +82,24 @@
         <tr><td>Cat7</td><td>10 Gbps</td><td>600 MHz</td><td>ISO/IEC 11801 (Clase F) — no reconocida por TIA-568; conectores GG45/TERA</td></tr>
         <tr><td>Cat8</td><td>25–40 Gbps</td><td>2000 MHz</td><td>Data center short-run</td></tr>
       </table>
+      <p class="subtitle">Categorías 1 a 4 están en desuso para datos (voz, Token Ring); Cat9 y Cat10 son especificaciones en desarrollo para cable SFTP/SSTP de 8 pares.</p>
+
+      <h3>Tipos de Apantallamiento (Shielding)</h3>
+      <p>La nomenclatura <strong>X/YTP</strong> describe primero el blindaje exterior del cable completo y luego el de cada par individual:</p>
+      <table>
+        <tr><th>Código</th><th>Significado</th><th>Uso típico</th></tr>
+        <tr><td>U/UTP</td><td>Sin blindaje exterior ni por par</td><td>Oficinas estándar, bajo costo</td></tr>
+        <tr><td>F/UTP</td><td>Foil (lámina) exterior; pares sin blindaje</td><td>Entornos con algo de EMI</td></tr>
+        <tr><td>S/UTP</td><td>Malla trenzada exterior; pares sin blindaje</td><td>Mayor protección mecánica</td></tr>
+        <tr><td>SF/UTP</td><td>Malla + foil exteriores; pares sin blindaje</td><td>Alta interferencia, sin blindaje por par</td></tr>
+        <tr><td>U/FTP</td><td>Sin blindaje exterior; cada par con foil</td><td>Baja diafonía entre pares</td></tr>
+        <tr><td>SF/FTP</td><td>Malla + foil exterior; cada par con foil</td><td>Máxima protección — data centers, industrial</td></tr>
+      </table>
+
+      <div class="callout fix">
+        <span class="label">Cuidado: cable CCA</span>
+        El cable <strong>CCA</strong> (Copper-Clad Aluminum, aluminio revestido de cobre) no cumple las normas TIA/ISO ni los estándares ETL/UL, y el NEC prohíbe su uso en cableado comercial. Tiene ~55 % más resistencia DC que el cobre sólido: se calienta más, es inadecuado para PoE y degrada el rendimiento en distancias largas. El ahorro inicial de un cable CCA barato se paga caro en fallas de red — exige siempre cobre sólido certificado.
+      </div>
 
       <h3>Estándares de Terminación: T568A y T568B</h3>
       <p>La norma TIA-568 define dos secuencias de color para los 4 pares (8 hilos). <strong>T568B</strong> es el estándar más usado en Latinoamérica y EE.UU.:</p>
@@ -96,6 +143,11 @@
         <tr><td>Patch Cord</td><td>Cable corto RJ-45 ↔ RJ-45 para patch panel ↔ switch o jack ↔ dispositivo final</td></tr>
         <tr><td>Punch Down</td><td>Técnica de terminación donde los hilos se insertan a presión en bloques 110 o Krone</td></tr>
         <tr><td>NEXT</td><td>Near-End CrossTalk — interferencia entre pares en el extremo de origen; parámetro crítico de certificación</td></tr>
+        <tr><td>MDF</td><td>Main Distribution Frame — sala de equipos central del edificio; conecta con el proveedor de servicios</td></tr>
+        <tr><td>IDF</td><td>Intermediate Distribution Frame — sala de telecomunicaciones que distribuye por piso o área</td></tr>
+        <tr><td>Backbone</td><td>Cableado troncal (normalmente fibra) que interconecta el MDF con cada IDF</td></tr>
+        <tr><td>CCA</td><td>Copper-Clad Aluminum — cable de aluminio revestido de cobre; no certificable, prohibido en cableado comercial</td></tr>
+        <tr><td>F/UTP</td><td>Cable con blindaje de foil exterior y pares sin blindaje individual</td></tr>
       </table>
     </div>
   </section>
@@ -112,8 +164,22 @@
         <tr><td>Tijeras de cableado</td><td>Cortar el cable a medida exacta</td></tr>
         <tr><td>Pass-Thru Crimper</td><td>Crimping con guía que empuja los hilos hasta el extremo del conector</td></tr>
         <tr><td>Cable Tester</td><td>Verificar continuidad y orden de pines (wiremap)</td></tr>
+        <tr><td>Generador de tono y sonda</td><td>Localizar un cable específico en un bundle o rack por tonificación digital/analógica</td></tr>
         <tr><td>Fluke DSX-8000</td><td>Certificar parámetros: NEXT, insertion loss, return loss; equipo de referencia del mercado</td></tr>
       </table>
+
+      <h3>Verificador vs. Calificador vs. Certificador</h3>
+      <p>No todos los "probadores" de cable hacen lo mismo — elegir el equipo equivocado da una falsa sensación de seguridad:</p>
+      <table>
+        <tr><th>Nivel</th><th>Qué prueba</th><th>Ejemplo</th></tr>
+        <tr><td>Verificador</td><td>Continuidad y orden de los hilos (wiremap)</td><td>Cable tester básico, MicroScanner2</td></tr>
+        <tr><td>Calificador</td><td>Continuidad + orden + distancia + tasa de datos (capas 1 a 3)</td><td>NetAlly LinkRunner, Fluke LinkIQ</td></tr>
+        <tr><td>Certificador</td><td>Todo lo anterior + parámetros de interferencia (NEXT, insertion loss) comparados contra el estándar de la categoría</td><td>Fluke DSX-8000 / DSX2-8000</td></tr>
+      </table>
+      <div class="callout tip">
+        <span class="label">Por qué certificar</span>
+        Una luz de enlace encendida <strong>no</strong> significa que la red cumple el estándar. Certificar cuesta apenas ~5 % del costo total de la instalación, filtra materiales y mano de obra deficientes desde el día uno, y deja evidencia documentada de que el cableado soporta la aplicación de hoy y la de mañana.
+      </div>
     </div>
   </section>
 
@@ -285,6 +351,51 @@
         </svg>
         <div class="cap">T568B tiene los pares naranja y verde invertidos respecto a T568A. Los pines 4-5 (azul) y 7-8 (café) son idénticos en ambos. Usar T568B en ambos extremos del cable = straight-through.</div>
       </div>
+
+      <div class="diagram">
+        <svg viewBox="0 0 760 145" xmlns="http://www.w3.org/2000/svg" font-family="Segoe UI, sans-serif" font-size="10">
+          <defs>
+            <marker id="a3" markerWidth="8" markerHeight="8" refX="5" refY="3" orient="auto">
+              <path d="M0,0 L8,3 L0,6 Z" fill="#9aa7b8"/>
+            </marker>
+          </defs>
+
+          <!-- Entrance Facility -->
+          <rect x="10" y="55" width="110" height="75" rx="8" fill="#1c2230" stroke="#9aa7b8" stroke-width="2"/>
+          <text x="65" y="88" fill="#e6edf3" text-anchor="middle" font-size="10">Entrance</text>
+          <text x="65" y="102" fill="#e6edf3" text-anchor="middle" font-size="10">Facility</text>
+
+          <line x1="120" y1="100" x2="210" y2="100" stroke="#9aa7b8" stroke-width="2" marker-end="url(#a3)"/>
+          <text x="165" y="90" fill="#9aa7b8" text-anchor="middle" font-size="9">Acometida</text>
+
+          <!-- MDF -->
+          <rect x="210" y="55" width="110" height="75" rx="8" fill="#1c2230" stroke="#a78bfa" stroke-width="2"/>
+          <text x="265" y="85" fill="#a78bfa" font-weight="bold" text-anchor="middle" font-size="12">MDF</text>
+          <text x="265" y="102" fill="#9aa7b8" text-anchor="middle" font-size="9">Sala de Equipos</text>
+          <text x="265" y="115" fill="#9aa7b8" text-anchor="middle" font-size="8">(rack central)</text>
+
+          <line x1="320" y1="100" x2="410" y2="100" stroke="#f59e0b" stroke-width="2" marker-end="url(#a3)"/>
+          <text x="365" y="76" fill="#f59e0b" font-weight="bold" text-anchor="middle" font-size="9">Backbone</text>
+          <text x="365" y="90" fill="#9aa7b8" text-anchor="middle" font-size="8">(Fibra óptica)</text>
+
+          <!-- IDF -->
+          <rect x="410" y="55" width="110" height="75" rx="8" fill="#1c2230" stroke="#34d399" stroke-width="2"/>
+          <text x="465" y="85" fill="#34d399" font-weight="bold" text-anchor="middle" font-size="12">IDF</text>
+          <text x="465" y="102" fill="#9aa7b8" text-anchor="middle" font-size="9">Sala de Telecom.</text>
+          <text x="465" y="115" fill="#9aa7b8" text-anchor="middle" font-size="8">(por piso / área)</text>
+
+          <line x1="520" y1="100" x2="610" y2="100" stroke="#4f9cf9" stroke-width="2" marker-end="url(#a3)"/>
+          <text x="565" y="76" fill="#4f9cf9" font-weight="bold" text-anchor="middle" font-size="9">Horizontal</text>
+          <text x="565" y="90" fill="#9aa7b8" text-anchor="middle" font-size="8">≤ 90 m (UTP)</text>
+
+          <!-- Work Area / TO -->
+          <rect x="610" y="55" width="110" height="75" rx="8" fill="#1c2230" stroke="#22d3ee" stroke-width="2"/>
+          <text x="665" y="85" fill="#22d3ee" font-weight="bold" text-anchor="middle" font-size="11">Work Area</text>
+          <text x="665" y="102" fill="#9aa7b8" text-anchor="middle" font-size="9">Telecom Outlet</text>
+          <text x="665" y="115" fill="#9aa7b8" text-anchor="middle" font-size="8">(jack + equipo)</text>
+        </svg>
+        <div class="cap">Los 6 elementos del cableado estructurado en su orden lógico: la acometida entra al MDF (sala de equipos), el backbone de fibra lo conecta con cada IDF (sala de telecomunicaciones por piso), y de ahí el cableado horizontal llega al área de trabajo del usuario.</div>
+      </div>
     </div>
   </section>
 
@@ -294,16 +405,21 @@
       <h2 class="h"><span class="lead">Laboratorio 1</span> — Punchando mi primer jack</h2>
       <p class="subtitle">Materiales: cable UTP Cat6, jack keystone Cat6, punch down tool, cable stripper, tijeras, cable tester.</p>
       <ol class="steps">
-        <li>Pelar con el stripper ~3 cm de chaqueta. No dañar la aislación de los pares. Conservar el ripcord (hilo de tracción).</li>
+        <li>Pelar con el stripper ~3 cm (o ~2 pulgadas) de chaqueta. No dañar la aislación de los pares. Conservar el <strong>ripcord</strong> (hilo de tracción) — nunca usar ese punto como inicio de la terminación: ahí siempre quedan micro-cortes.</li>
+        <li>Envolver el tramo de chaqueta sobrante alrededor del ripcord y tirar con firmeza para rasgarla limpiamente; cortar el excedente de chaqueta y ripcord con tijeras. Un borde irregular es buena señal: significa que no hubo corte hecho por el pelador.</li>
         <li>Separar los pares desenrollando lo mínimo necesario para alcanzar los canales del jack. Mantener el trenzado lo más cerca posible.</li>
-        <li>Posicionar hilos según <strong>T568B</strong>: colocar cada hilo en su canal marcado en el plástico del jack.</li>
-        <li>Punchdown: presionar la herramienta sobre cada hilo. La cuchilla corta el exceso automáticamente. El lado de corte va hacia afuera del jack.</li>
-        <li>Montar el jack en la faceplate o caja de pared. Etiquetar el outlet con un identificador único.</li>
+        <li>Posicionar hilos según <strong>T568B</strong>: colocar cada hilo en su canal marcado en el plástico del jack. Cada fabricante marca su propia distribución con imágenes en el jack — deténte a leerla antes de continuar.</li>
+        <li>Punchdown: presionar la herramienta sobre cada hilo, siempre <strong>en línea recta</strong>. La cuchilla corta el exceso automáticamente. El lado de corte va hacia afuera del jack.</li>
+        <li>Montar el jack en la faceplate o caja de pared y colocar el clip/candado plástico si el conector lo incluye — no es decorativo, fija los hilos en su lugar. Etiquetar el outlet con un identificador único.</li>
         <li>Probar con el cable tester: conectar en el jack y en el patch panel. Verificar wiremap 1:1 — los 8 pines en orden correcto.</li>
       </ol>
       <div class="callout tip">
         <span class="label">Regla de oro</span>
         Nunca desenrollar más de <strong>13 mm</strong> de par en la terminación. A más desenrollado, mayor NEXT y peor certificación.
+      </div>
+      <div class="callout note">
+        <span class="label">Truco de oficio</span>
+        Si el cable no trae ripcord, no vale la pena trabajar con él: sin ese hilo de tracción no hay forma limpia de abrir la chaqueta sin arriesgar micro-cortes en el aislante de los pares.
       </div>
     </div>
   </section>
@@ -314,10 +430,13 @@
       <h2 class="h"><span class="lead">Resumen</span> del módulo</h2>
       <ul class="bullets">
         <li>El cableado estructurado se rige por TIA-568 e ISO 11801; garantiza interoperabilidad y escalabilidad.</li>
+        <li>El instalador trabaja en la Capa 1 del modelo OSI (física); las capas 2-7 son responsabilidad de switches, routers y software.</li>
+        <li>Los 6 elementos son: instalaciones de entrada, MDF, backbone, IDF, cableado horizontal y área de trabajo (TO).</li>
         <li>Cat6A (500 MHz, 10 Gbps a 100 m) es la categoría mínima recomendada para instalaciones nuevas.</li>
         <li>T568B: pines 1-2 naranja, 3-6 verde, 4-5 azul, 7-8 café — estándar dominante en Latinoamérica.</li>
         <li>El patch panel centraliza el cableado horizontal; los jacks terminan el cable en el área de trabajo.</li>
         <li>NEXT es el parámetro de certificación más crítico; lo degrada el exceso de desenrollado en la terminación.</li>
+        <li>Un cable CCA nunca reemplaza al cobre sólido: no certifica y degrada el rendimiento y la seguridad de la red.</li>
       </ul>
     </div>
   </section>
@@ -351,6 +470,26 @@
         <div class="flashcard"><div class="inner">
           <div class="face front">¿Para qué sirve la punch down tool?</div>
           <div class="face back">Inserta y corta los hilos del cable UTP en los bloques <strong>110 o Krone</strong> del patch panel y jacks. Garantiza contacto eléctrico sin soldar.</div>
+        </div></div>
+        <div class="flashcard"><div class="inner">
+          <div class="face front">¿En qué capa OSI trabaja el instalador de cableado?</div>
+          <div class="face back"><strong>Capa 1 (Física)</strong>. Define pines, voltajes y el medio (cobre, fibra, WiFi). Las capas 2-7 son responsabilidad de switches, routers y software.</div>
+        </div></div>
+        <div class="flashcard"><div class="inner">
+          <div class="face front">Diferencia entre MDF e IDF</div>
+          <div class="face back">El <strong>MDF</strong> es la sala de equipos central del edificio. El <strong>IDF</strong> es la sala de telecomunicaciones que distribuye por piso/área. El backbone (fibra) los interconecta.</div>
+        </div></div>
+        <div class="flashcard"><div class="inner">
+          <div class="face front">¿Qué es un cable F/UTP?</div>
+          <div class="face back">Cable con blindaje de <strong>foil</strong> exterior y pares sin blindaje individual. Protege contra EMI externa sin el costo de blindar cada par.</div>
+        </div></div>
+        <div class="flashcard"><div class="inner">
+          <div class="face front">¿Por qué evitar el cable CCA?</div>
+          <div class="face back">El aluminio revestido de cobre no cumple TIA/ISO/ETL/UL, tiene ~55 % más resistencia DC (mala para PoE) y se rompe más fácil al tirar. No es certificable.</div>
+        </div></div>
+        <div class="flashcard"><div class="inner">
+          <div class="face front">Verificador vs. Certificador — diferencia</div>
+          <div class="face back">El <strong>verificador</strong> solo prueba continuidad/wiremap. El <strong>certificador</strong> (ej. Fluke DSX-8000) además mide NEXT e insertion loss contra el estándar de la categoría.</div>
         </div></div>
       </div>
     </div>
@@ -400,6 +539,30 @@
           <label><input type="radio" name="q5a" value="b"> Network Extended Transfer</label>
           <label><input type="radio" name="q5a" value="c"> Noise Equalization Transfer</label>
           <div class="explain">Near-End CrossTalk: interferencia entre pares medida en el extremo donde se inyecta la señal.</div>
+        </div>
+
+        <div class="q" data-answer="c">
+          <div class="qt">6. ¿En qué capa del modelo OSI trabaja el instalador de cableado estructurado?</div>
+          <label><input type="radio" name="q6a" value="a"> Capa 3 — Red</label>
+          <label><input type="radio" name="q6a" value="b"> Capa 2 — Enlace de datos</label>
+          <label><input type="radio" name="q6a" value="c"> Capa 1 — Física</label>
+          <div class="explain">El instalador define pines, voltajes y el medio de transmisión: eso es la Capa 1 (Física). El resto lo manejan switches, routers y software.</div>
+        </div>
+
+        <div class="q" data-answer="b">
+          <div class="qt">7. ¿Cuál sala de telecomunicaciones distribuye el cableado por piso o área?</div>
+          <label><input type="radio" name="q7a" value="a"> MDF</label>
+          <label><input type="radio" name="q7a" value="b"> IDF</label>
+          <label><input type="radio" name="q7a" value="c"> Entrance Facility</label>
+          <div class="explain">El IDF (Intermediate Distribution Frame) distribuye por piso/área; el MDF es la sala de equipos central del edificio, conectada al IDF por el backbone.</div>
+        </div>
+
+        <div class="q" data-answer="a">
+          <div class="qt">8. ¿Por qué se evita el cable CCA (Copper-Clad Aluminum) en instalaciones certificadas?</div>
+          <label><input type="radio" name="q8a" value="a"> No cumple normas TIA/ISO/ETL/UL y tiene mayor resistencia DC</label>
+          <label><input type="radio" name="q8a" value="b"> Es más caro que el cobre sólido</label>
+          <label><input type="radio" name="q8a" value="c"> Solo funciona con fibra óptica</label>
+          <div class="explain">El CCA no está autorizado por ningún organismo de certificación, tiene ~55% más resistencia DC (mal para PoE) y menor resistencia a la tracción que el cobre sólido.</div>
         </div>
 
         <button class="btn" onclick="checkQuiz('quiz1')">Comprobar respuestas</button>
