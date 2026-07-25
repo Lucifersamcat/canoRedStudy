@@ -16,8 +16,9 @@
     <div class="progress-dots"><span class="on"></span><span class="on"></span><span></span><span></span><span></span><span></span></div>
     <div class="toc">
       <a href="#teoria">Teoría</a><a href="#conceptos">Conceptos</a>
-      <a href="#diagrama">Diagrama OSI</a><a href="#lab">Laboratorio</a>
-      <a href="#flash">Flashcards</a><a href="#quiz">Cuestionario</a>
+      <a href="#diagrama">Diagrama OSI</a><a href="#comandos">Comandos</a>
+      <a href="#lab">Laboratorio</a><a href="#flash">Flashcards</a>
+      <a href="#quiz">Cuestionario</a><a href="#recursos">Recursos</a>
     </div>
   </section>
 
@@ -55,6 +56,44 @@
         <span class="label">Para recordar</span>
         <strong>TCP = Llamada telefónica</strong> (se establece la comunicación antes de hablar). <strong>UDP = Carta postal</strong> (se envía y no se sabe si llegó).
       </div>
+      <p>TCP también <strong>cierra</strong> la sesión de forma ordenada con un intercambio de cuatro mensajes (FIN → ACK → FIN → ACK), liberando los recursos en ambos extremos.</p>
+
+      <h3>Encapsulación y PDUs</h3>
+      <p>Cuando los datos bajan por las capas del emisor, cada capa les añade su propia cabecera. A la unidad de datos de cada capa se le llama <strong>PDU</strong> (Protocol Data Unit) y cambia de nombre según el nivel. En el receptor el proceso es inverso (desencapsulación): cada capa quita su cabecera y entrega el contenido a la capa superior.</p>
+      <table>
+        <tr><th>Capa</th><th>PDU</th><th>Información que añade</th></tr>
+        <tr><td>Aplicación / Presentación / Sesión</td><td>Datos</td><td>El mensaje del usuario (HTTP, etc.)</td></tr>
+        <tr><td>Transporte (4)</td><td>Segmento (TCP) / Datagrama (UDP)</td><td>Puerto origen y destino</td></tr>
+        <tr><td>Red (3)</td><td>Paquete</td><td>IP origen y destino</td></tr>
+        <tr><td>Enlace (2)</td><td>Trama</td><td>MAC origen y destino + FCS</td></tr>
+        <tr><td>Física (1)</td><td>Bits</td><td>Señal eléctrica / óptica / RF</td></tr>
+      </table>
+
+      <h3>Modelo TCP/IP vs OSI</h3>
+      <p>OSI es el modelo teórico de referencia (7 capas), pero Internet funciona realmente sobre el modelo <strong>TCP/IP</strong>, más compacto (4 capas). Conviene saber cómo se corresponden:</p>
+      <table>
+        <tr><th>TCP/IP (4 capas)</th><th>Capas OSI equivalentes</th><th>Ejemplos</th></tr>
+        <tr><td>Aplicación</td><td>7 + 6 + 5</td><td>HTTP, DNS, SMTP, TLS</td></tr>
+        <tr><td>Transporte</td><td>4</td><td>TCP, UDP</td></tr>
+        <tr><td>Internet</td><td>3</td><td>IP, ICMP</td></tr>
+        <tr><td>Acceso a red</td><td>2 + 1</td><td>Ethernet, WiFi, ARP</td></tr>
+      </table>
+
+      <h3>Puertos bien conocidos</h3>
+      <p>El puerto identifica el servicio dentro de un host. Los puertos <strong>0–1023</strong> son "bien conocidos" (reservados a servicios estándar); 1024–49151 son registrados; 49152–65535 son dinámicos/efímeros (los que abre tu equipo como origen). Los esenciales:</p>
+      <table>
+        <tr><th>Puerto</th><th>Protocolo</th><th>Servicio</th></tr>
+        <tr><td>20 / 21</td><td>TCP</td><td>FTP (datos / control)</td></tr>
+        <tr><td>22</td><td>TCP</td><td>SSH / SFTP</td></tr>
+        <tr><td>23</td><td>TCP</td><td>Telnet (inseguro)</td></tr>
+        <tr><td>25</td><td>TCP</td><td>SMTP (correo saliente)</td></tr>
+        <tr><td>53</td><td>UDP/TCP</td><td>DNS</td></tr>
+        <tr><td>67 / 68</td><td>UDP</td><td>DHCP (servidor / cliente)</td></tr>
+        <tr><td>80</td><td>TCP</td><td>HTTP</td></tr>
+        <tr><td>123</td><td>UDP</td><td>NTP</td></tr>
+        <tr><td>443</td><td>TCP</td><td>HTTPS</td></tr>
+        <tr><td>3389</td><td>TCP</td><td>RDP (escritorio remoto)</td></tr>
+      </table>
 
       <h3>Dominios de broadcast y colisión</h3>
       <p>Un <strong>dominio de colisión</strong> es el segmento donde dos equipos pueden interferirse al transmitir simultáneamente. Los switches crean un dominio de colisión por puerto (full-duplex, sin colisiones). Los hubs crean un dominio de colisión único para todos los puertos.</p>
@@ -128,6 +167,125 @@
         </svg>
         <div class="cap">Las 7 capas del modelo OSI. El tráfico baja por las capas en el emisor y sube en el receptor.</div>
       </div>
+
+      <div class="diagram">
+        <svg viewBox="0 0 760 300" xmlns="http://www.w3.org/2000/svg" font-family="Segoe UI, sans-serif" font-size="12">
+          <defs><marker id="enc" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6 Z" fill="#9aa7b8"/></marker></defs>
+          <text x="380" y="20" fill="#e6edf3" font-weight="bold" text-anchor="middle" font-size="13">Encapsulación — cada capa añade su cabecera</text>
+
+          <!-- Datos (capa 7-5) -->
+          <text x="20" y="58" fill="#9aa7b8" font-size="10">Aplicación</text>
+          <rect x="120" y="44" width="520" height="26" rx="4" fill="#1c3318" stroke="#34d399"/>
+          <text x="380" y="61" fill="#34d399" text-anchor="middle" font-size="11">DATOS</text>
+          <text x="650" y="61" fill="#9aa7b8" font-size="10">PDU: Datos</text>
+          <line x1="380" y1="70" x2="380" y2="86" stroke="#9aa7b8" stroke-width="1.2" marker-end="url(#enc)"/>
+
+          <!-- Segmento (capa 4) -->
+          <text x="20" y="106" fill="#9aa7b8" font-size="10">Transporte</text>
+          <rect x="92" y="90" width="56" height="26" rx="4" fill="#3a2a00" stroke="#f59e0b"/>
+          <text x="120" y="107" fill="#f59e0b" text-anchor="middle" font-size="10">TCP</text>
+          <rect x="148" y="90" width="492" height="26" rx="4" fill="#1c3318" stroke="#34d399"/>
+          <text x="394" y="107" fill="#34d399" text-anchor="middle" font-size="11">DATOS</text>
+          <text x="650" y="107" fill="#9aa7b8" font-size="10">PDU: Segmento</text>
+          <line x1="380" y1="116" x2="380" y2="132" stroke="#9aa7b8" stroke-width="1.2" marker-end="url(#enc)"/>
+
+          <!-- Paquete (capa 3) -->
+          <text x="20" y="152" fill="#9aa7b8" font-size="10">Red</text>
+          <rect x="64" y="136" width="56" height="26" rx="4" fill="#0e2740" stroke="#4f9cf9"/>
+          <text x="92" y="153" fill="#4f9cf9" text-anchor="middle" font-size="10">IP</text>
+          <rect x="120" y="136" width="56" height="26" rx="4" fill="#3a2a00" stroke="#f59e0b"/>
+          <text x="148" y="153" fill="#f59e0b" text-anchor="middle" font-size="10">TCP</text>
+          <rect x="176" y="136" width="464" height="26" rx="4" fill="#1c3318" stroke="#34d399"/>
+          <text x="408" y="153" fill="#34d399" text-anchor="middle" font-size="11">DATOS</text>
+          <text x="650" y="153" fill="#9aa7b8" font-size="10">PDU: Paquete</text>
+          <line x1="380" y1="162" x2="380" y2="178" stroke="#9aa7b8" stroke-width="1.2" marker-end="url(#enc)"/>
+
+          <!-- Trama (capa 2) -->
+          <text x="20" y="198" fill="#9aa7b8" font-size="10">Enlace</text>
+          <rect x="64" y="182" width="56" height="26" rx="4" fill="#2a1438" stroke="#a78bfa"/>
+          <text x="92" y="199" fill="#a78bfa" text-anchor="middle" font-size="10">MAC</text>
+          <rect x="120" y="182" width="48" height="26" rx="4" fill="#0e2740" stroke="#4f9cf9"/>
+          <text x="144" y="199" fill="#4f9cf9" text-anchor="middle" font-size="10">IP</text>
+          <rect x="168" y="182" width="48" height="26" rx="4" fill="#3a2a00" stroke="#f59e0b"/>
+          <text x="192" y="199" fill="#f59e0b" text-anchor="middle" font-size="10">TCP</text>
+          <rect x="216" y="182" width="360" height="26" rx="4" fill="#1c3318" stroke="#34d399"/>
+          <text x="396" y="199" fill="#34d399" text-anchor="middle" font-size="11">DATOS</text>
+          <rect x="576" y="182" width="64" height="26" rx="4" fill="#2a1438" stroke="#a78bfa"/>
+          <text x="608" y="199" fill="#a78bfa" text-anchor="middle" font-size="10">FCS</text>
+          <text x="650" y="199" fill="#9aa7b8" font-size="10">PDU: Trama</text>
+          <line x1="380" y1="208" x2="380" y2="224" stroke="#9aa7b8" stroke-width="1.2" marker-end="url(#enc)"/>
+
+          <!-- Bits (capa 1) -->
+          <text x="20" y="244" fill="#9aa7b8" font-size="10">Física</text>
+          <rect x="120" y="228" width="520" height="26" rx="4" fill="#11161f" stroke="#22d3ee"/>
+          <text x="380" y="245" fill="#22d3ee" text-anchor="middle" font-size="11" font-family="monospace">1011010011101000101101…</text>
+          <text x="650" y="245" fill="#9aa7b8" font-size="10">PDU: Bits</text>
+
+          <text x="380" y="282" fill="#9aa7b8" text-anchor="middle" font-size="10">En el receptor el proceso es inverso (desencapsulación): cada capa retira su cabecera y entrega el contenido a la capa superior.</text>
+        </svg>
+        <div class="cap">Al bajar por las capas, cada nivel envuelve los datos con su propia cabecera (TCP→IP→MAC) y la PDU cambia de nombre: datos → segmento → paquete → trama → bits.</div>
+      </div>
+
+      <div class="diagram">
+        <svg viewBox="0 0 760 320" xmlns="http://www.w3.org/2000/svg" font-family="Segoe UI, sans-serif" font-size="12">
+          <defs>
+            <marker id="hs" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6 Z" fill="#9aa7b8"/></marker>
+          </defs>
+          <text x="380" y="20" fill="#e6edf3" font-weight="bold" text-anchor="middle" font-size="13">TCP: apertura (3-way) y cierre (4-way)</text>
+          <!-- Actores -->
+          <rect x="120" y="30" width="120" height="26" rx="6" fill="#1c2230" stroke="#34d399"/>
+          <text x="180" y="48" fill="#34d399" text-anchor="middle" font-size="11" font-weight="700">Cliente</text>
+          <rect x="520" y="30" width="120" height="26" rx="6" fill="#1c2230" stroke="#4f9cf9"/>
+          <text x="580" y="48" fill="#4f9cf9" text-anchor="middle" font-size="11" font-weight="700">Servidor</text>
+          <line x1="180" y1="56" x2="180" y2="306" stroke="#2b3242" stroke-dasharray="4 3"/>
+          <line x1="580" y1="56" x2="580" y2="306" stroke="#2b3242" stroke-dasharray="4 3"/>
+
+          <text x="40" y="80" fill="#34d399" font-size="10" font-weight="700">Apertura</text>
+          <line x1="184" y1="92" x2="576" y2="106" stroke="#34d399" stroke-width="1.5" marker-end="url(#hs)"/>
+          <text x="380" y="92" fill="#34d399" text-anchor="middle" font-size="10">① SYN</text>
+          <line x1="576" y1="120" x2="184" y2="134" stroke="#4f9cf9" stroke-width="1.5" marker-end="url(#hs)"/>
+          <text x="380" y="120" fill="#4f9cf9" text-anchor="middle" font-size="10">② SYN + ACK</text>
+          <line x1="184" y1="148" x2="576" y2="162" stroke="#34d399" stroke-width="1.5" marker-end="url(#hs)"/>
+          <text x="380" y="148" fill="#34d399" text-anchor="middle" font-size="10">③ ACK</text>
+          <text x="380" y="182" fill="#9aa7b8" text-anchor="middle" font-size="10">═══ sesión ESTABLISHED · datos ═══</text>
+
+          <text x="40" y="216" fill="#f59e0b" font-size="10" font-weight="700">Cierre</text>
+          <line x1="184" y1="228" x2="576" y2="242" stroke="#f59e0b" stroke-width="1.5" marker-end="url(#hs)"/>
+          <text x="380" y="228" fill="#f59e0b" text-anchor="middle" font-size="10">① FIN</text>
+          <line x1="576" y1="256" x2="184" y2="270" stroke="#4f9cf9" stroke-width="1.5" marker-end="url(#hs)"/>
+          <text x="380" y="256" fill="#4f9cf9" text-anchor="middle" font-size="10">② ACK</text>
+          <line x1="576" y1="284" x2="184" y2="298" stroke="#f59e0b" stroke-width="1.5" marker-end="url(#hs)"/>
+          <text x="380" y="284" fill="#f59e0b" text-anchor="middle" font-size="10">③ FIN</text>
+          <line x1="184" y1="300" x2="576" y2="312" stroke="#34d399" stroke-width="1.5" marker-end="url(#hs)"/>
+          <text x="380" y="312" fill="#34d399" text-anchor="middle" font-size="10">④ ACK</text>
+        </svg>
+        <div class="cap">TCP abre la sesión con tres mensajes (SYN → SYN/ACK → ACK) y la cierra ordenadamente con cuatro (FIN → ACK → FIN → ACK). UDP no hace nada de esto: envía y olvida.</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="comandos">
+    <div class="wrap block-body">
+      <h2 class="h"><span class="lead">Comandos</span> — capas, puertos y sesiones</h2>
+      <p>Estos comandos permiten "ver" las capas en acción: qué sesiones TCP/UDP están abiertas, qué puertos escuchan y si un servicio remoto responde.</p>
+      <pre><code><span class="cmt"># Conexiones y puertos en escucha</span>
+netstat -an                  <span class="cmt"># Windows/Linux: sesiones activas y puertos LISTENING</span>
+ss -tuln                     <span class="cmt"># Linux moderno: TCP/UDP en escucha, numérico</span>
+
+<span class="cmt"># ¿Está abierto un puerto en un host remoto? (capa 4)</span>
+Test-NetConnection host -Port 443   <span class="cmt"># PowerShell (Windows)</span>
+nc -vz 8.8.8.8 53                   <span class="cmt"># Linux/macOS (netcat): probar UDP/TCP</span>
+
+<span class="cmt"># Ver el camino y la latencia (capa 3)</span>
+tracert google.com           <span class="cmt"># Windows</span>
+traceroute google.com        <span class="cmt"># Linux/macOS</span>
+
+<span class="cmt"># Ver la tabla MAC ↔ IP aprendida localmente (capa 2 ↔ 3)</span>
+arp -a</code></pre>
+      <div class="callout note">
+        <span class="label">Estados útiles de netstat</span>
+        <strong>LISTENING</strong> = el servicio espera conexiones · <strong>ESTABLISHED</strong> = sesión TCP activa · <strong>TIME_WAIT</strong> = sesión cerrándose. Si un servidor no responde, primero verifica que su puerto esté en LISTENING.
+      </div>
     </div>
   </section>
 
@@ -149,11 +307,33 @@
     </div>
   </section>
 
+  <section class="section">
+    <div class="wrap block-body">
+      <h2 class="h"><span class="lead">Resumen</span> del módulo</h2>
+      <ul class="bullets">
+        <li>El modelo OSI (7 capas) es el marco teórico; TCP/IP (4 capas) es el modelo real de Internet.</li>
+        <li>Encapsulación: cada capa añade su cabecera. La PDU cambia de nombre: datos → segmento → paquete → trama → bits.</li>
+        <li>TCP es fiable y orientado a conexión (3-way handshake); UDP es rápido y sin garantía de entrega.</li>
+        <li>Los puertos identifican el servicio: 22 SSH, 53 DNS, 80 HTTP, 443 HTTPS, 3389 RDP.</li>
+        <li>Las VLANs y los routers separan dominios de broadcast; los switches separan dominios de colisión por puerto.</li>
+        <li>ARP resuelve IP→MAC; la MAC Address Table del switch mapea MAC↔puerto y es volátil.</li>
+      </ul>
+    </div>
+  </section>
+
   <section class="section" id="flash">
     <div class="wrap block-body">
       <h2 class="h"><span class="lead">Flashcards</span></h2>
       <p class="subtitle">Haz clic en cada tarjeta para ver la respuesta.</p>
       <div class="fc-grid">
+        <div class="flashcard"><div class="inner">
+          <div class="face front">¿Cómo se llama la PDU en cada capa?</div>
+          <div class="face back">Transporte = segmento (TCP) / datagrama (UDP); Red = paquete; Enlace = trama; Física = bits. El proceso de añadir cabeceras se llama encapsulación.</div>
+        </div></div>
+        <div class="flashcard"><div class="inner">
+          <div class="face front">¿Cuántas capas tiene el modelo TCP/IP y cómo se mapea a OSI?</div>
+          <div class="face back">4 capas: Aplicación (OSI 7-6-5), Transporte (4), Internet (3) y Acceso a red (2-1).</div>
+        </div></div>
         <div class="flashcard"><div class="inner">
           <div class="face front">¿Cuántas capas tiene el modelo OSI?</div>
           <div class="face back">7 capas: Física, Enlace, Red, Transporte, Sesión, Presentación y Aplicación.</div>
@@ -225,6 +405,34 @@
         <button class="btn ghost" onclick="resetQuiz('quiz2')">Reiniciar</button>
         <div class="quiz-result"></div>
       </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="wrap block-body">
+      <h2 class="h"><span class="lead">Preguntas</span> de repaso</h2>
+      <ul class="review">
+        <li>Describe qué le ocurre a un mensaje HTTP a medida que baja por las capas OSI hasta convertirse en bits.</li>
+        <li>¿Por qué elegirías UDP en lugar de TCP para una videollamada, y TCP para descargar un archivo?</li>
+        <li>Un servicio web no responde. ¿Cómo usarías <code>netstat</code>/<code>Test-NetConnection</code> para distinguir si el problema es el servidor o la red?</li>
+        <li>¿En qué se diferencia un dominio de colisión de un dominio de broadcast, y qué dispositivo separa cada uno?</li>
+        <li>¿Por qué dos PCs en VLANs distintas no se comunican aunque estén en el mismo switch?</li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="section" id="recursos">
+    <div class="wrap block-body">
+      <h2 class="h"><span class="lead">Recursos</span> y material de apoyo</h2>
+      <p class="subtitle">Ampliación audiovisual y documentación de referencia para profundizar a nivel técnico superior.</p>
+      <ul class="reslist">
+        <li><span class="tag video">vídeo</span><a href="https://www.youtube.com/watch?v=LkolbURrtTs" target="_blank" rel="noopener">Practical Networking — OSI Model: A Practical Perspective</a> · <a href="https://www.youtube.com/watch?v=0aGqGKrRE0g" target="_blank" rel="noopener">Parte 2</a> — la mejor explicación práctica de capas y encapsulación.</li>
+        <li><span class="tag video">vídeo</span><a href="https://www.youtube.com/results?search_query=modelo+OSI+TCP+IP+explicado+espa%C3%B1ol" target="_blank" rel="noopener">Búsqueda: «modelo OSI y TCP/IP explicado»</a> — recorridos animados de las 7 capas y su correspondencia con TCP/IP.</li>
+        <li><span class="tag doc">doc</span><a href="https://www.cloudflare.com/learning/ddos/glossary/open-systems-interconnection-model-osi/" target="_blank" rel="noopener">Cloudflare — Modelo OSI</a> — referencia capa por capa con ejemplos.</li>
+        <li><span class="tag doc">doc</span><a href="https://www.iana.org/assignments/service-names-port-numbers/service-names-port-numbers.xhtml" target="_blank" rel="noopener">IANA — Registro oficial de puertos</a> — la fuente autoritativa de qué servicio usa cada puerto.</li>
+        <li><span class="tag doc">doc</span><a href="https://www.rfc-editor.org/rfc/rfc9293" target="_blank" rel="noopener">RFC 9293 — Transmission Control Protocol</a> — especificación actual de TCP (handshake, estados, control de flujo).</li>
+        <li><span class="tag lab">lab</span><a href="https://www.wireshark.org/" target="_blank" rel="noopener">Wireshark</a> — captura tramas reales y observa la encapsulación (Ethernet → IP → TCP) capa por capa.</li>
+      </ul>
     </div>
   </section>
 

@@ -16,8 +16,9 @@
     <div class="progress-dots"><span class="on"></span><span class="on"></span><span class="on"></span><span class="on"></span><span class="on"></span><span></span></div>
     <div class="toc">
       <a href="#teoria">Teoría</a><a href="#conceptos">Conceptos</a>
-      <a href="#diagrama">Diagrama</a><a href="#lab">Laboratorio</a>
-      <a href="#flash">Flashcards</a><a href="#quiz">Cuestionario</a>
+      <a href="#diagrama">Diagrama</a><a href="#comandos">Comandos</a>
+      <a href="#lab">Laboratorio</a><a href="#flash">Flashcards</a>
+      <a href="#quiz">Cuestionario</a><a href="#recursos">Recursos</a>
     </div>
   </section>
 
@@ -48,6 +49,28 @@
         <span class="label">VM vs Container</span>
         Usa una <strong>VM</strong> cuando necesitas un OS diferente al host o aislamiento total. Usa un <strong>container LXC</strong> cuando quieres ligereza y velocidad en un servicio Linux (web server, DNS, base de datos).
       </div>
+
+      <h3>Redes en virtualización: el switch virtual</h3>
+      <p>Aquí es donde virtualización y redes se cruzan. Las VMs no se conectan a un puerto físico: se conectan a un <strong>switch virtual</strong> (o <em>bridge</em>) que vive dentro del hypervisor. En Proxmox ese bridge se llama <code>vmbr0</code> por defecto y funciona como un switch de capa 2 por software: aprende MACs, reenvía tramas entre las VMs y las saca al exterior por la tarjeta física del host (la "uplink"). Cada VM recibe una <strong>NIC virtual</strong> (lo ideal es el driver <code>virtio</code>, el más rápido) con su propia MAC.</p>
+      <p>Como es un switch, también entiende <strong>VLANs</strong>: se puede etiquetar el tráfico de una VM con un VLAN ID (VLAN-aware bridge), igual que en un switch físico. Así varias VMs en el mismo host quedan segmentadas en redes distintas.</p>
+
+      <h3>Modos de red de una VM</h3>
+      <ul class="bullets">
+        <li><strong>Bridged (puente):</strong> la VM se conecta al bridge y aparece en la red física como un equipo más, con IP del mismo rango que el host. Es el modo de producción.</li>
+        <li><strong>NAT:</strong> el hypervisor traduce las direcciones; la VM sale a Internet usando la IP del host pero no es accesible directamente desde la red. Útil en laboratorios con una sola IP.</li>
+        <li><strong>Host-only / interna:</strong> la VM solo ve al host y a otras VMs del mismo segmento virtual; sin salida a Internet. Ideal para laboratorios aislados.</li>
+      </ul>
+
+      <h3>Snapshot vs Backup</h3>
+      <p>Se confunden, pero no son lo mismo. Un <strong>snapshot</strong> congela el estado de una VM en un instante para revertir un cambio rápido (una actualización que salió mal); depende del almacenamiento original, por lo que <em>no</em> sirve como respaldo. Un <strong>backup</strong> es una copia completa e independiente (un archivo) que se guarda en otro almacenamiento y permite restaurar la VM aunque el disco original se pierda.</p>
+
+      <h3>LXC vs Docker</h3>
+      <p>Ambos son contenedores, pero con filosofías distintas. <strong>LXC</strong> es un contenedor <em>de sistema</em>: se comporta como una máquina Linux ligera completa (con su init, servicios y SSH), pensado para correr de forma persistente. <strong>Docker</strong> es un contenedor <em>de aplicación</em>: empaqueta un solo proceso/servicio y su entorno, pensado para ser efímero y desplegado a escala. Proxmox usa LXC; en producción moderna de aplicaciones suele usarse Docker (a menudo dentro de una VM).</p>
+
+      <div class="callout tip">
+        <span class="label">Regla práctica de red</span>
+        Si una VM no tiene conectividad, revisa en este orden: (1) la NIC virtual está conectada al <strong>bridge correcto</strong>, (2) el modo de red (bridged vs NAT) es el esperado, (3) el VLAN tag coincide con la red, y (4) la IP/gateway dentro de la VM. El 90% de los fallos están en los primeros dos puntos.
+      </div>
     </div>
   </section>
 
@@ -67,6 +90,10 @@
         <tr><td>Snapshot</td><td>Foto del estado de una VM en un momento dado — permite rollback rápido</td></tr>
         <tr><td>HA (High Availability)</td><td>Configuración que permite migrar VMs automáticamente si un nodo falla</td></tr>
         <tr><td>Live Migration</td><td>Migración en vivo de una VM de un nodo a otro sin interrupción del servicio</td></tr>
+        <tr><td>Bridge virtual (vmbr0)</td><td>Switch L2 por software del hypervisor al que se conectan las VMs; saca el tráfico por la NIC física</td></tr>
+        <tr><td>NIC virtio</td><td>Driver de tarjeta de red virtual de alto rendimiento, recomendado para VMs Linux/Windows</td></tr>
+        <tr><td>Modo bridged / NAT</td><td>Bridged: la VM aparece en la red real; NAT: sale a Internet tras la IP del host</td></tr>
+        <tr><td>LXC vs Docker</td><td>LXC = contenedor de sistema (máquina Linux ligera); Docker = contenedor de aplicación (un servicio)</td></tr>
       </table>
     </div>
   </section>
@@ -107,6 +134,117 @@
         </svg>
         <div class="cap">Tipo 1 es más eficiente porque no tiene OS intermediario. Tipo 2 es más sencillo de instalar y usar para laboratorios y desarrollo.</div>
       </div>
+
+      <div class="diagram">
+        <svg viewBox="0 0 760 320" xmlns="http://www.w3.org/2000/svg" font-family="Segoe UI, sans-serif" font-size="12">
+          <defs><marker id="vb" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6 Z" fill="#9aa7b8"/></marker></defs>
+          <text x="380" y="20" fill="#e6edf3" font-weight="bold" text-anchor="middle" font-size="13">El switch virtual: bridge vmbr0 dentro del hypervisor</text>
+
+          <!-- Host -->
+          <rect x="30" y="34" width="430" height="200" rx="10" fill="#0d1220" stroke="#a78bfa" stroke-width="1.5"/>
+          <text x="50" y="54" fill="#a78bfa" font-weight="700" font-size="12">Servidor físico (host Proxmox)</text>
+
+          <!-- VMs -->
+          <rect x="50" y="66" width="120" height="46" rx="7" fill="#1c2230" stroke="#4f9cf9"/>
+          <text x="110" y="86" fill="#e6edf3" text-anchor="middle" font-size="11">VM Web</text>
+          <text x="110" y="102" fill="#34d399" text-anchor="middle" font-size="9">virtio · VLAN 10</text>
+          <rect x="180" y="66" width="120" height="46" rx="7" fill="#1c2230" stroke="#4f9cf9"/>
+          <text x="240" y="86" fill="#e6edf3" text-anchor="middle" font-size="11">VM DB</text>
+          <text x="240" y="102" fill="#34d399" text-anchor="middle" font-size="9">virtio · VLAN 10</text>
+          <rect x="310" y="66" width="130" height="46" rx="7" fill="#1c2230" stroke="#f59e0b"/>
+          <text x="375" y="86" fill="#e6edf3" text-anchor="middle" font-size="11">CT LXC (DNS)</text>
+          <text x="375" y="102" fill="#f472b6" text-anchor="middle" font-size="9">veth · VLAN 20</text>
+
+          <!-- líneas a bridge -->
+          <line x1="110" y1="112" x2="110" y2="150" stroke="#9aa7b8" stroke-width="1.3"/>
+          <line x1="240" y1="112" x2="240" y2="150" stroke="#9aa7b8" stroke-width="1.3"/>
+          <line x1="375" y1="112" x2="375" y2="150" stroke="#9aa7b8" stroke-width="1.3"/>
+
+          <!-- Bridge vmbr0 -->
+          <rect x="50" y="150" width="390" height="40" rx="7" fill="#1c3318" stroke="#34d399" stroke-width="2"/>
+          <text x="245" y="168" fill="#34d399" text-anchor="middle" font-weight="700" font-size="12">vmbr0 — switch virtual L2 (VLAN-aware)</text>
+          <text x="245" y="183" fill="#9aa7b8" text-anchor="middle" font-size="9">aprende MACs · etiqueta/segmenta VLANs · reenvía tramas</text>
+
+          <!-- NIC física -->
+          <line x1="245" y1="190" x2="245" y2="206" stroke="#9aa7b8" stroke-width="1.3"/>
+          <rect x="170" y="206" width="150" height="22" rx="5" fill="#11161f" stroke="#9aa7b8"/>
+          <text x="245" y="221" fill="#9aa7b8" text-anchor="middle" font-size="10">NIC física (uplink) eth0</text>
+
+          <!-- Switch físico -->
+          <line x1="460" y1="217" x2="560" y2="217" stroke="#9aa7b8" stroke-width="2" marker-end="url(#vb)"/>
+          <text x="510" y="210" fill="#34d399" text-anchor="middle" font-size="9">trunk 802.1Q</text>
+          <rect x="560" y="190" width="170" height="56" rx="9" fill="#1c2230" stroke="#4f9cf9"/>
+          <text x="645" y="214" fill="#e6edf3" text-anchor="middle" font-weight="700" font-size="12">Switch físico</text>
+          <text x="645" y="231" fill="#9aa7b8" text-anchor="middle" font-size="10">VLAN 10, 20…</text>
+
+          <text x="380" y="276" fill="#9aa7b8" text-anchor="middle" font-size="10">Las VMs no tocan un puerto físico: se conectan al bridge vmbr0, que actúa como un switch de capa 2</text>
+          <text x="380" y="292" fill="#9aa7b8" text-anchor="middle" font-size="10">y saca el tráfico etiquetado por la NIC física hacia el switch real mediante un enlace trunk.</text>
+        </svg>
+        <div class="cap">Aquí se cruzan redes y virtualización: el bridge <code>vmbr0</code> es un switch de capa 2 por software. Entiende VLANs, por lo que varias VMs del mismo host pueden vivir en redes distintas y salir por un trunk al switch físico.</div>
+      </div>
+
+      <div class="diagram">
+        <svg viewBox="0 0 760 230" xmlns="http://www.w3.org/2000/svg" font-family="Segoe UI, sans-serif" font-size="12">
+          <text x="380" y="20" fill="#e6edf3" font-weight="bold" text-anchor="middle" font-size="13">Modo Bridged vs Modo NAT</text>
+          <!-- Bridged -->
+          <rect x="20" y="34" width="350" height="180" rx="9" fill="#1c2230" stroke="#34d399" stroke-width="1.5"/>
+          <text x="195" y="56" fill="#34d399" font-weight="700" text-anchor="middle">BRIDGED (puente)</text>
+          <rect x="44" y="74" width="100" height="38" rx="6" fill="#11161f" stroke="#4f9cf9"/>
+          <text x="94" y="92" fill="#e6edf3" text-anchor="middle" font-size="10">VM</text>
+          <text x="94" y="105" fill="#9aa7b8" text-anchor="middle" font-size="9">192.168.1.50</text>
+          <line x1="144" y1="93" x2="200" y2="93" stroke="#9aa7b8" stroke-width="1.3"/>
+          <rect x="200" y="74" width="146" height="38" rx="6" fill="#1c3318" stroke="#34d399"/>
+          <text x="273" y="97" fill="#34d399" text-anchor="middle" font-size="10">red física directa</text>
+          <text x="195" y="150" fill="#e6edf3" text-anchor="middle" font-size="10">La VM aparece como un equipo más</text>
+          <text x="195" y="167" fill="#e6edf3" text-anchor="middle" font-size="10">en la LAN, con IP del mismo rango.</text>
+          <text x="195" y="192" fill="#34d399" text-anchor="middle" font-size="10">Modo de producción · accesible desde la red</text>
+          <!-- NAT -->
+          <rect x="390" y="34" width="350" height="180" rx="9" fill="#1c2230" stroke="#f59e0b" stroke-width="1.5"/>
+          <text x="565" y="56" fill="#f59e0b" font-weight="700" text-anchor="middle">NAT</text>
+          <rect x="414" y="74" width="100" height="38" rx="6" fill="#11161f" stroke="#4f9cf9"/>
+          <text x="464" y="92" fill="#e6edf3" text-anchor="middle" font-size="10">VM</text>
+          <text x="464" y="105" fill="#9aa7b8" text-anchor="middle" font-size="9">10.0.0.5 (priv.)</text>
+          <line x1="514" y1="93" x2="556" y2="93" stroke="#9aa7b8" stroke-width="1.3"/>
+          <rect x="556" y="74" width="70" height="38" rx="6" fill="#3a2a00" stroke="#f59e0b"/>
+          <text x="591" y="97" fill="#f59e0b" text-anchor="middle" font-size="9">NAT host</text>
+          <line x1="626" y1="93" x2="668" y2="93" stroke="#9aa7b8" stroke-width="1.3"/>
+          <text x="700" y="97" fill="#34d399" text-anchor="middle" font-size="9">Internet</text>
+          <text x="565" y="150" fill="#e6edf3" text-anchor="middle" font-size="10">La VM sale a Internet tras la IP del host;</text>
+          <text x="565" y="167" fill="#e6edf3" text-anchor="middle" font-size="10">no es accesible directamente desde la LAN.</text>
+          <text x="565" y="192" fill="#f59e0b" text-anchor="middle" font-size="10">Laboratorios · una sola IP disponible</text>
+        </svg>
+        <div class="cap">Bridged pone la VM en la red real (producción); NAT la oculta tras la IP del host (laboratorios). Un tercer modo, host-only, aísla la VM sin salida a Internet.</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="comandos">
+    <div class="wrap block-body">
+      <h2 class="h"><span class="lead">Comandos</span> — Proxmox y red virtual</h2>
+      <p>Proxmox tiene interfaz web, pero todo se puede hacer por CLI. <code>qm</code> gestiona VMs (KVM), <code>pct</code> gestiona contenedores (LXC), y la red se define en el host como un bridge de Linux.</p>
+      <pre><code><span class="cmt"># --- VMs con qm (KVM) ---</span>
+qm list                          <span class="cmt"># listar VMs y su estado</span>
+qm start 100                     <span class="cmt"># arrancar la VM 100</span>
+qm snapshot 100 antes-update     <span class="cmt"># crear un snapshot</span>
+qm set 100 -net0 virtio,bridge=vmbr0   <span class="cmt"># NIC virtio en el bridge vmbr0</span>
+qm set 100 -net0 virtio,bridge=vmbr0,tag=10  <span class="cmt"># misma NIC en la VLAN 10</span>
+
+<span class="cmt"># --- Contenedores con pct (LXC) ---</span>
+pct list                         <span class="cmt"># listar contenedores</span>
+pct start 200                    <span class="cmt"># arrancar el CT 200</span>
+pct enter 200                    <span class="cmt"># abrir una shell dentro del contenedor</span>
+
+<span class="cmt"># --- El bridge en el host (Debian/Proxmox) ---</span>
+ip -br link show type bridge     <span class="cmt"># ver los bridges (vmbr0...)</span>
+brctl show                       <span class="cmt"># qué interfaces cuelgan de cada bridge</span>
+<span class="cmt"># La config persistente vive en /etc/network/interfaces (iface vmbr0)</span>
+
+<span class="cmt"># --- Backup completo de una VM ---</span>
+vzdump 100 --storage backups --mode snapshot</code></pre>
+      <div class="callout note">
+        <span class="label">Snapshot ≠ backup</span>
+        <code>qm snapshot</code> sirve para revertir un cambio rápido, pero vive en el mismo disco. Para un respaldo real usa <code>vzdump</code>, que genera un archivo independiente en otro almacenamiento.
+      </div>
     </div>
   </section>
 
@@ -128,11 +266,33 @@
     </div>
   </section>
 
+  <section class="section">
+    <div class="wrap block-body">
+      <h2 class="h"><span class="lead">Resumen</span> del módulo</h2>
+      <ul class="bullets">
+        <li>Virtualizar permite que un servidor físico aloje muchas VMs: eficiencia, agilidad, disponibilidad y ahorro.</li>
+        <li>Tipo 1 (bare-metal: Proxmox, ESXi) es más eficiente que Tipo 2 (hosted: VirtualBox).</li>
+        <li>KVM da VMs completas; LXC da contenedores ligeros que comparten el kernel del host.</li>
+        <li>Las VMs se conectan a un <strong>bridge virtual</strong> (vmbr0) que actúa como switch L2 y entiende VLANs.</li>
+        <li>Modos de red: bridged (la VM aparece en la red real), NAT (sale tras la IP del host), host-only (aislada).</li>
+        <li>Snapshot ≠ backup: el snapshot revierte un cambio rápido; el backup (vzdump) es una copia independiente.</li>
+      </ul>
+    </div>
+  </section>
+
   <section class="section" id="flash">
     <div class="wrap block-body">
       <h2 class="h"><span class="lead">Flashcards</span></h2>
       <p class="subtitle">Haz clic en cada tarjeta para ver la respuesta.</p>
       <div class="fc-grid">
+        <div class="flashcard"><div class="inner">
+          <div class="face front">¿Qué es el bridge vmbr0 en Proxmox?</div>
+          <div class="face back">Un switch virtual de capa 2 por software al que se conectan las NICs de las VMs; reenvía tramas entre ellas y las saca al exterior por la tarjeta física del host. Soporta VLANs.</div>
+        </div></div>
+        <div class="flashcard"><div class="inner">
+          <div class="face front">Diferencia entre snapshot y backup</div>
+          <div class="face back">El snapshot congela el estado para revertir un cambio, pero vive en el mismo disco. El backup es una copia completa e independiente en otro almacenamiento; sí protege ante pérdida del disco.</div>
+        </div></div>
         <div class="flashcard"><div class="inner">
           <div class="face front">¿Qué es un hypervisor Tipo 1?</div>
           <div class="face back">Se instala directamente sobre el hardware (bare-metal) sin OS intermediario. Más eficiente. Ej: Proxmox, ESXi, Hyper-V.</div>
@@ -204,6 +364,34 @@
         <button class="btn ghost" onclick="resetQuiz('quiz5')">Reiniciar</button>
         <div class="quiz-result"></div>
       </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="wrap block-body">
+      <h2 class="h"><span class="lead">Preguntas</span> de repaso</h2>
+      <ul class="review">
+        <li>¿Por qué un hypervisor Tipo 1 rinde mejor que uno Tipo 2 en producción?</li>
+        <li>¿Cuándo elegirías un contenedor LXC en lugar de una VM completa, y cuándo al revés?</li>
+        <li>Una VM no tiene conectividad de red. ¿Qué pasos de diagnóstico seguirías, en orden?</li>
+        <li>¿Por qué un snapshot no debe usarse como estrategia de respaldo?</li>
+        <li>¿Qué diferencia hay entre el modo de red <em>bridged</em> y el modo <em>NAT</em> de una VM?</li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="section" id="recursos">
+    <div class="wrap block-body">
+      <h2 class="h"><span class="lead">Recursos</span> y material de apoyo</h2>
+      <p class="subtitle">Ampliación audiovisual y documentación de referencia para profundizar a nivel técnico superior.</p>
+      <ul class="reslist">
+        <li><span class="tag video">vídeo</span><a href="https://www.youtube.com/watch?v=wX75Z-4MEoM" target="_blank" rel="noopener">NetworkChuck — Aprende máquinas virtuales</a> — introducción práctica a VMs (en inglés, muy didáctico).</li>
+        <li><span class="tag video">vídeo</span><a href="https://www.youtube.com/watch?v=_u8qTN3cCnQ" target="_blank" rel="noopener">NetworkChuck — Proxmox</a> — instalación y primeros pasos del hypervisor Tipo 1.</li>
+        <li><span class="tag video">vídeo</span><a href="https://www.youtube.com/results?search_query=proxmox+vlan+bridge+vmbr0+networking" target="_blank" rel="noopener">Búsqueda: «Proxmox VLAN bridge vmbr0»</a> — configuración de red virtual y VLANs en Proxmox.</li>
+        <li><span class="tag doc">doc</span><a href="https://pve.proxmox.com/wiki/Network_Configuration" target="_blank" rel="noopener">Proxmox VE Wiki — Network Configuration</a> — referencia oficial de bridges, VLAN-aware y modos de red.</li>
+        <li><span class="tag doc">doc</span><a href="https://www.redhat.com/en/topics/virtualization/what-is-KVM" target="_blank" rel="noopener">Red Hat — ¿Qué es KVM?</a> — el motor de virtualización detrás de Proxmox.</li>
+        <li><span class="tag doc">doc</span><a href="https://www.docker.com/resources/what-container/" target="_blank" rel="noopener">Docker — ¿Qué es un contenedor?</a> — para contrastar el contenedor de aplicación (Docker) con el de sistema (LXC).</li>
+      </ul>
     </div>
   </section>
 
