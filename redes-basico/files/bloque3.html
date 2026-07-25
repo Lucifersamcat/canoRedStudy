@@ -142,7 +142,7 @@
             <text x="380" y="197" fill="#f472b6">4 · ACKNOWLEDGE (confirma asignación)</text>
           </g>
         </svg>
-        <div class="cap">El proceso DORA ocurre en milisegundos. Discovery y Request son broadcasts. Offer y Acknowledge también son broadcast en el proceso inicial (el cliente aún no tiene IP); en renovaciones posteriores el servidor puede responder en unicast directamente al cliente.</div>
+        <div class="cap">El proceso DORA ocurre en milisegundos. Discovery y Request son siempre broadcast. Offer y Acknowledge dependen del flag de broadcast del cliente (RFC 2131 §4.1): si está activo el servidor responde en broadcast; si no, puede responder en unicast a la dirección MAC del cliente incluso antes de que tenga IP asignada. En renovaciones el cliente ya conoce la IP del servidor y usa unicast directamente.</div>
       </div>
 
       <div class="diagram">
